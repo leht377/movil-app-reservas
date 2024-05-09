@@ -9,24 +9,6 @@ import theme from '../common/theme'
 
 const Tab = createBottomTabNavigator()
 
-//   <Tab.Navigator
-//     screenOptions={({ route }) => ({
-//       tabBarIcon: ({ color, focused, size }) => {
-//         let iconName
-//         if (route.name === 'Welcome') {
-//           iconName = focused
-//             ? 'information-circle'
-//             : 'information-circle-outline'
-//         } else if (route.name === 'Menu') {
-//           iconName = 'list'
-//         }
-//         return <Ionicons name={iconName} size={size} color={color} />
-//       },
-//       tabBarActiveTintColor: 'tomato',
-//       tabBarInactiveTintColor: 'gray'
-//     })}
-//   >
-
 const MyTabs = () => {
   return (
     <Tab.Navigator
