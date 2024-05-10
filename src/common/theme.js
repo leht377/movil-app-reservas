@@ -17,12 +17,12 @@ const theme = {
   },
   fontWeigth: {
     normal: '400',
-    bold: '700'
+    bold: '800'
   },
   fontSize: {
-    bodymini: PixelRatio.roundToNearestPixel(10 / pixelFontScale),
-    body: PixelRatio.roundToNearestPixel(14 / pixelFontScale),
-    title: PixelRatio.roundToNearestPixel(16 / pixelFontScale)
+    bodymini: PixelRatio.roundToNearestPixel(14 / pixelFontScale),
+    body: PixelRatio.roundToNearestPixel(18 / pixelFontScale),
+    title: PixelRatio.roundToNearestPixel(20 / pixelFontScale)
   }
 }
 
