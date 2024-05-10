@@ -1,15 +1,27 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native'
 import Button from '../../../../components/Button'
 import StyledText from '../../../../components/StyledText'
 import MyIcon from '../../../../components/MyIcon'
 import theme from '../../../../../common/theme'
 import GoogleIcon from '../../../../icons/Google.icon'
 import PersonDoor from '../../../../icons/PersonDoor'
+import { useNavigation } from '@react-navigation/native'
+import { StackNavigationProp } from '@react-navigation/stack'
+// import { AppStackParamList } from '../../../../routes/types/app.stack.paramlist'
+import { AutenticacionStackParamList } from '../../../../routes/types/autenticacion.stack.paramslist'
 
 const OpcionesRegistroPage = () => {
+  const { navigate } = useNavigation<StackNavigationProp<AutenticacionStackParamList>>()
+  const registroCliente = () => {
+    navigate('RegistroCliente')
+  }
+
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
+    >
       <View style={styles.containerIcon}>
         <PersonDoor />
       </View>
@@ -47,6 +59,7 @@ const OpcionesRegistroPage = () => {
           containerStyle={styles.containerButtonStyle}
           buttonStyle={styles.buttonStyle}
           color={'primary'}
+          onPress={registroCliente}
         >
           <MyIcon nombre={'person'} tamano={25} color={theme.colors.secondary} />
           <StyledText fontWeight='bold' color='secondary'>
@@ -64,7 +77,7 @@ const OpcionesRegistroPage = () => {
           </StyledText>
         </Button>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 
