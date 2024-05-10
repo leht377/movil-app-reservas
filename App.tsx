@@ -1,11 +1,10 @@
-
 import { NavigationContainer } from '@react-navigation/native'
-import MyTabs from './src/components/MyTabs'
+import MyTabs from './src/app/components/MyTabs'
 
-export default function App () {
+export default function App() {
   return (
     <NavigationContainer>
-       <MyTabs />
+      <MyTabs />
     </NavigationContainer>
   )
 }

@@ -10,7 +10,7 @@ import {
   View,
   ViewStyle
 } from 'react-native'
-import theme from '../common/theme'
+import theme from '../../common/theme'
 import StyledText from './StyledText'
 import MyIcon from './MyIcon'
 import Button from './Button'

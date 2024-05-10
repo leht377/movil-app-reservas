@@ -1,7 +1,7 @@
 import { StyleSheet, TextStyle, TouchableWithoutFeedbackProps, ViewStyle } from 'react-native'
 import { Button as ThemedButton } from '@rneui/themed'
 import React from 'react'
-import theme from '../common/theme'
+import theme from '../../common/theme'
 import { StyleProp } from 'react-native'
 
 interface Props {

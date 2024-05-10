@@ -1,11 +1,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import React from 'react'
-import HomePage from '../app/Home/pages/HomePage'
-import FavoritosPages from '../app/Favoritos/pages/FavoritosPages'
-import ReservasPage from '../app/Reservas/pages/ReservasPage'
-import PerfilPage from '../app/Perfil/pages/PerfilPage'
+import HomePage from '../pages/Home/pages/HomePage'
+import FavoritosPages from '../pages/Favoritos/pages/FavoritosPages'
+import ReservasPage from '../pages/Reservas/pages/ReservasPage'
+import PerfilPage from '../pages/Perfil/pages/PerfilPage'
 import MyIcon from './MyIcon'
-import theme from '../common/theme'
+import theme from '../../common/theme'
 
 const Tab = createBottomTabNavigator()
 

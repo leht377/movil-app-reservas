@@ -13,7 +13,7 @@ interface StyledTextProps {
   isSelectable?: boolean
 }
 
-import theme from '../common/theme'
+import theme from '../../common/theme'
 
 const StyledText: React.FC<StyledTextProps> = ({
   children,
