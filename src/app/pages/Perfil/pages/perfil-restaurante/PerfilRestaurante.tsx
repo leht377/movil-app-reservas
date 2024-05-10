@@ -1,10 +1,10 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 
-const AutenticacionPage = () => {
-  return
+const PerfilRestaurante = () => {
+  return <View></View>
 }
 
 const styles = StyleSheet.create({})
 
-export default AutenticacionPage
+export default PerfilRestaurante

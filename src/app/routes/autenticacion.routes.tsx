@@ -8,9 +8,10 @@ import OpcionesRegistroPage from '../pages/Autenticacion/page/opciones-registro/
 const Stack = createStackNavigator()
 const AutenticacionRoutes = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name='OpcionesRegistro' component={OpcionesRegistroPage} />
-      <Stack.Screen name='LoginCliente' component={LoginCliente} />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name='opciones-registro' component={OpcionesRegistroPage} />
+
+      <Stack.Screen name='login' component={LoginCliente} />
       {/* <Stack.Screen name="Notifications" component={Notifications} />
     <Stack.Screen name="Profile" component={Profile} />
     <Stack.Screen name="Settings" component={Settings} />  */}

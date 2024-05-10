@@ -1,0 +1,112 @@
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
+import Button from '../../../../components/Button'
+import StyledText from '../../../../components/StyledText'
+import MyIcon from '../../../../components/MyIcon'
+import theme from '../../../../../common/theme'
+import GoogleIcon from '../../../../icons/Google.icon'
+import PersonDoor from '../../../../icons/PersonDoor'
+
+const OpcionesRegistroPage = () => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.containerIcon}>
+        <PersonDoor />
+      </View>
+      <View style={styles.containerOpcionesIngreso}>
+        <Button
+          containerStyle={styles.containerButtonStyle}
+          buttonStyle={styles.buttonStyle}
+          color={'secondary'}
+        >
+          <MyIcon nombre={'mail'} tamano={25} color={theme.colors.quaternary} />
+          <StyledText fontWeight='bold' color='quaternary'>
+            Ingresar con correo
+          </StyledText>
+        </Button>
+        <Button
+          containerStyle={styles.containerButtonStyle}
+          buttonStyle={styles.buttonStyle}
+          color={'secondary'}
+        >
+          <GoogleIcon height={25} width={25} />
+          <StyledText fontWeight='bold' color='quaternary'>
+            Ingresar con Google
+          </StyledText>
+        </Button>
+      </View>
+      <View style={styles.containerSeparador}>
+        <View style={styles.barra} />
+        <StyledText color='tertiary' fontWeight='bold' fontSize='bodymini'>
+          O
+        </StyledText>
+        <View style={styles.barra} />
+      </View>
+      <View style={styles.containerOpcionesIngreso}>
+        <Button
+          containerStyle={styles.containerButtonStyle}
+          buttonStyle={styles.buttonStyle}
+          color={'primary'}
+        >
+          <MyIcon nombre={'person'} tamano={25} color={theme.colors.secondary} />
+          <StyledText fontWeight='bold' color='secondary'>
+            Registrarse como cliente
+          </StyledText>
+        </Button>
+        <Button
+          containerStyle={styles.containerButtonStyle}
+          buttonStyle={styles.buttonStyle}
+          color={'secondary'}
+        >
+          <MyIcon nombre={'restaurant'} tamano={25} color={theme.colors.quaternary} />
+          <StyledText fontWeight='bold' color='quaternary'>
+            Registrarse como restaurante
+          </StyledText>
+        </Button>
+      </View>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.secondary,
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+    gap: 20
+  },
+  containerIcon: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  containerOpcionesIngreso: {
+    gap: 10
+  },
+  containerSeparador: {
+    width: 'auto',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 10
+  },
+  barra: {
+    flex: 1,
+    height: 2,
+    backgroundColor: theme.colors.bgScreen
+  },
+  containerButtonStyle: {
+    elevation: 1,
+    borderRadius: 5
+  },
+
+  buttonStyle: {
+    justifyContent: 'flex-start',
+    gap: 20,
+    paddingVertical: 15
+  }
+})
+
+export default OpcionesRegistroPage

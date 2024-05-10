@@ -1,10 +1,14 @@
+import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
-import MyTabs from './src/app/components/MyTabs'
-
+import AppRoutes from './src/app/routes/app.routes'
+import { View } from 'react-native'
+import { StatusBar } from 'react-native'
 export default function App() {
   return (
     <NavigationContainer>
-      <MyTabs />
+      <View style={{ flex: 1, paddingTop: StatusBar.currentHeight }}>
+        <AppRoutes />
+      </View>
     </NavigationContainer>
   )
 }

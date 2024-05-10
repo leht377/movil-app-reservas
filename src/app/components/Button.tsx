@@ -16,6 +16,7 @@ interface Props {
   fontSize?: 'bodymini' | 'body' | 'title'
   onPress?: TouchableWithoutFeedbackProps['onPress']
   children?: React.ReactNode
+  buttonStyle?: StyleProp<ViewStyle>
 }
 
 const Button: React.FC<Props> = ({
@@ -29,7 +30,8 @@ const Button: React.FC<Props> = ({
   textAlign = 'center',
   fontSize = 'body',
   onPress,
-  children
+  children,
+  buttonStyle
 }) => {
   const fontSizeMap: Record<Props['fontSize'], number> = {
     body: theme.fontSize.body,
@@ -62,6 +64,7 @@ const Button: React.FC<Props> = ({
       color={colorStyled}
       disabled={disabled}
       loading={loading}
+      buttonStyle={buttonStyle}
       onPress={onPress}
       containerStyle={containerStyle}
       children={children}

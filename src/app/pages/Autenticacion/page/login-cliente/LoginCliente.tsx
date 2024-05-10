@@ -1,10 +1,10 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 
-const OpcionesIngresoView = () => {
-  return
+const LoginCliente = () => {
+  return <View></View>
 }
 
 const styles = StyleSheet.create({})
 
-export default OpcionesIngresoView
+export default LoginCliente

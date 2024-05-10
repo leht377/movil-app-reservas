@@ -3,7 +3,7 @@ import React from 'react'
 import HomePage from '../pages/Home/pages/HomePage'
 import FavoritosPages from '../pages/Favoritos/pages/FavoritosPages'
 import ReservasPage from '../pages/Reservas/pages/ReservasPage'
-import PerfilPage from '../pages/Perfil/pages/PerfilPage'
+import PerfilPage from '../pages/Perfil/pages/perfil/PerfilPage'
 import MyIcon from './MyIcon'
 import theme from '../../common/theme'
 
