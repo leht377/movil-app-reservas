@@ -62,7 +62,7 @@ const OpcionesRegistroPage = () => {
           onPress={registroCliente}
         >
           <MyIcon nombre={'person'} tamano={25} color={theme.colors.secondary} />
-          <StyledText fontWeight='bold' color='secondary'>
+          <StyledText fontWeight='bold' color='secondary' fontSize='body'>
             Registrarse como cliente
           </StyledText>
         </Button>
@@ -111,14 +111,15 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.bgScreen
   },
   containerButtonStyle: {
-    elevation: 1,
+    elevation: 2,
     borderRadius: 5
+    // borderWidth: 1
   },
 
   buttonStyle: {
     justifyContent: 'flex-start',
     gap: 20,
-    paddingVertical: 15
+    paddingVertical: 12
   }
 })
 

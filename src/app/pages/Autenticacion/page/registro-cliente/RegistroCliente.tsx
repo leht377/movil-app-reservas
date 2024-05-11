@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   container: {
-    gap: 15,
+    gap: 20,
     paddingHorizontal: 20,
     justifyContent: 'center',
     paddingVertical: 5
@@ -65,13 +65,14 @@ const styles = StyleSheet.create({
   containerPoliticas: {},
   containerButtonStyle: {
     elevation: 1,
+    borderWidth: 1,
     borderRadius: 5
   },
 
   buttonStyle: {
     justifyContent: 'flex-start',
     gap: 20,
-    paddingVertical: 15
+    paddingVertical: 12
   }
 })
 

@@ -42,7 +42,7 @@ const FormularioRegistroCliente = () => {
       onSubmit={handleSubmitForm}
     >
       {({ handleChange, handleBlur, handleSubmit, errors, values, touched }) => (
-        <View style={{ gap: 20 }}>
+        <View style={{ gap: 10 }}>
           <FormikTextInput name='nombre' placeholder='Nombre' />
           <FormikTextInput name='apellido' placeholder='Apellido' />
           <FormikTextInput name='email' placeholder='Email' />

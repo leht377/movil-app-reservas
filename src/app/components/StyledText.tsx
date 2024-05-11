@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     color: theme.colors.quaternary
   },
   bold: {
-    fontWeight: '800'
+    fontWeight: '700'
   },
   title: {
     fontSize: theme.fontSize.title

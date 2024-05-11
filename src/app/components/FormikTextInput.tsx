@@ -22,6 +22,7 @@ const FormikTextInput: React.FC<FormikextInputProps> = ({
   placeholder
 }) => {
   const [field, meta, helpers] = useField(name)
+
   return (
     <View style={{ gap: 5 }}>
       <StyledTextInput
@@ -30,7 +31,7 @@ const FormikTextInput: React.FC<FormikextInputProps> = ({
         keyboardType={keyboardType}
         placeholder={placeholder}
       />
-      {meta.error && (
+      {meta.error && meta.touched && (
         <StyledText fontSize='bodymini' color='primary' fontWeight='bold'>
           * {meta.error?.toString()}
         </StyledText>
