@@ -62,6 +62,7 @@ const Button: React.FC<Props> = ({
         fontSize: fontSizeStyle
       }}
       color={colorStyled}
+      disabledStyle={{ opacity: 0.8, backgroundColor: colorStyled }}
       disabled={disabled}
       loading={loading}
       buttonStyle={[{ borderRadius: 5 }, buttonStyle]}

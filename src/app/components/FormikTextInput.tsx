@@ -8,6 +8,7 @@ interface FormikextInputProps {
   keyboardType?: KeyboardTypeOptions | 'password'
   placeholder?: string
   name: string
+  disable?: boolean
   // style?: TextStyle
   // placeholderTextColor?: ColorValue
   // containerInputStyle?: ViewStyle
@@ -19,7 +20,8 @@ interface FormikextInputProps {
 const FormikTextInput: React.FC<FormikextInputProps> = ({
   name,
   keyboardType = 'default',
-  placeholder
+  placeholder,
+  disable = false
 }) => {
   const [field, meta, helpers] = useField(name)
 
@@ -30,6 +32,7 @@ const FormikTextInput: React.FC<FormikextInputProps> = ({
         value={field.value}
         keyboardType={keyboardType}
         placeholder={placeholder}
+        disable={disable}
       />
       {meta.error && meta.touched && (
         <StyledText fontSize='bodymini' color='primary' fontWeight='bold'>

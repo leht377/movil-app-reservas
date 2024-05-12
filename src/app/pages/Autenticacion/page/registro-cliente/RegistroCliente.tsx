@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native'
 import StyledText from '../../../../components/StyledText'
 import FormularioRegistroCliente from './formularios/FormularioRegistroCliente'
@@ -7,8 +7,11 @@ import Button from '../../../../components/Button'
 import GoogleIcon from '../../../../icons/Google.icon'
 import PersonFile from '../../../../icons/PersonFile'
 import { ScrollView } from 'react-native'
+import Modal from '../../../../components/Modal'
+import ModalStatusRegistro from './components/ModalStatusRegistro'
 
 const RegistroCliente = () => {
+  const [modalVisible, setModalVisible] = useState(false)
   return (
     <KeyboardAvoidingView
       style={styles.topContainer}
@@ -38,6 +41,7 @@ const RegistroCliente = () => {
               containerStyle={styles.containerButtonStyle}
               buttonStyle={styles.buttonStyle}
               color={'secondary'}
+              onPress={() => setModalVisible(true)}
             >
               <GoogleIcon height={25} width={25} />
               <StyledText fontWeight='bold' color='quaternary'>
@@ -47,6 +51,7 @@ const RegistroCliente = () => {
           </View>
         </View>
       </ScrollView>
+      <ModalStatusRegistro isVisible={modalVisible} onClose={() => setModalVisible(false)} />
     </KeyboardAvoidingView>
   )
 }
