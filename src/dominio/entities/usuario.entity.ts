@@ -3,7 +3,7 @@ export class UsuarioEntity {
     private readonly id: string,
     private rol: string,
     private correo: string,
-    private readonly constrasenaHash?: string
+    private readonly token: string
   ) {}
   getId(): string {
     return this.id
@@ -17,7 +17,7 @@ export class UsuarioEntity {
     return this.correo
   }
 
-  getContrasenaHash(): string | undefined {
-    return this.constrasenaHash
+  getTokent(): string {
+    return this.token
   }
 }
