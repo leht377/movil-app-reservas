@@ -27,12 +27,9 @@ const OpcionesClienteSection = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.secondary,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
     gap: 30
   },
-  containerHeader: { gap: 10 },
+  containerHeader: {},
   containerOpciones: { flexDirection: 'row', flexWrap: 'wrap', gap: 30 }
 })
 

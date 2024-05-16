@@ -2,13 +2,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import theme from '../../common/theme'
-import HomePage from '../pages/Home/pages/HomePage'
+
 import ReservasPage from '../pages/Reservas/pages/ReservasPage'
 import FavoritosPages from '../pages/Favoritos/pages/FavoritosPages'
 
 import MyIcon from '../components/MyIcon'
 import PerfilRoutes from './perfil.routes'
 import AutenticacionRoutes from './autenticacion.routes'
+import HomeCliente from '../pages/Home/pages/Home-cliente/HomeCliente'
 
 const Tab = createBottomTabNavigator()
 const AppRoutes = () => {
@@ -26,7 +27,7 @@ const AppRoutes = () => {
     >
       <Tab.Screen
         name='HomePage'
-        component={HomePage}
+        component={HomeCliente}
         options={{
           title: 'Home',
           tabBarIcon: ({ color, size }) => <MyIcon color={color} tamano={size} nombre='home' />
