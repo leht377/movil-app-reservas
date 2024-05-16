@@ -30,6 +30,11 @@ const usuarioSlice = createSlice({
 
     builder.addCase(registrarCliente.rejected, (state, action) => {
       state.status = Status.FAILED
+      if ((action.payload as any)?.code === 400) {
+        state.error = (action.payload as any)?.data?.error
+      } else {
+        state.error = 'Ocurrio un error desconocido'
+      }
     })
 
     builder.addCase(registrarCliente.fulfilled, (state, action) => {
@@ -49,9 +54,18 @@ export const autenticarUsuario = createAsyncThunk(
 
 export const registrarCliente = createAsyncThunk(
   'usuario/registrar_cliente',
-  async (data: RegistrarClienteDto) => {
-    const usuario = await clienteServices.registrarCliente(data)
-    console.log(usuario)
-    return usuario
+  async (data: RegistrarClienteDto, { rejectWithValue }) => {
+    try {
+      const usuario = await clienteServices.registrarCliente(data)
+      return usuario
+    } catch (error) {
+      if (!error.response) {
+        throw error
+      }
+      return rejectWithValue({
+        data: error.response.data,
+        code: error.response?.status
+      })
+    }
   }
 )

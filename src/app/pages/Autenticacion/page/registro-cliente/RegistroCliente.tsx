@@ -9,9 +9,12 @@ import PersonFile from '../../../../icons/PersonFile'
 import { ScrollView } from 'react-native'
 import Modal from '../../../../components/Modal'
 import ModalStatusRegistro from './components/ModalStatusRegistro'
+import useRegistrarCliente from './hooks/useRegistrarCliente'
 
 const RegistroCliente = () => {
   const [modalVisible, setModalVisible] = useState(false)
+  const { registrar } = useRegistrarCliente()
+
   return (
     <KeyboardAvoidingView
       style={styles.topContainer}
@@ -22,7 +25,7 @@ const RegistroCliente = () => {
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <PersonFile />
           </View>
-          <FormularioRegistroCliente />
+          <FormularioRegistroCliente onSubmit={registrar} />
           <View style={styles.containerPoliticas}>
             <StyledText fontSize='bodymini' align='center'>
               Al continuar, aceptas las{' '}

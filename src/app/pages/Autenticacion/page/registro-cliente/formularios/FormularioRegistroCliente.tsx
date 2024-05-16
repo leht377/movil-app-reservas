@@ -30,9 +30,9 @@ const RegistroClienteSchema = Yup.object().shape({
   email: Yup.string().email('Correo invalido').required('El correo es requerido')
 })
 
-const FormularioRegistroCliente = () => {
-  const handleSubmitForm = (values) => {
-    console.log(values)
+const FormularioRegistroCliente = ({ onSubmit }) => {
+  const handleSubmitForm = ({ nombre, apellido, email, constrasena }) => {
+    onSubmit({ nombre: nombre, correo: email, apellido: apellido, contrasena: constrasena })
   }
   const initialValues: MyFormValues = { apellido: '', email: '', nombre: '', constrasena: '' }
   return (

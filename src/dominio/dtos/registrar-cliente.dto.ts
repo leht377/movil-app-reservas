@@ -9,12 +9,11 @@ export class RegistrarClienteDto {
   static crear(object: { [key: string]: any }): RegistrarClienteDto {
     const { nombre, apellido, correo, contrasena } = object
 
-    // if (!nombre) throw CustomErrors.badRequest('El nombre es requerido')
-    // if (!apellido) throw CustomErrors.badRequest('El apellido es requerido')
-    // if (!correo) throw CustomErrors.badRequest('El correo es requerido')
-    // if (!validators.email.test(correo)) throw CustomErrors.badRequest('Correo no valido')
-    // if (!contrasena) throw CustomErrors.badRequest('La contraseña es requerida')
-    // if (contrasena?.length < 5) throw CustomErrors.badRequest('La contraseña es demasiado corta')
+    if (!nombre) throw new Error('El nombre es requerido')
+    if (!apellido) throw new Error('El apellido es requerido')
+    if (!correo) throw new Error('El correo es requerido')
+    if (!contrasena) throw new Error('La contraseña es requerida')
+    if (contrasena?.length < 5) throw new Error('La contraseña es demasiado corta')
 
     return new RegistrarClienteDto(nombre, apellido, correo, contrasena)
   }
