@@ -1,8 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import usuarioReducer from './reducers/usuario.reducer'
+import restaurantesReducer from './reducers/restaurantes.reducer'
 
 export const store = configureStore({
-  reducer: { usuario: usuarioReducer }
+  reducer: { usuario: usuarioReducer, restaurante: restaurantesReducer },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false
+    })
 })
 
 export default store

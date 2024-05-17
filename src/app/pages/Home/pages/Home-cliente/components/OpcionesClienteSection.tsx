@@ -5,8 +5,13 @@ import Button from '../../../../../components/Button'
 import MyIcon from '../../../../../components/MyIcon'
 import theme from '../../../../../../common/theme'
 import OpcionItem from './OpcionItem'
+import { useNavigation } from '@react-navigation/native'
+import { HomeStackParamList } from '../../../../../routes/types/home.stack.paramlist'
+import { StackNavigationProp } from '@react-navigation/stack'
 
 const OpcionesClienteSection = () => {
+  const { navigate } = useNavigation<StackNavigationProp<HomeStackParamList>>()
+
   return (
     <View style={styles.container}>
       <View style={styles.containerHeader}>
@@ -16,7 +21,11 @@ const OpcionesClienteSection = () => {
         <StyledText fontSize='bodymini'>luiseduardohernandeztenorio@gmail.com</StyledText>
       </View>
       <View style={styles.containerOpciones}>
-        <OpcionItem iconName='restaurant' text='Buscar restaurante' />
+        <OpcionItem
+          iconName='restaurant'
+          text='Buscar restaurante'
+          onPress={() => navigate('Restaurantes')}
+        />
         <OpcionItem iconName='calendar-number' text='Administrar reservas' />
         <OpcionItem iconName='log-out' text='Cerrar sessión' />
       </View>

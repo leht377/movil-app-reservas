@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, TouchableNativeFeedback, View } from 'react-native'
+import { GestureResponderEvent, StyleSheet, TouchableNativeFeedback, View } from 'react-native'
 import theme from '../../../../../../common/theme'
 import MyIcon from '../../../../../components/MyIcon'
 import StyledText from '../../../../../components/StyledText'
@@ -7,8 +7,9 @@ import StyledText from '../../../../../components/StyledText'
 interface Props {
   iconName: string
   text: string
+  onPress?: (event: GestureResponderEvent) => void
 }
-const OpcionItem: React.FC<Props> = ({ iconName, text }) => {
+const OpcionItem: React.FC<Props> = ({ iconName, text, onPress }) => {
   return (
     <View
       style={{
@@ -19,7 +20,7 @@ const OpcionItem: React.FC<Props> = ({ iconName, text }) => {
         gap: 10
       }}
     >
-      <TouchableNativeFeedback>
+      <TouchableNativeFeedback onPress={onPress}>
         <View
           style={{
             backgroundColor: theme.colors.secondary,

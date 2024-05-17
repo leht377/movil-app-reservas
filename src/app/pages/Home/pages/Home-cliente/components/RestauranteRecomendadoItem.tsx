@@ -4,12 +4,35 @@ import { StyleSheet, View } from 'react-native'
 import theme from '../../../../../../common/theme'
 import MyIcon from '../../../../../components/MyIcon'
 import StyledText from '../../../../../components/StyledText'
+import { RestauranteDetalladoEntity } from '../../../../../../dominio/entities'
 
-const RestauranteRecomendadoItem = () => {
+interface Props {
+  restaurante: RestauranteDetalladoEntity
+}
+
+const EstrellaVacia = () => {
+  return <MyIcon nombre={'star-outline'} tamano={15} color={theme.colors.primary} />
+}
+
+const EstrellaMitad = () => {
+  return <MyIcon nombre={'star-half'} tamano={15} color={theme.colors.primary} />
+}
+
+const EstrellaCompleta = () => {
+  return <MyIcon nombre={'star'} tamano={15} color={theme.colors.primary} />
+}
+const RestauranteRecomendadoItem: React.FC<Props> = ({ restaurante }) => {
+  const nombreRestaurante =
+    restaurante.getNombre().length > 20
+      ? restaurante.getNombre().slice(0, 20) + ' ...'
+      : restaurante.getNombre()
+  const calificacion = restaurante.getCalificacionPromedio()
+
+  if (!restaurante) return null
   return (
     <View
       style={{
-        width: 110,
+        width: 100,
         justifyContent: 'flex-start',
         alignItems: 'center'
       }}
@@ -35,14 +58,15 @@ const RestauranteRecomendadoItem = () => {
         />
       </View>
       <View style={{ flexDirection: 'row', gap: 5 }}>
-        <MyIcon nombre={'star-outline'} tamano={15} />
-        <MyIcon nombre={'star-outline'} tamano={15} />
-        <MyIcon nombre={'star-outline'} tamano={15} />
-        <MyIcon nombre={'star-outline'} tamano={15} />
-        <MyIcon nombre={'star-outline'} tamano={15} />
+        {[1, 2, 3, 4, 5].map((e, index, array) => {
+          if (calificacion >= e) return <EstrellaCompleta key={index} />
+          else if (calificacion < e && calificacion > array[index - 1])
+            return <EstrellaMitad key={index} />
+          return <EstrellaVacia key={index} />
+        })}
       </View>
-      <StyledText fontWeight='bold' fontSize='body'>
-        Tann's foot
+      <StyledText fontWeight='bold' fontSize='body' align='center'>
+        {nombreRestaurante}
       </StyledText>
     </View>
   )

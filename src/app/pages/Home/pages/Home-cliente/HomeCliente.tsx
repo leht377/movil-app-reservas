@@ -11,22 +11,15 @@ import { SearchBar } from '@rneui/themed'
 const HomeCliente = () => {
   return (
     <View style={styles.container}>
-      <View style={{ backgroundColor: 'purple', flex: 0.4 }}>
+      <View style={styles.header}>
         <HeaderHome />
       </View>
 
-      <View style={{ flex: 0.6, gap: 3 }}>
-        <View
-          style={{
-            backgroundColor: theme.colors.secondary,
-            flex: 0.5,
-            paddingHorizontal: 20,
-            paddingVertical: 10
-          }}
-        >
+      <View style={styles.containerSections}>
+        <View style={styles.sectionOpcionesClientes}>
           <OpcionesClienteSection />
         </View>
-        <View style={{ backgroundColor: theme.colors.secondary, flex: 0.5 }}>
+        <View style={styles.sectionRestaurantesRecomendados}>
           <RestaurantesRecomendadosSection />
         </View>
       </View>
@@ -37,7 +30,18 @@ const HomeCliente = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1
-  }
+  },
+  header: {
+    flex: 0.4
+  },
+  containerSections: { flex: 0.6, gap: 3 },
+  sectionOpcionesClientes: {
+    backgroundColor: theme.colors.secondary,
+    flex: 0.5,
+    paddingHorizontal: 20,
+    paddingVertical: 10
+  },
+  sectionRestaurantesRecomendados: { backgroundColor: theme.colors.secondary, flex: 0.5 }
 })
 
 export default HomeCliente
