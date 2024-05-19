@@ -25,6 +25,4 @@ const AutenticacionRoutes = () => {
   )
 }
 
-const styles = StyleSheet.create({})
-
 export default AutenticacionRoutes

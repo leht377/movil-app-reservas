@@ -10,6 +10,7 @@ import MyIcon from '../components/MyIcon'
 import PerfilRoutes from './perfil.routes'
 import AutenticacionRoutes from './autenticacion.routes'
 import HomeCliente from '../pages/Home/pages/Home-cliente/HomeCliente'
+import HomeRoutes from './home.routes'
 
 const Tab = createBottomTabNavigator()
 const AppRoutes = () => {
@@ -26,8 +27,8 @@ const AppRoutes = () => {
       initialRouteName='HomePage'
     >
       <Tab.Screen
-        name='HomePage'
-        component={HomeCliente}
+        name='Home'
+        component={HomeRoutes}
         options={{
           title: 'Home',
           tabBarIcon: ({ color, size }) => <MyIcon color={color} tamano={size} nombre='home' />

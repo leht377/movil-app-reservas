@@ -5,22 +5,12 @@ import theme from '../../../../../../common/theme'
 import MyIcon from '../../../../../components/MyIcon'
 import StyledText from '../../../../../components/StyledText'
 import { RestauranteDetalladoEntity } from '../../../../../../dominio/entities'
+import Star from '../../../../../components/Star'
 
 interface Props {
   restaurante: RestauranteDetalladoEntity
 }
 
-const EstrellaVacia = () => {
-  return <MyIcon nombre={'star-outline'} tamano={15} color={theme.colors.primary} />
-}
-
-const EstrellaMitad = () => {
-  return <MyIcon nombre={'star-half'} tamano={15} color={theme.colors.primary} />
-}
-
-const EstrellaCompleta = () => {
-  return <MyIcon nombre={'star'} tamano={15} color={theme.colors.primary} />
-}
 const RestauranteRecomendadoItem: React.FC<Props> = ({ restaurante }) => {
   const nombreRestaurante =
     restaurante.getNombre().length > 20
@@ -59,10 +49,10 @@ const RestauranteRecomendadoItem: React.FC<Props> = ({ restaurante }) => {
       </View>
       <View style={{ flexDirection: 'row', gap: 5 }}>
         {[1, 2, 3, 4, 5].map((e, index, array) => {
-          if (calificacion >= e) return <EstrellaCompleta key={index} />
+          if (calificacion >= e) return <Star type='completa' size={15} key={index} />
           else if (calificacion < e && calificacion > array[index - 1])
-            return <EstrellaMitad key={index} />
-          return <EstrellaVacia key={index} />
+            return <Star type='mitad' size={15} key={index} />
+          return <Star type='vacia' size={15} key={index} />
         })}
       </View>
       <StyledText fontWeight='bold' fontSize='body' align='center'>
