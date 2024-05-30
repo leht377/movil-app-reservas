@@ -1,5 +1,11 @@
 import React, { useCallback, useEffect } from 'react'
-import { ActivityIndicator, FlatList, ImageBackground, StyleSheet, View } from 'react-native'
+import {
+  ActivityIndicator,
+  FlatList,
+  ImageBackground,
+  StyleSheet,
+  View
+} from 'react-native'
 
 import { SearchBar } from '@rneui/themed'
 
@@ -98,11 +104,16 @@ import StyledText from '../../../../components/StyledText'
 //   }
 // ]
 const RestauranteClientePage = () => {
-  const { loading, obtenerRestaurantes, restaurantes } = useObtenerRestaurantes()
+  const { loading, obtenerRestaurantes, restaurantes } =
+    useObtenerRestaurantes()
 
   const renderItem = useCallback(({ item }) => {
     return <CardRestaurante restaurante={item} />
   }, [])
+
+  const handleMoreData = () => {
+    !loading && obtenerRestaurantes()
+  }
 
   const renderFooter = () => {
     if (!loading) return null
@@ -122,8 +133,10 @@ const RestauranteClientePage = () => {
         renderItem={renderItem}
         contentContainerStyle={{ gap: 10, paddingHorizontal: 10 }}
         keyExtractor={(item) => item?.getId()}
-        ListEmptyComponent={<StyledText>No hay restaurantes ...</StyledText>}
-        onEndReached={() => {}}
+        ListEmptyComponent={
+          !loading && <StyledText>No hay restaurantes ...</StyledText>
+        }
+        onEndReached={() => handleMoreData()}
         onEndReachedThreshold={0.5}
         ListFooterComponent={renderFooter}
       />

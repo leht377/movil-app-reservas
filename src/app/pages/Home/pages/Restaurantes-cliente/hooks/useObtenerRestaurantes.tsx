@@ -1,38 +1,38 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { useAppSelector } from '../../../../../../redux/hooks/useAppSelector'
-import { useAppDispatch } from '../../../../../../redux/hooks/useAppDispatch'
-import { get_restaurantes } from '../../../../../../redux/reducers/restaurantes.reducer'
+import React, { useEffect, useState } from 'react'
+import { restauranteServices } from '../../../../../../services/restaurante.services'
+import { Paginacion } from '../../../../../../dominio/interfaces/paginacion.interface'
 
 const useObtenerRestaurantes = () => {
-  const { restaurantes, paginacion } = useAppSelector((state) => state.restaurante)
+  // const { restaurantes, paginacion } = useAppSelector((state) => state.restaurante)
 
+  const [restaurantes, setRestaurantes] = useState([])
+  const [paginacion, setPaginacion] = useState<Paginacion | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
-  const [hasMoreData, setHasMoreData] = useState(true)
 
-  const dispatch = useAppDispatch()
+  const obtenerRestaurantes = async () => {
+    if (paginacion && !paginacion.hasNextPage) return
 
-  const obtenerRestaurantes = useCallback(async () => {
     setLoading(true)
     setError(null)
 
-    // const nextPage = paginacion?.nextPage ? paginacion?.nextPage : 1
-    const page = paginacion ? (paginacion.hasNextPage ? paginacion.nextPage : paginacion.page) : 1
-
     try {
-      await dispatch(get_restaurantes(page)).unwrap()
-      setHasMoreData(paginacion?.hasNextPage)
+      const response = await restauranteServices.obtener_resturantes(
+        paginacion?.nextPage
+      )
+
+      if (response.paginacion?.page > 1)
+        setRestaurantes([...restaurantes, ...response.restaurantes])
+      else setRestaurantes(response.restaurantes)
+      setPaginacion(response.paginacion)
     } catch (err) {
       setError('Error al obtener los restaurantes')
       // console.error(err) // Puedes mantenerlo comentado o eliminarlo según lo necesites
     } finally {
       setLoading(false)
     }
-  }, [])
+  }
 
-  useEffect(() => {
-    console.log(paginacion)
-  }, [paginacion])
   useEffect(() => {
     obtenerRestaurantes()
   }, [])
