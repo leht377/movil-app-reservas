@@ -34,7 +34,15 @@ const obtener_resturantes = async (
   return { restaurantes: restaurantesMapeados, paginacion }
 }
 
+const obetenerRestaurantePorId = async (
+  restauranteId: string
+): Promise<RestauranteDetalladoEntity | null> => {
+  const response = await axios.get(`${API_URL}/restaurantes/${restauranteId}`)
+  const restaurante = response.data
+  return RestauranteMapper.RestauranteDetalladoEntityFromObject(restaurante)
+}
 export const restauranteServices = {
   obtener_top_resturantes,
-  obtener_resturantes
+  obtener_resturantes,
+  obetenerRestaurantePorId
 }

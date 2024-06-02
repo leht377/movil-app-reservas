@@ -1,10 +1,16 @@
 import React from 'react'
 import { StyleSheet, Text, TextStyle } from 'react-native'
 
-interface StyledTextProps {
+export interface StyledTextProps {
   children: React.ReactNode
-  align?: 'left' | 'center' | 'right'
-  color?: 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'quinary' | 'green'
+  align?: TextStyle['textAlign']
+  color?:
+    | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'quaternary'
+    | 'quinary'
+    | 'green'
   fontSize?: 'bodymini' | 'body' | 'title'
   fontWeight?: 'bold'
   textTransform?: 'capitalize' | 'lowercase' | 'none' | 'uppercase'
@@ -37,9 +43,6 @@ const StyledText: React.FC<StyledTextProps> = ({
     color === 'quinary' && styles.textQuinary,
     color === 'green' && styles.textGreen,
 
-    align === 'center' && styles.textAlignCenter,
-    align === 'left' && styles.textLeft,
-    align === 'right' && styles.textRigth,
     fontSize === 'title' && styles.title,
     fontSize === 'bodymini' && styles.bodymini,
     fontSize === 'body' && styles.body,
@@ -53,7 +56,11 @@ const StyledText: React.FC<StyledTextProps> = ({
   ]
 
   return (
-    <Text selectable={isSelectable} style={textStyle} {...restOfProps}>
+    <Text
+      selectable={isSelectable}
+      style={[textStyle, { textAlign: align }]}
+      {...restOfProps}
+    >
       {children}
     </Text>
   )

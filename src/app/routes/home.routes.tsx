@@ -2,6 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import HomeCliente from '../pages/Home/pages/Home-cliente/HomeCliente'
 import RestauranteClientePage from '../pages/Home/pages/Restaurantes-cliente/RestauranteClientePage'
 import { HomeStackParamList } from './types/home.stack.paramlist'
+import RestauranteDetalle from '../pages/Home/pages/Restaurante-detalle/RestauranteDetalle'
 
 const Stack = createStackNavigator<HomeStackParamList>()
 
@@ -13,6 +14,11 @@ const HomeRoutes = () => {
         name='Restaurantes'
         component={RestauranteClientePage}
         options={{ headerShown: true }}
+      />
+      <Stack.Screen
+        name='RestauranteDetalle'
+        component={RestauranteDetalle}
+        options={{ headerShown: true, title: '' }}
       />
     </Stack.Navigator>
   )
