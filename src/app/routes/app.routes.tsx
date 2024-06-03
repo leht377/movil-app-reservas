@@ -9,7 +9,6 @@ import FavoritosPages from '../pages/Favoritos/pages/FavoritosPages'
 import MyIcon from '../components/MyIcon'
 import PerfilRoutes from './perfil.routes'
 import AutenticacionRoutes from './autenticacion.routes'
-import HomeCliente from '../pages/Home/pages/Home-cliente/HomeCliente'
 import HomeRoutes from './home.routes'
 
 const Tab = createBottomTabNavigator()
@@ -31,7 +30,9 @@ const AppRoutes = () => {
         component={HomeRoutes}
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, size }) => <MyIcon color={color} tamano={size} nombre='home' />
+          tabBarIcon: ({ color, size }) => (
+            <MyIcon color={color} tamano={size} nombre='home' />
+          )
         }}
       />
       <Tab.Screen
@@ -39,7 +40,9 @@ const AppRoutes = () => {
         component={ReservasPage}
         options={{
           title: 'Reservas',
-          tabBarIcon: ({ color, size }) => <MyIcon color={color} tamano={size} nombre='calendar' />
+          tabBarIcon: ({ color, size }) => (
+            <MyIcon color={color} tamano={size} nombre='calendar' />
+          )
         }}
       />
       <Tab.Screen
@@ -47,7 +50,9 @@ const AppRoutes = () => {
         component={FavoritosPages}
         options={{
           title: 'Favoritos',
-          tabBarIcon: ({ color, size }) => <MyIcon color={color} tamano={size} nombre='heart' />
+          tabBarIcon: ({ color, size }) => (
+            <MyIcon color={color} tamano={size} nombre='heart' />
+          )
         }}
       />
       <Tab.Screen
