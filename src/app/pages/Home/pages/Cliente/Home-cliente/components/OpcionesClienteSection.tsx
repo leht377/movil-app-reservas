@@ -1,13 +1,12 @@
 import React from 'react'
 import { StyleSheet, TouchableNativeFeedback, View } from 'react-native'
-import StyledText from '../../../../../components/StyledText'
-import Button from '../../../../../components/Button'
-import MyIcon from '../../../../../components/MyIcon'
-import theme from '../../../../../../common/theme'
+
 import OpcionItem from './OpcionItem'
 import { useNavigation } from '@react-navigation/native'
-import { HomeStackParamList } from '../../../../../routes/types/home.stack.paramlist'
+
 import { StackNavigationProp } from '@react-navigation/stack'
+import StyledText from '../../../../../../components/StyledText'
+import { HomeStackParamList } from '../../../../../../routes/types/home.stack.paramlist'
 
 const OpcionesClienteSection = () => {
   const { navigate } = useNavigation<StackNavigationProp<HomeStackParamList>>()
@@ -18,7 +17,9 @@ const OpcionesClienteSection = () => {
         <StyledText fontWeight='bold' fontSize='title'>
           Hola, cliente
         </StyledText>
-        <StyledText fontSize='bodymini'>luiseduardohernandeztenorio@gmail.com</StyledText>
+        <StyledText fontSize='bodymini'>
+          luiseduardohernandeztenorio@gmail.com
+        </StyledText>
       </View>
       <View style={styles.containerOpciones}>
         <OpcionItem

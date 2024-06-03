@@ -1,7 +1,7 @@
+import { RestauranteDetalladoEntity } from '@/dominio/entities'
+import { restauranteServices } from '@/services/restaurante.services'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { RestauranteDetalladoEntity } from '../../../../../../dominio/entities'
-import { restauranteServices } from '../../../../../../services/restaurante.services'
 
 const useObtenerRestuaranteId = (restauranteId: string) => {
   const [restaurante, setRestaurante] =

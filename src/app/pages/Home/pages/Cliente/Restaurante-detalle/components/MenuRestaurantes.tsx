@@ -2,11 +2,7 @@ import React, { useState } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
 
 import FilterHastag from './FilterHastag/FilterHastag'
-import StyledText from '../../../../../components/StyledText'
-import { HashtagEntity } from '../../../../../../dominio/entities'
-import { Image } from 'react-native'
-import theme from '../../../../../../common/theme'
-import CardPlato from '../../../../../components/CardPlato'
+import CardPlato from '@/app/components/CardPlato'
 
 const MenuRestaurantes = () => {
   const onSelectFilters = (filters: string[]) => {

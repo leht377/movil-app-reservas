@@ -9,10 +9,11 @@ import {
 
 import { SearchBar } from '@rneui/themed'
 
-import theme from '../../../../../common/theme'
 import CardRestaurante from './components/CardRestaurante'
 import useObtenerRestaurantes from './hooks/useObtenerRestaurantes'
-import StyledText from '../../../../components/StyledText'
+import StyledText from '@/app/components/StyledText'
+import theme from '@/common/theme'
+
 // const restaurantes = [
 //   {
 //     id: '66311290bbc94fb1b508bf60',

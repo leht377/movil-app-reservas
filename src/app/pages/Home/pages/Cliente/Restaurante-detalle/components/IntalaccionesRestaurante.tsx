@@ -1,9 +1,8 @@
+import theme from '@/common/theme'
 import React, { useState } from 'react'
 import { FlatList } from 'react-native'
 import { Image } from 'react-native'
 import { StyleSheet, View } from 'react-native'
-import Button from '../../../../../components/Button'
-import theme from '../../../../../../common/theme'
 
 const renderItem = ({ item }) => {
   return (

@@ -1,12 +1,13 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import StyledText from '../../../../components/StyledText'
+
 import OpcionesClienteSection from './components/OpcionesClienteSection'
 import RestaurantesRecomendadosSection from './components/RestaurantesRecomendadosSection'
-import theme from '../../../../../common/theme'
+
 import { Image } from 'react-native'
 import HeaderHome from './components/HeaderHome'
 import { SearchBar } from '@rneui/themed'
+import theme from '@/common/theme'
 
 const HomeCliente = () => {
   return (
@@ -41,7 +42,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10
   },
-  sectionRestaurantesRecomendados: { backgroundColor: theme.colors.secondary, flex: 0.5 }
+  sectionRestaurantesRecomendados: {
+    backgroundColor: theme.colors.secondary,
+    flex: 0.5
+  }
 })
 
 export default HomeCliente

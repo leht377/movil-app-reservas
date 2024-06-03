@@ -1,6 +1,6 @@
+import { Paginacion } from '@/dominio/interfaces/paginacion.interface'
+import { restauranteServices } from '@/services/restaurante.services'
 import React, { useEffect, useState } from 'react'
-import { restauranteServices } from '../../../../../../services/restaurante.services'
-import { Paginacion } from '../../../../../../dominio/interfaces/paginacion.interface'
 
 const useObtenerRestaurantes = () => {
   // const { restaurantes, paginacion } = useAppSelector((state) => state.restaurante)

@@ -1,11 +1,12 @@
 import { View } from 'react-native'
-import theme from '../../../../../../../common/theme'
+
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
-import StyledText from '../../../../../../components/StyledText'
-import MyIcon from '../../../../../../components/MyIcon'
-import Modal from '../../../../../../components/Modal'
+
 import { useState } from 'react'
 import { TouchableNativeFeedback } from 'react-native'
+import StyledText from '@/app/components/StyledText'
+import theme from '@/common/theme'
+import MyIcon from '@/app/components/MyIcon'
 
 const FilterBadge = ({ title, onPress, isPlus = false }) => {
   return (

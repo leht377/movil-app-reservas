@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import { StyleSheet, View, Image, ScrollView, FlatList } from 'react-native'
-import StyledText from '../../../../../components/StyledText'
 
 import RestauranteRecomendadoItem from './RestauranteRecomendadoItem'
 import useObtenerTopRestaurantes from '../hooks/useObtenerTopRestaurantes'
-import { RestauranteMapper } from '../../../../../../common/utils/mappers/restaurante.mapper'
+
+import StyledText from '../../../../../../components/StyledText'
 
 // const restaurantes = [
 //   {
@@ -390,7 +390,8 @@ import { RestauranteMapper } from '../../../../../../common/utils/mappers/restau
 // ]
 
 const RestaurantesRecomendadosSection = () => {
-  const { cargando, obtenerTopRestaurantes, restaurantes } = useObtenerTopRestaurantes()
+  const { cargando, obtenerTopRestaurantes, restaurantes } =
+    useObtenerTopRestaurantes()
 
   const getData = async () => {
     await obtenerTopRestaurantes()
@@ -405,7 +406,9 @@ const RestaurantesRecomendadosSection = () => {
         <StyledText fontWeight='bold' fontSize='title'>
           Recomendados
         </StyledText>
-        <StyledText fontSize='bodymini'>Restaurantes mejores calificados</StyledText>
+        <StyledText fontSize='bodymini'>
+          Restaurantes mejores calificados
+        </StyledText>
       </View>
 
       <FlatList

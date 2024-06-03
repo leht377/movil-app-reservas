@@ -1,8 +1,10 @@
 import { createStackNavigator } from '@react-navigation/stack'
-import HomeCliente from '../pages/Home/pages/Home-cliente/HomeCliente'
-import RestauranteClientePage from '../pages/Home/pages/Restaurantes-cliente/RestauranteClientePage'
+
 import { HomeStackParamList } from './types/home.stack.paramlist'
-import RestauranteDetalle from '../pages/Home/pages/Restaurante-detalle/RestauranteDetalle'
+
+import HomeCliente from '../pages/Home/pages/Cliente/Home-cliente/HomeCliente'
+import RestauranteDetalle from '../pages/Home/pages/Cliente/Restaurante-detalle/RestauranteDetalle'
+import RestauranteClientePage from '../pages/Home/pages/Cliente/Restaurantes-cliente/RestauranteClientePage'
 
 const Stack = createStackNavigator<HomeStackParamList>()
 

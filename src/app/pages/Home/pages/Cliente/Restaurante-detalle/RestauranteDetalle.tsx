@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { Dimensions, ImageBackground, StyleSheet, View } from 'react-native'
-import StyledText from '../../../../components/StyledText'
+
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
-import { HomeStackParamList } from '../../../../routes/types/home.stack.paramlist'
+
 import useObtenerRestuaranteId from './hooks/useObtenerRestuaranteId'
-import theme from '../../../../../common/theme'
+
 import {
   FlatList,
   ScrollView,
   TouchableWithoutFeedback
 } from 'react-native-gesture-handler'
-import StartCalificacion from '../../../../components/StartCalificacion'
-import MyIcon from '../../../../components/MyIcon'
-import Button from '../../../../components/Button'
-import Badge from '../../../../components/Badge'
+
 import CustomTabView from './components/CustomTabView'
+import StartCalificacion from '@/app/components/StartCalificacion'
+import MyIcon from '@/app/components/MyIcon'
+import Badge from '@/app/components/Badge'
+import Button from '@/app/components/Button'
+import StyledText from '@/app/components/StyledText'
+import { HomeStackParamList } from '@/app/routes/types/home.stack.paramlist'
+import theme from '@/common/theme'
 const Header = () => {
   return (
     <View>

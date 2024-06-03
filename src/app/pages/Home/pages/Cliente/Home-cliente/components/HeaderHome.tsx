@@ -1,19 +1,29 @@
 import React from 'react'
 import { ImageBackground, StyleSheet, View } from 'react-native'
-import StyledText from '../../../../../components/StyledText'
-import Button from '../../../../../components/Button'
+
+import StyledText from '../../../../../../components/StyledText'
+import Button from '../../../../../../components/Button'
 
 const HeaderHome = () => {
   return (
     <View style={styles.container}>
       <View style={styles.containerText}>
-        <StyledText color='secondary' fontWeight='bold' style={{ fontSize: 30 }}>
+        <StyledText
+          color='secondary'
+          fontWeight='bold'
+          style={{ fontSize: 30 }}
+        >
           Estas en busqueda de un restaurante
         </StyledText>
-        <Button title='Reservar' color='primary' containerStyle={styles.button} fontWeight='bold' />
+        <Button
+          title='Reservar'
+          color='primary'
+          containerStyle={styles.button}
+          fontWeight='bold'
+        />
       </View>
       <ImageBackground
-        source={require('../../../../../../../assets/header.jpg')}
+        source={require('@assest/header.jpg')}
         style={styles.imageBackground}
         imageStyle={styles.imageStyle}
         resizeMode='cover'

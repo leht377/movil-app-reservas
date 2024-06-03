@@ -1,11 +1,10 @@
 import React from 'react'
 import { Image } from 'react-native'
 import { StyleSheet, View } from 'react-native'
-import theme from '../../../../../../common/theme'
-import MyIcon from '../../../../../components/MyIcon'
-import StyledText from '../../../../../components/StyledText'
-import { RestauranteDetalladoEntity } from '../../../../../../dominio/entities'
-import Star from '../../../../../components/Star'
+import { RestauranteDetalladoEntity } from '../../../../../../../dominio/entities'
+import theme from '../../../../../../../common/theme'
+import Star from '../../../../../../components/Star'
+import StyledText from '../../../../../../components/StyledText'
 
 interface Props {
   restaurante: RestauranteDetalladoEntity
@@ -49,7 +48,8 @@ const RestauranteRecomendadoItem: React.FC<Props> = ({ restaurante }) => {
       </View>
       <View style={{ flexDirection: 'row', gap: 5 }}>
         {[1, 2, 3, 4, 5].map((e, index, array) => {
-          if (calificacion >= e) return <Star type='completa' size={15} key={index} />
+          if (calificacion >= e)
+            return <Star type='completa' size={15} key={index} />
           else if (calificacion < e && calificacion > array[index - 1])
             return <Star type='mitad' size={15} key={index} />
           return <Star type='vacia' size={15} key={index} />

@@ -7,11 +7,12 @@ import {
   useWindowDimensions
 } from 'react-native'
 import { TabView, SceneMap, TabBar, TabBarProps } from 'react-native-tab-view'
-import StyledText from '../../../../../components/StyledText'
-import theme from '../../../../../../common/theme'
+
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import MenuRestaurantes from './MenuRestaurantes'
 import IntalaccionesRestaurante from './IntalaccionesRestaurante'
+import StyledText from '@/app/components/StyledText'
+import theme from '@/common/theme'
 
 const FirstRoute = () => (
   <View style={{ flex: 1 }}>

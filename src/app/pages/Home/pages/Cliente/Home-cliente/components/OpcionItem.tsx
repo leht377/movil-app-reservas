@@ -1,8 +1,13 @@
 import React from 'react'
-import { GestureResponderEvent, StyleSheet, TouchableNativeFeedback, View } from 'react-native'
-import theme from '../../../../../../common/theme'
-import MyIcon from '../../../../../components/MyIcon'
-import StyledText from '../../../../../components/StyledText'
+import {
+  GestureResponderEvent,
+  StyleSheet,
+  TouchableNativeFeedback,
+  View
+} from 'react-native'
+import StyledText from '../../../../../../components/StyledText'
+import MyIcon from '../../../../../../components/MyIcon'
+import theme from '../../../../../../../common/theme'
 
 interface Props {
   iconName: string

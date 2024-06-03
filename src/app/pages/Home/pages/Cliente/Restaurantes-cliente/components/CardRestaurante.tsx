@@ -1,14 +1,15 @@
 import React from 'react'
 import { ImageBackground, StyleSheet, View } from 'react-native'
-import StyledText from '../../../../../components/StyledText'
-import Star from '../../../../../components/Star'
-import theme from '../../../../../../common/theme'
-import MyIcon from '../../../../../components/MyIcon'
-import Button from '../../../../../components/Button'
-import { RestauranteDetalladoEntity } from '../../../../../../dominio/entities'
+
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { HomeStackParamList } from '../../../../../routes/types/home.stack.paramlist'
+import StyledText from '@/app/components/StyledText'
+import Star from '@/app/components/Star'
+import MyIcon from '@/app/components/MyIcon'
+import Button from '@/app/components/Button'
+import { HomeStackParamList } from '@/app/routes/types/home.stack.paramlist'
+import { RestauranteDetalladoEntity } from '@/dominio/entities'
+import theme from '@/common/theme'
 
 interface Props {
   restaurante: RestauranteDetalladoEntity

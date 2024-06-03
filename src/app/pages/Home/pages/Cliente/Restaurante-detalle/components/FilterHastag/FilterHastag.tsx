@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { FlatList, ListRenderItem, StyleSheet, View } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
-import theme from '../../../../../../../common/theme'
-import MyIcon from '../../../../../../components/MyIcon'
-import Modal from '../../../../../../components/Modal'
-import { HashtagEntity } from '../../../../../../../dominio/entities'
-import Button from '../../../../../../components/Button'
 import FilterBadge from './FilterBadge'
+import Modal from '@/app/components/Modal'
+import { HashtagEntity } from '@/dominio/entities'
+import MyIcon from '@/app/components/MyIcon'
+import theme from '@/common/theme'
 
 const ModalFiltros = ({ isVisible, onClose, hastags, onSelectHastag }) => {
   return (
