@@ -80,8 +80,8 @@ const ReservarForm = () => {
         values,
         touched
       }) => (
-        <View style={{ gap: 10 }}>
-          <View>
+        <View style={{ gap: 10, paddingBottom: 20 }}>
+          <View style={{ gap: 10 }}>
             <View style={{ flex: 1 }}>
               <FormikTextInput
                 name='nombre_reservante'

@@ -1,41 +1,101 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import DateTimePicker, {
   DateTimePickerAndroid
 } from '@react-native-community/datetimepicker'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Button from './Button'
+import { Calendar, LocaleConfig } from 'react-native-calendars'
+import theme from '@/common/theme'
 
-const CalendarPicker = () => {
-  const [date, setDate] = useState(new Date(1598051730000))
+LocaleConfig.locales['es'] = {
+  monthNames: [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre'
+  ],
+  monthNamesShort: [
+    'Ene.',
+    'Feb.',
+    'Mar.',
+    'Abr.',
+    'May.',
+    'Jun.',
+    'Jul.',
+    'Ago.',
+    'Sep.',
+    'Oct.',
+    'Nov.',
+    'Dic.'
+  ],
+  dayNames: [
+    'Domingo',
+    'Lunes',
+    'Martes',
+    'Miércoles',
+    'Jueves',
+    'Viernes',
+    'Sábado'
+  ],
+  dayNamesShort: ['Dom.', 'Lun.', 'Mar.', 'Mié.', 'Jue.', 'Vie.', 'Sáb.'],
+  today: 'Hoy'
+}
+LocaleConfig.defaultLocale = 'es'
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate
-    setDate(currentDate)
-  }
+function getFormattedDate(date) {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0') // Months are 0-based
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
 
-  const showMode = (currentMode) => {
-    DateTimePickerAndroid.open({
-      value: date,
-      onChange,
-      mode: currentMode,
-      is24Hour: true
-    })
-  }
+interface Props {
+  onSelectDay: (daySelected: string) => void
+  disableDates?: string[]
+}
 
-  const showDatepicker = () => {
-    showMode('date')
-  }
+const CalendarPicker: React.FC<Props> = ({
+  onSelectDay,
+  disableDates = []
+}) => {
+  const [selected, setSelected] = useState('')
+  const today = getFormattedDate(new Date())
 
-  const showTimepicker = () => {
-    showMode('time')
-  }
+  const disable = disableDates.reduce((a, c) => {
+    a[c] = { disabled: true }
+    return a
+  }, {})
+
+  useEffect(() => {
+    selected && onSelectDay(selected)
+  }, [selected])
 
   return (
     <SafeAreaView>
-      <Button onPress={showDatepicker} title='Show date picker!' />
-      <Button onPress={showTimepicker} title='Show time picker!' />
-      <Text>selected: {date.toLocaleString()}</Text>
+      <Calendar
+        minDate={today}
+        onDayPress={(day) => {
+          setSelected(day.dateString)
+        }}
+        markedDates={{
+          [selected]: {
+            selected: true,
+            disableTouchEvent: true,
+            selectedColor: theme.colors.primary
+          },
+          ...disable
+        }}
+        theme={{ arrowColor: theme.colors.primary }}
+      />
     </SafeAreaView>
   )
 }

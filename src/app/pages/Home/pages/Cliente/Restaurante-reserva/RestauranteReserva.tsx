@@ -18,8 +18,8 @@ const RestauranteReserva = () => {
     <View style={styles.container}>
       <ScrollView>
         <HeaderRestaurante />
-        <View style={{ paddingHorizontal: 20 }}>
-          <CalendarPicker />
+        <View style={{ paddingHorizontal: 20, marginBottom: 10 }}>
+          <CalendarPicker onSelectDay={(value) => console.log(value)} />
           <ReservarForm />
         </View>
       </ScrollView>
