@@ -8,8 +8,11 @@ import theme from "../../../../../common/theme";
 import FormularioRegistroRestaurante from "./formularios/FormularioResgistroRestaurante";
 import StyledText from "@/app/components/StyledText";
 import CoffeIcon from "@/app/components/CoffeIcon";
+import useRegistrarRestaurante from "./hooks/useRegistrarRestaurante";
 
 const RegistroRestaurantePage = () => {
+  const { registrar } = useRegistrarRestaurante();
+
   return (
     <KeyboardAvoidingView style={styles.topContainer}>
       <ScrollView>
@@ -24,7 +27,7 @@ const RegistroRestaurantePage = () => {
             </View>
           </View>
 
-          <FormularioRegistroRestaurante onSubmit={""} />
+          <FormularioRegistroRestaurante onSubmit={registrar} />
           <View style={styles.containerPoliticas}>
             <StyledText fontSize="bodymini" align="center">
               Al continuar, aceptas las{" "}
@@ -34,7 +37,7 @@ const RegistroRestaurantePage = () => {
               y
               <StyledText fontSize="bodymini" color="primary">
                 {" "}
-                la politica de privacidad
+                la política de privacidad
               </StyledText>
             </StyledText>
           </View>

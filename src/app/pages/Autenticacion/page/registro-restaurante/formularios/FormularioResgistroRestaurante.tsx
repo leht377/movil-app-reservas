@@ -14,7 +14,7 @@ import { Formik } from "formik";
 
 interface MyFromValues {
   nombre: string;
-  direccion: string;
+  locacion: string;
   email: string;
   contrasena: string;
 }
@@ -25,7 +25,7 @@ const ResgistroRestauranteSchema = Yup.object().shape({
     .min(3, "Nombre demasiado corto!")
     .required("El nombre es requerido"),
 
-  direccion: Yup.string()
+  locacion: Yup.string()
     .max(50, "Dirección demasiado larga!")
     .min(2, "Dirección demasiado corta!")
     .required("La dirección es requerida"),
@@ -36,15 +36,15 @@ const ResgistroRestauranteSchema = Yup.object().shape({
 
   contrasena: Yup.string()
     .max(50, "Contraseña demasiado larga!")
-    .min(2, "Contraseña demasiado corta!")
+    .min(5, "Contraseña demasiado corta!")
     .required("La contraseña es requerida"),
 });
 
 const FormularioRegistroRestaurante = ({ onSubmit }) => {
-  const handleSubmitForm = ({ nombre, direccion, email, contrasena }) => {
+  const handleSubmitForm = ({ nombre, locacion, email, contrasena }) => {
     onSubmit({
       nombre: nombre,
-      direccion: direccion,
+      locacion: locacion,
       email: email,
       contrasena: contrasena,
     });
@@ -52,7 +52,7 @@ const FormularioRegistroRestaurante = ({ onSubmit }) => {
 
   const initialValues: MyFromValues = {
     nombre: "",
-    direccion: "",
+    locacion: "",
     email: "",
     contrasena: "",
   };
@@ -62,27 +62,38 @@ const FormularioRegistroRestaurante = ({ onSubmit }) => {
       validationSchema={ResgistroRestauranteSchema}
       onSubmit={handleSubmitForm}
     >
-      {({handleChange,handleBlur,handleSubmit,errors,values,touched,}) => (
-        <View style={{gap:10}}>
+      {({
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        errors,
+        values,
+        touched,
+      }) => (
+        <View style={{ gap: 10 }}>
           <FormikTextInput name="nombre" placeholder="Nombre" />
-          <FormikTextInput name="direccion" placeholder="Dirección" />
+          <FormikTextInput name="locacion" placeholder="Dirección" />
           <FormikTextInput name="email" placeholder="Email" />
-          <FormikTextInput name='constrasena' placeholder='Contraseña' keyboardType='password'/>
+          <FormikTextInput
+            name="constrasena"
+            placeholder="Contraseña"
+            keyboardType="password"
+          />
           <Button
-            color='primary'
+            color="primary"
             buttonStyle={{ paddingVertical: 10 }}
             onPress={
-             handleSubmit as (
-              values:GestureResponderEvent| React.FormEvent<HTMLFormElement> | undefined
-             )=>void
+              handleSubmit as (
+                values:
+                  | GestureResponderEvent
+                  | React.FormEvent<HTMLFormElement>
+                  | undefined
+              ) => void
             }
-            title='Registrarse como restaurante'
+            title="Registrarse como restaurante"
           />
         </View>
-
-       
       )}
-     
     </Formik>
   );
 };
