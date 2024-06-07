@@ -1,5 +1,6 @@
 export type AutenticacionStackParamList = {
-  OpcionesRegistro: undefined
-  RegistroCliente: undefined
-  Login: undefined
-}
+  OpcionesRegistro: undefined;
+  RegistroCliente: undefined;
+  Login: undefined;
+  RegistroRestaurante: undefined;
+};
