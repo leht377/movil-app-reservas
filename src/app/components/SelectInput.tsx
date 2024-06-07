@@ -7,7 +7,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 export interface PropsSelectInput {
   data: { label: string; value: any }[]
-  onSelect: (selectedItem: any, index: number) => void
+  onSelect: (
+    selectedItem: { label: string; value: string },
+    index: number
+  ) => void
   value: any
   label?: string
   disable?: boolean
