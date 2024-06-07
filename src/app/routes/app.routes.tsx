@@ -10,6 +10,7 @@ import MyIcon from '../components/MyIcon'
 import PerfilRoutes from './perfil.routes'
 import AutenticacionRoutes from './autenticacion.routes'
 import HomeRoutes from './home.routes'
+import ReservaRoutes from './reserva.routes'
 
 const Tab = createBottomTabNavigator()
 const AppRoutes = () => {
@@ -37,7 +38,7 @@ const AppRoutes = () => {
       />
       <Tab.Screen
         name='ReservasPage'
-        component={ReservasPage}
+        component={ReservaRoutes}
         options={{
           title: 'Reservas',
           tabBarIcon: ({ color, size }) => (

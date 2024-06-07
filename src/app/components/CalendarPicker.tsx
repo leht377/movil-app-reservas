@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import DateTimePicker, {
   DateTimePickerAndroid
 } from '@react-native-community/datetimepicker'
@@ -61,11 +61,13 @@ function getFormattedDate(date) {
 interface Props {
   onSelectDay: (daySelected: string) => void
   disableDates?: string[]
+  style?: StyleProp<ViewStyle>
 }
 
 const CalendarPicker: React.FC<Props> = ({
   onSelectDay,
-  disableDates = []
+  disableDates = [],
+  style
 }) => {
   const [selected, setSelected] = useState('')
   const today = getFormattedDate(new Date())
@@ -86,6 +88,7 @@ const CalendarPicker: React.FC<Props> = ({
         onDayPress={(day) => {
           setSelected(day.dateString)
         }}
+        style={style}
         markedDates={{
           [selected]: {
             selected: true,
