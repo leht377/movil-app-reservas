@@ -30,7 +30,7 @@ const renderItem = () => {
         minHeight: Dimensions.get('screen').height - 200
       }}
     >
-      {/* <CustomTabView /> */}
+      <CustomTabView />
     </View>
   )
 }

@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import Status from '../../common/utils/enums/status_asynctrunck'
 import { ClienteEntity } from '../../dominio/entities'
 
@@ -15,8 +15,12 @@ const clienteSlice = createSlice({
     status_registrar_cliente: Status.IDLE,
     error: null
   },
-  reducers: {}
+  reducers: {
+    set_cliente(state, action: PayloadAction<ClienteEntity>) {
+      state.cliente = action.payload
+    }
+  }
 })
 
-export const {} = clienteSlice.actions
+export const { set_cliente } = clienteSlice.actions
 export default clienteSlice.reducer

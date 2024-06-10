@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import theme from '../../common/theme'
 
@@ -11,9 +11,19 @@ import PerfilRoutes from './perfil.routes'
 import AutenticacionRoutes from './autenticacion.routes'
 import HomeRoutes from './home.routes'
 import ReservaRoutes from './reserva.routes'
+import { useAppSelector } from '@/redux/hooks/useAppSelector'
+
+import useValidarUsuario from '../hooks/useValidarUsuario'
 
 const Tab = createBottomTabNavigator()
 const AppRoutes = () => {
+  const { usuario } = useAppSelector((state) => state.usuario)
+  const { validarUsuario } = useValidarUsuario()
+
+  useEffect(() => {
+    if (!usuario) validarUsuario()
+  }, [])
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -58,7 +68,7 @@ const AppRoutes = () => {
       />
       <Tab.Screen
         name='PerfilPage'
-        component={false ? PerfilRoutes : AutenticacionRoutes}
+        component={usuario ? PerfilRoutes : AutenticacionRoutes}
         options={{
           title: 'Perfil',
           tabBarIcon: ({ color, size }) => (

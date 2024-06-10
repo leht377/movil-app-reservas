@@ -21,6 +21,10 @@ const OpcionesRegistroPage = () => {
     navigate("RegistroRestaurante");
   };
 
+  const login = () => {
+    navigate("Login")
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -34,6 +38,7 @@ const OpcionesRegistroPage = () => {
           containerStyle={styles.containerButtonStyle}
           buttonStyle={styles.buttonStyle}
           color={"secondary"}
+          onPress={login}
         >
           <MyIcon nombre={"mail"} tamano={25} color={theme.colors.quaternary} />
           <StyledText fontWeight="bold" color="quaternary">

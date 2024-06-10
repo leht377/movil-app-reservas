@@ -4,6 +4,8 @@ export class ClienteEntity {
     private usuario_id: string,
     private nombre: string,
     private apellido: string,
+    private rol: string,
+    private correo: string,
     private restaurantes_favoritos_ids: string[]
   ) {}
 
@@ -25,5 +27,13 @@ export class ClienteEntity {
 
   getRestaurantesFavoritosIds(): string[] {
     return this.restaurantes_favoritos_ids
+  }
+
+  getRol(): string {
+    return this.rol
+  }
+
+  getCorreo(): string {
+    return this.correo
   }
 }
