@@ -10,6 +10,7 @@ import Button from '@/app/components/Button'
 import { HomeStackParamList } from '@/app/routes/types/home.stack.paramlist'
 import { RestauranteDetalladoEntity } from '@/dominio/entities'
 import theme from '@/common/theme'
+import StartCalificacion from '@/app/components/StartCalificacion'
 
 interface Props {
   restaurante: RestauranteDetalladoEntity
@@ -43,13 +44,7 @@ const CardRestaurante: React.FC<Props> = ({ restaurante }) => {
       <View style={styles.infoContainer}>
         <View style={styles.ratingContainer}>
           <View style={styles.starsContainer}>
-            {[1, 2, 3, 4, 5].map((e, index) => {
-              let tipo_estrella
-              if (calificacion >= e) tipo_estrella = 'completa'
-              else if (calificacion > e - 1 && calificacion < e) tipo_estrella = 'mitad'
-              else tipo_estrella = 'vacia'
-              return <Star type={tipo_estrella} size={24} key={index} />
-            })}
+            <StartCalificacion calificacion={calificacion} disable starSize={20} />
           </View>
           <StyledText fontSize='body' fontWeight='bold'>
             {restaurante?.getCantidadResenas()?.toLocaleString('en')} Reseñas

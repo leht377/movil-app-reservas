@@ -5,12 +5,10 @@ import { View } from 'react-native'
 import { StatusBar } from 'react-native'
 import { Provider } from 'react-redux'
 import store from './src/redux/store'
-import {
-  GestureHandlerRootView,
-  NativeViewGestureHandler
-} from 'react-native-gesture-handler'
+import { GestureHandlerRootView, NativeViewGestureHandler } from 'react-native-gesture-handler'
 
 export default function App() {
+  // return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}></View>
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer>
