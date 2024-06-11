@@ -5,11 +5,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 
 import useObtenerRestuaranteId from './hooks/useObtenerRestuaranteId'
 
-import {
-  FlatList,
-  ScrollView,
-  TouchableWithoutFeedback
-} from 'react-native-gesture-handler'
+import { FlatList, ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
 import CustomTabView from './components/CustomTabView'
 import StartCalificacion from '@/app/components/StartCalificacion'
@@ -21,6 +17,7 @@ import { HomeStackParamList } from '@/app/routes/types/home.stack.paramlist'
 import theme from '@/common/theme'
 import { StackNavigationProp } from '@react-navigation/stack'
 import HeaderRestaurante from '../components/HeaderRestaurante'
+import LoadingScreen from '@/app/components/LoadingScreen'
 
 const renderItem = () => {
   return (
@@ -30,7 +27,7 @@ const renderItem = () => {
         minHeight: Dimensions.get('screen').height - 200
       }}
     >
-      <CustomTabView />
+      {/* <CustomTabView /> */}
     </View>
   )
 }
@@ -38,14 +35,16 @@ const renderItem = () => {
 const RestauranteDetalle = () => {
   const { params } = useRoute<RouteProp<HomeStackParamList>>()
   const { restauranteId } = params
-  const [scrollEnabled, setScrollEnable] = useState(true)
-  // const { restaurante, loading } = useObtenerRestuaranteId(restauranteId)
+  const { restaurante, loading } = useObtenerRestuaranteId(restauranteId)
   const { navigate } = useNavigation<StackNavigationProp<HomeStackParamList>>()
+
+  if (loading && !restaurante) return <LoadingScreen />
+
   return (
     <View style={styles.container}>
       <ScrollView nestedScrollEnabled stickyHeaderIndices={[1]}>
         <View>
-          <HeaderRestaurante />
+          <HeaderRestaurante restaurante={restaurante} />
           <View style={styles.containerButton}>
             <Button
               title='Reservar'

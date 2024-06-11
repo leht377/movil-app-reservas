@@ -2,26 +2,41 @@ import Badge from '@/app/components/Badge'
 import MyIcon from '@/app/components/MyIcon'
 import StartCalificacion from '@/app/components/StartCalificacion'
 import StyledText from '@/app/components/StyledText'
+import { agruparHorasServicio } from '@/common/helpers/agruparHorasServicio'
+import { agruparDiasDeServicio } from '@/common/helpers/ordenarDiasDeServicio'
 import theme from '@/common/theme'
+import { RestauranteDetalladoEntity, RestauranteEntity } from '@/dominio/entities'
 import React from 'react'
 import { ImageBackground, StyleSheet, View } from 'react-native'
 
-const HeaderRestaurante = () => {
+interface Props {
+  restaurante: RestauranteDetalladoEntity
+}
+const HeaderRestaurante: React.FC<Props> = ({ restaurante }) => {
+  const foto =
+    // restaurante?.getUrlFotoRestaurante()[0] ||
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxEDbEHQNBO6uY1dwIHIUprr5PatZJJdLubNdtMXxROQ&s'
+
+  let dias_servicio_agrupados = agruparDiasDeServicio(restaurante?.getDiasServicio() ?? [])
+  let dias_servicio = dias_servicio_agrupados
+    .map((d) => {
+      if (d.length > 1) return `${d[0]?.slice(0, 3)}/${d[d.length - 1]?.slice(0, 3)}`
+      return `${d[0]?.slice(0, 3)}`
+    })
+    .join(' - ')
+  let horas_servicio_agrupadas_12h = agruparHorasServicio(restaurante?.getHorasServicio())
+
   return (
     <View>
       <View style={styles.headerRestaurante}>
         <View style={styles.containerText}>
-          <StyledText
-            color='secondary'
-            fontWeight='bold'
-            style={{ fontSize: 40 }}
-          >
-            Restaurante nombre
+          <StyledText color='secondary' fontWeight='bold' style={{ fontSize: 40 }}>
+            {restaurante?.getNombre()}
           </StyledText>
         </View>
         <ImageBackground
           source={{
-            uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxEDbEHQNBO6uY1dwIHIUprr5PatZJJdLubNdtMXxROQ&s'
+            uri: foto
           }}
           style={styles.imageBackground}
           imageStyle={styles.imageStyle}
@@ -30,26 +45,41 @@ const HeaderRestaurante = () => {
       </View>
       <View style={styles.containerInformacionBasica}>
         <View style={styles.containerDescripcion}>
-          <StyledText align='justify'>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati
-            eum cumque, tempora, ipsa qui delectus aliquid iste praesentium
-            possimus quos, repellat alias provident doloribus atque commodi
-            quisquam amet illum cupiditate?
-          </StyledText>
+          <StyledText align='justify'>{restaurante?.getDescripcion()}</StyledText>
         </View>
         <View style={styles.containerResenas}>
-          <StartCalificacion calificacion={4} />
+          <StartCalificacion calificacion={restaurante?.getCalificacionPromedio()} />
           <StyledText fontSize='body' fontWeight='bold'>
-            {2000?.toLocaleString('en')} Reseñas
+            {restaurante?.getCantidadResenas()?.toLocaleString('en')} Reseñas
           </StyledText>
         </View>
         <View style={styles.containerLocation}>
           <MyIcon nombre={'location'} tamano={25} />
-          <StyledText fontWeight='bold'>Buenaventura Crra 55</StyledText>
+          <StyledText fontWeight='bold'>{restaurante?.getLocacion()}</StyledText>
         </View>
         <View style={styles.containerDisponibilidad}>
-          <Badge text='7:00 AM - 8:00 PM' icon='time' />
-          <Badge text='LUNES - JUEVES' icon='today' />
+          {horas_servicio_agrupadas_12h?.map((horas) => {
+            return (
+              <Badge
+                key={horas.toString()}
+                text={
+                  horas?.length > 1 ? `${horas[0]} - ${horas[horas.length - 1]}` : `${horas[0]}`
+                }
+                icon='time'
+              />
+            )
+          })}
+          {/* <Badge text={horas_servicio} icon='time' /> */}
+          <Badge text={dias_servicio} icon='today' />
+          {/* {dias_servicio_agrupados?.map((dias) => {
+            return (
+              <Badge
+                key={dias.toString()}
+                text={dias?.length > 1 ? `${dias[0]} - ${dias[dias.length - 1]}` : `${dias[0]}`}
+                icon='today'
+              />
+            )
+          })} */}
         </View>
       </View>
     </View>
@@ -93,6 +123,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 20,
     gap: 10,
+    flexWrap: 'wrap',
     alignItems: 'center'
   },
   imageBackground: {

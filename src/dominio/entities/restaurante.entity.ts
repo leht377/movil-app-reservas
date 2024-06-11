@@ -8,8 +8,8 @@ export class RestauranteEntity {
     private calificacion: number,
     private cantidad_resenas: number,
     private locacion: string,
-    private horas_servicio: Date[],
-    private dias_servicio: Date[],
+    private horas_servicio: string[],
+    private dias_servicio: string[],
     private url_foto_restaurante: string,
     private url_fotos_instalaciones: string[],
     private fechas_bloqueadas_reservas: Date[],
@@ -56,11 +56,11 @@ export class RestauranteEntity {
     return this.locacion
   }
 
-  getHorasServicio(): Date[] {
+  getHorasServicio(): string[] {
     return this.horas_servicio
   }
 
-  getDiasServicio(): Date[] {
+  getDiasServicio(): string[] {
     return this.dias_servicio
   }
 

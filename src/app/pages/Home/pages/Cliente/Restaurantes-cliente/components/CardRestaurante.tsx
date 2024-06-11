@@ -22,6 +22,10 @@ const CardRestaurante: React.FC<Props> = ({ restaurante }) => {
   const handleGotoRestauranteDetalle = () => {
     navigate('RestauranteDetalle', { restauranteId: restaurante.getId() })
   }
+
+  const foto =
+    restaurante.getUrlFotoRestaurante()[0] ||
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxEDbEHQNBO6uY1dwIHIUprr5PatZJJdLubNdtMXxROQ&s'
   return (
     <View style={styles.card}>
       <StyledText fontSize='title' fontWeight='bold' style={styles.title}>
@@ -30,7 +34,7 @@ const CardRestaurante: React.FC<Props> = ({ restaurante }) => {
       <View>
         <ImageBackground
           source={{
-            uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxEDbEHQNBO6uY1dwIHIUprr5PatZJJdLubNdtMXxROQ&s'
+            uri: foto
           }}
           style={styles.image}
           resizeMode='cover'
@@ -42,8 +46,7 @@ const CardRestaurante: React.FC<Props> = ({ restaurante }) => {
             {[1, 2, 3, 4, 5].map((e, index) => {
               let tipo_estrella
               if (calificacion >= e) tipo_estrella = 'completa'
-              else if (calificacion > e - 1 && calificacion < e)
-                tipo_estrella = 'mitad'
+              else if (calificacion > e - 1 && calificacion < e) tipo_estrella = 'mitad'
               else tipo_estrella = 'vacia'
               return <Star type={tipo_estrella} size={24} key={index} />
             })}
