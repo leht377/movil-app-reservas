@@ -12,7 +12,7 @@ import AutenticacionRoutes from './autenticacion.routes'
 import HomeRoutes from './home.routes'
 import ReservaRoutes from './reserva.routes'
 import { useAppSelector } from '@/redux/hooks/useAppSelector'
-
+import HomeRestaurante from '../pages/Home/pages/Cliente/Home-restaurante/HomeRestaurante'
 import useValidarUsuario from '../hooks/useValidarUsuario'
 
 const Tab = createBottomTabNavigator()
@@ -41,9 +41,7 @@ const AppRoutes = () => {
         component={HomeRoutes}
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, size }) => (
-            <MyIcon color={color} tamano={size} nombre='home' />
-          )
+          tabBarIcon: ({ color, size }) => <MyIcon color={color} tamano={size} nombre='home' />
         }}
       />
       <Tab.Screen
@@ -51,19 +49,16 @@ const AppRoutes = () => {
         component={ReservaRoutes}
         options={{
           title: 'Reservas',
-          tabBarIcon: ({ color, size }) => (
-            <MyIcon color={color} tamano={size} nombre='calendar' />
-          )
+          tabBarIcon: ({ color, size }) => <MyIcon color={color} tamano={size} nombre='calendar' />
         }}
       />
       <Tab.Screen
         name='FavoritosPage'
-        component={FavoritosPages}
+        // component={FavoritosPages}
+        component={HomeRestaurante}
         options={{
           title: 'Favoritos',
-          tabBarIcon: ({ color, size }) => (
-            <MyIcon color={color} tamano={size} nombre='heart' />
-          )
+          tabBarIcon: ({ color, size }) => <MyIcon color={color} tamano={size} nombre='heart' />
         }}
       />
       <Tab.Screen
