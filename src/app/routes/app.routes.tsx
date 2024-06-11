@@ -1,18 +1,19 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import theme from '../../common/theme'
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import theme from "../../common/theme";
 
-import ReservasPage from '../pages/Reservas/pages/ReservasPage'
-import FavoritosPages from '../pages/Favoritos/pages/FavoritosPages'
+import ReservasPage from "../pages/Reservas/pages/ReservasPage";
+import FavoritosPages from "../pages/Favoritos/pages/FavoritosPages";
 
-import MyIcon from '../components/MyIcon'
-import PerfilRoutes from './perfil.routes'
-import AutenticacionRoutes from './autenticacion.routes'
-import HomeRoutes from './home.routes'
-import ReservaRoutes from './reserva.routes'
+import MyIcon from "../components/MyIcon";
+import PerfilRoutes from "./perfil.routes";
+import AutenticacionRoutes from "./autenticacion.routes";
+import HomeRoutes from "./home.routes";
+import ReservaRoutes from "./reserva.routes";
+import HomeRestaurante from "../pages/Home/pages/Cliente/Home-restaurante/HomeRestaurante";
 
-const Tab = createBottomTabNavigator()
+const Tab = createBottomTabNavigator();
 const AppRoutes = () => {
   return (
     <Tab.Navigator
@@ -20,56 +21,57 @@ const AppRoutes = () => {
         tabBarActiveTintColor: theme.colors.primary,
         tabBarInactiveTintColor: theme.colors.tertiary,
         tabBarStyle: {
-          backgroundColor: theme.colors.secondary
+          backgroundColor: theme.colors.secondary,
         },
-        headerShown: false
+        headerShown: false,
       }}
-      initialRouteName='HomePage'
+      initialRouteName="HomePage"
     >
       <Tab.Screen
-        name='Home'
+        name="Home"
         component={HomeRoutes}
         options={{
-          title: 'Home',
+          title: "Home",
           tabBarIcon: ({ color, size }) => (
-            <MyIcon color={color} tamano={size} nombre='home' />
-          )
+            <MyIcon color={color} tamano={size} nombre="home" />
+          ),
         }}
       />
       <Tab.Screen
-        name='ReservasPage'
+        name="ReservasPage"
         component={ReservaRoutes}
         options={{
-          title: 'Reservas',
+          title: "Reservas",
           tabBarIcon: ({ color, size }) => (
-            <MyIcon color={color} tamano={size} nombre='calendar' />
-          )
+            <MyIcon color={color} tamano={size} nombre="calendar" />
+          ),
         }}
       />
       <Tab.Screen
-        name='FavoritosPage'
-        component={FavoritosPages}
+        name="FavoritosPage"
+        // component={FavoritosPages}
+        component={HomeRestaurante}
         options={{
-          title: 'Favoritos',
+          title: "Favoritos",
           tabBarIcon: ({ color, size }) => (
-            <MyIcon color={color} tamano={size} nombre='heart' />
-          )
+            <MyIcon color={color} tamano={size} nombre="heart" />
+          ),
         }}
       />
       <Tab.Screen
-        name='PerfilPage'
+        name="PerfilPage"
         component={false ? PerfilRoutes : AutenticacionRoutes}
         options={{
-          title: 'Perfil',
+          title: "Perfil",
           tabBarIcon: ({ color, size }) => (
-            <MyIcon color={color} tamano={size} nombre='person-circle' />
-          )
+            <MyIcon color={color} tamano={size} nombre="person-circle" />
+          ),
         }}
       />
     </Tab.Navigator>
-  )
-}
+  );
+};
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
 
-export default AppRoutes
+export default AppRoutes;
