@@ -2,5 +2,8 @@ import { NavigatorScreenParams } from '@react-navigation/native'
 import { AutenticacionStackParamList } from './autenticacion.stack.paramslist'
 
 export type AppStackParamList = {
-  Autenticacion: NavigatorScreenParams<AutenticacionStackParamList>
+  Home: undefined
+  ReservasPage: undefined
+  FavoritosPage: undefined
+  PerfilPage: undefined
 }

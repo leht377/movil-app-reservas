@@ -18,6 +18,8 @@ import theme from '@/common/theme'
 import { StackNavigationProp } from '@react-navigation/stack'
 import HeaderRestaurante from '../components/HeaderRestaurante'
 import LoadingScreen from '@/app/components/LoadingScreen'
+import { useAppSelector } from '@/redux/hooks/useAppSelector'
+import { AppStackParamList } from '@/app/routes/types/app.stack.paramlist'
 
 const renderItem = () => {
   return (
@@ -37,20 +39,21 @@ const RestauranteDetalle = () => {
   const { restauranteId } = params
   const { restaurante, loading } = useObtenerRestuaranteId(restauranteId)
   const { navigate } = useNavigation<StackNavigationProp<HomeStackParamList>>()
-
+  const naviagtioApp = useNavigation<StackNavigationProp<AppStackParamList>>()
+  const { usuario } = useAppSelector((state) => state.usuario)
   if (loading && !restaurante) return <LoadingScreen />
 
+  const handleNavigation = () => {
+    if (usuario) navigate('RestauranteReserva', { restauranteId })
+    else naviagtioApp.navigate('PerfilPage')
+  }
   return (
     <View style={styles.container}>
       <ScrollView nestedScrollEnabled stickyHeaderIndices={[1]}>
         <View>
           <HeaderRestaurante restaurante={restaurante} />
           <View style={styles.containerButton}>
-            <Button
-              title='Reservar'
-              color='primary'
-              onPress={() => navigate('RestauranteReserva', { restauranteId })}
-            />
+            <Button title='Reservar' color='primary' onPress={handleNavigation} />
           </View>
         </View>
         {renderItem()}

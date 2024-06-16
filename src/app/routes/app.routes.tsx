@@ -14,8 +14,9 @@ import ReservaRoutes from './reserva.routes'
 import { useAppSelector } from '@/redux/hooks/useAppSelector'
 import HomeRestaurante from '../pages/Home/pages/Cliente/Home-restaurante/HomeRestaurante'
 import useValidarUsuario from '../hooks/useValidarUsuario'
+import { AppStackParamList } from './types/app.stack.paramlist'
 
-const Tab = createBottomTabNavigator()
+const Tab = createBottomTabNavigator<AppStackParamList>()
 const AppRoutes = () => {
   const { usuario } = useAppSelector((state) => state.usuario)
   const { validarUsuario } = useValidarUsuario()
@@ -34,7 +35,7 @@ const AppRoutes = () => {
         },
         headerShown: false
       }}
-      initialRouteName='HomePage'
+      initialRouteName='Home'
     >
       <Tab.Screen
         name='Home'

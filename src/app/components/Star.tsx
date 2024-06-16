@@ -5,7 +5,7 @@ import MyIcon from './MyIcon'
 
 interface Props {
   type: 'completa' | 'mitad' | 'vacia'
-  size: number
+  size?: number
 }
 
 const Star: React.FC<Props> = ({ size = 15, type }) => {

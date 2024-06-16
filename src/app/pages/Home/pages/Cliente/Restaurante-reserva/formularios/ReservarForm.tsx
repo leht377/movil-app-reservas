@@ -1,6 +1,8 @@
 import Button from '@/app/components/Button'
+import CalendarPicker from '@/app/components/CalendarPicker'
 import FormikSelectInput from '@/app/components/FormikSelectInput'
 import FormikTextInput from '@/app/components/FormikTextInput'
+import StyledText from '@/app/components/StyledText'
 import { Formik } from 'formik'
 import React from 'react'
 import { GestureResponderEvent, StyleSheet, View } from 'react-native'
@@ -9,6 +11,7 @@ interface MyFormValues {
   nombre_reservante: string
   hora_reserva: string
   cantidad_personas: number
+  dia_reserva: string
 }
 
 const ReservaSchema = Yup.object().shape({
@@ -20,13 +23,15 @@ const ReservaSchema = Yup.object().shape({
   cantidad_personas: Yup.number()
     .min(1, 'Minimo una persona')
     .max(5, 'Maximo 5 personas')
-    .required('Campo requerido')
+    .required('Campo requerido'),
+  dia_reserva: Yup.string().required('El dia es requerido')
 })
 
 const initialValues: MyFormValues = {
   cantidad_personas: 0,
   hora_reserva: '',
-  nombre_reservante: ''
+  nombre_reservante: '',
+  dia_reserva: null
 }
 
 const cantidad_personas = [
@@ -37,51 +42,32 @@ const cantidad_personas = [
   { label: '5', value: 5 }
 ]
 
-const horas_del_dia = [
-  { label: '12:00 AM', value: '00:00' },
-  { label: '1:00 AM', value: '01:00' },
-  { label: '2:00 AM', value: '02:00' },
-  { label: '3:00 AM', value: '03:00' },
-  { label: '4:00 AM', value: '04:00' },
-  { label: '5:00 AM', value: '05:00' },
-  { label: '6:00 AM', value: '06:00' },
-  { label: '7:00 AM', value: '07:00' },
-  { label: '8:00 AM', value: '08:00' },
-  { label: '9:00 AM', value: '09:00' },
-  { label: '10:00 AM', value: '10:00' },
-  { label: '11:00 AM', value: '11:00' },
-  { label: '12:00 PM', value: '12:00' },
-  { label: '1:00 PM', value: '13:00' },
-  { label: '2:00 PM', value: '14:00' },
-  { label: '3:00 PM', value: '15:00' },
-  { label: '4:00 PM', value: '16:00' },
-  { label: '5:00 PM', value: '17:00' },
-  { label: '6:00 PM', value: '18:00' },
-  { label: '7:00 PM', value: '19:00' },
-  { label: '8:00 PM', value: '20:00' },
-  { label: '9:00 PM', value: '21:00' },
-  { label: '10:00 PM', value: '22:00' },
-  { label: '11:00 PM', value: '23:00' }
-]
-const ReservarForm = () => {
+interface Props {
+  dataHoras: {
+    label: string
+    value: any
+  }[]
+  handleSubmit: (values: any) => any
+}
+const ReservarForm: React.FC<Props> = ({ dataHoras, handleSubmit }) => {
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={ReservaSchema}
       onSubmit={(values) => {
-        console.log(values)
+        handleSubmit(values)
       }}
     >
-      {({
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        errors,
-        values,
-        touched
-      }) => (
+      {({ handleChange, handleBlur, handleSubmit, errors, values, touched }) => (
         <View style={{ gap: 10, paddingBottom: 20 }}>
           <View style={{ gap: 10 }}>
+            <CalendarPicker onSelectDay={handleChange('dia_reserva')} />
+            {errors.dia_reserva ? (
+              <StyledText fontWeight='bold' fontSize='bodymini' color='primary'>
+                *{errors.dia_reserva}
+              </StyledText>
+            ) : null}
+
             <View style={{ flex: 1 }}>
               <FormikTextInput
                 name='nombre_reservante'
@@ -100,7 +86,7 @@ const ReservarForm = () => {
               <View style={{ flex: 1, minWidth: 180 }}>
                 <FormikSelectInput
                   name='hora_reserva'
-                  data={horas_del_dia}
+                  data={dataHoras}
                   label='Hora de reserva'
                   placeholder='Seleccionar hora'
                 />
@@ -120,10 +106,7 @@ const ReservarForm = () => {
             buttonStyle={{ paddingVertical: 10 }}
             onPress={
               handleSubmit as (
-                values:
-                  | GestureResponderEvent
-                  | React.FormEvent<HTMLFormElement>
-                  | undefined
+                values: GestureResponderEvent | React.FormEvent<HTMLFormElement> | undefined
               ) => void
             }
             title='Solicitar reserva'

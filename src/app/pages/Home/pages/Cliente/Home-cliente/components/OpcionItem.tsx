@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  GestureResponderEvent,
-  StyleSheet,
-  TouchableNativeFeedback,
-  View
-} from 'react-native'
+import { GestureResponderEvent, StyleSheet, TouchableNativeFeedback, View } from 'react-native'
 import StyledText from '../../../../../../components/StyledText'
 import MyIcon from '../../../../../../components/MyIcon'
 import theme from '../../../../../../../common/theme'

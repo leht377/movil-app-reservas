@@ -7,19 +7,22 @@ import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import StyledText from '../../../../../../components/StyledText'
 import { HomeStackParamList } from '../../../../../../routes/types/home.stack.paramlist'
+import { useAppSelector } from '@/redux/hooks/useAppSelector'
+import { AppStackParamList } from '@/app/routes/types/app.stack.paramlist'
 
 const OpcionesClienteSection = () => {
   const { navigate } = useNavigation<StackNavigationProp<HomeStackParamList>>()
+  const { usuario } = useAppSelector((state) => state.usuario)
+  const { cliente } = useAppSelector((state) => state.cliente)
 
+  const appNavigation = useNavigation<StackNavigationProp<AppStackParamList>>()
   return (
     <View style={styles.container}>
       <View style={styles.containerHeader}>
         <StyledText fontWeight='bold' fontSize='title'>
-          Hola, cliente
+          Bienvenido {usuario ? cliente?.getNombre() : 'Reserva '}
         </StyledText>
-        <StyledText fontSize='bodymini'>
-          luiseduardohernandeztenorio@gmail.com
-        </StyledText>
+        <StyledText fontSize='bodymini'>{usuario ? usuario?.getCorreo() : ''}</StyledText>
       </View>
       <View style={styles.containerOpciones}>
         <OpcionItem
@@ -27,8 +30,16 @@ const OpcionesClienteSection = () => {
           text='Buscar restaurante'
           onPress={() => navigate('Restaurantes')}
         />
-        <OpcionItem iconName='calendar-number' text='Administrar reservas' />
-        <OpcionItem iconName='log-out' text='Cerrar sessión' />
+        <OpcionItem
+          iconName='calendar-number'
+          text='Administrar reservas'
+          onPress={
+            usuario
+              ? () => appNavigation.navigate('ReservasPage')
+              : () => appNavigation.navigate('PerfilPage')
+          }
+        />
+        {usuario && <OpcionItem iconName='log-out' text='Cerrar sessión' />}
       </View>
     </View>
   )
