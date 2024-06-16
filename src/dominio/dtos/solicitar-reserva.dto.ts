@@ -6,7 +6,8 @@ export class SolicitarReservaDto {
     public readonly fecha_reserva: Date,
     public readonly hora_reserva: Date,
     public readonly cantidad_personas: number,
-    public readonly usuario_id: string
+    public readonly usuario_id: string,
+    public readonly token: string
   ) {}
   static crear(object: { [key: string]: any }): SolicitarReservaDto {
     const {
@@ -16,7 +17,8 @@ export class SolicitarReservaDto {
       fecha_reserva,
       hora_reserva,
       usuario_id,
-      cantidad_personas
+      cantidad_personas,
+      token
     } = object
     if (!restaurante_id || typeof restaurante_id !== 'string') {
       throw new Error('El campo "restaurante_id" es requerido y debe ser una cadena de texto')
@@ -43,7 +45,9 @@ export class SolicitarReservaDto {
     if (!hora_reserva) {
       throw new Error('El campo "hora_reserva" es requerido')
     }
-
+    if (!token) {
+      throw new Error('El campo "token" es requerido')
+    }
     return new SolicitarReservaDto(
       restaurante_id,
       cliente_id,
@@ -51,7 +55,8 @@ export class SolicitarReservaDto {
       fechaReservaDate,
       hora_reserva,
       cantidad_personas,
-      usuario_id
+      usuario_id,
+      token
     )
   }
 }

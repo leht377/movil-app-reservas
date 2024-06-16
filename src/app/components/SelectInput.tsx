@@ -7,10 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 export interface PropsSelectInput {
   data: { label: string; value: any }[]
-  onSelect: (
-    selectedItem: { label: string; value: string },
-    index: number
-  ) => void
+  onSelect: (selectedItem: { label: string; value: string }, index: number) => void
   value: any
   label?: string
   disable?: boolean
@@ -40,7 +37,7 @@ const SelectInput: React.FC<PropsSelectInput> = ({
 
             <View style={styles.dropdownButtonStyle}>
               <StyledText fontSize='body' style={styles.dropdownButtonTxtStyle}>
-                {(selectedItem?.label && selectedItem.label) || placeholder}
+                {(value && selectedItem?.label && selectedItem.label) || placeholder}
               </StyledText>
               <Icon
                 name={isOpened ? 'chevron-up' : 'chevron-down'}

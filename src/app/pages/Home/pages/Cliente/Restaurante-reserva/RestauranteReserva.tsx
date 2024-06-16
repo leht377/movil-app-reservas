@@ -19,10 +19,10 @@ const RestauranteReserva = () => {
   const { params } = useRoute<RouteProp<HomeStackParamList>>()
   const { restauranteId } = params
   const { restaurante, loading } = useObtenerRestuaranteId(restauranteId)
-  const { solicitarReserva, loadingReserva } = useSolicitarReserva()
-  const [diaSeleccionado, setDiaSeleccionado] = useState(null)
 
-  const handleSubmit = (data) => {
+  const { solicitarReserva, status, error } = useSolicitarReserva()
+
+  const handleSubmit = async (data) => {
     const dataR = {
       nombre_reservante: data?.nombre_reservante,
       fecha_reserva: data?.dia_reserva,
@@ -30,8 +30,8 @@ const RestauranteReserva = () => {
       cantidad_personas: data?.cantidad_personas,
       restaurante_id: restauranteId
     }
-
-    solicitarReserva(dataR)
+    const fueExitoso = await solicitarReserva(dataR)
+    return fueExitoso
   }
 
   if (loading && !restaurante) return <LoadingScreen />
@@ -46,7 +46,7 @@ const RestauranteReserva = () => {
           <ReservarForm dataHoras={dataHoras} handleSubmit={handleSubmit} />
         </View>
       </ScrollView>
-      <ModalStatusRegistroReserva isVisible={true} onClose={() => {}} />
+      <ModalStatusRegistroReserva error={error} onClose={() => {}} status={status} />
     </View>
   )
 }

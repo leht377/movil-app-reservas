@@ -4,7 +4,7 @@ import FormikSelectInput from '@/app/components/FormikSelectInput'
 import FormikTextInput from '@/app/components/FormikTextInput'
 import StyledText from '@/app/components/StyledText'
 import { Formik } from 'formik'
-import React from 'react'
+import React, { useState } from 'react'
 import { GestureResponderEvent, StyleSheet, View } from 'react-native'
 import * as Yup from 'yup'
 interface MyFormValues {
@@ -50,12 +50,19 @@ interface Props {
   handleSubmit: (values: any) => any
 }
 const ReservarForm: React.FC<Props> = ({ dataHoras, handleSubmit }) => {
+  const [isSubmit, setIsSubmit] = useState(false)
+  const handle = async (values, resetForm) => {
+    setIsSubmit(true)
+    const fueExitoso = await handleSubmit(values)
+    if (fueExitoso) resetForm()
+    setIsSubmit(false)
+  }
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={ReservaSchema}
-      onSubmit={(values) => {
-        handleSubmit(values)
+      onSubmit={(values, { resetForm }) => {
+        handle(values, resetForm)
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, errors, values, touched }) => (
@@ -109,6 +116,8 @@ const ReservarForm: React.FC<Props> = ({ dataHoras, handleSubmit }) => {
                 values: GestureResponderEvent | React.FormEvent<HTMLFormElement> | undefined
               ) => void
             }
+            disabled={isSubmit}
+            loading={isSubmit}
             title='Solicitar reserva'
           />
         </View>
