@@ -11,6 +11,9 @@ import { ScrollView } from 'react-native'
 import { SearchBar } from '@rneui/themed'
 import SelectInput from '@/app/components/SelectInput'
 import { FlatList } from 'react-native'
+import useObtenerReservasCliente from './hooks/useObtenerReservasCliente'
+import LoadingScreen from '@/app/components/LoadingScreen'
+import { RefreshControl } from 'react-native-gesture-handler'
 
 const data = [
   { label: 'Todas', value: 'Todas' },
@@ -18,54 +21,50 @@ const data = [
   { label: 'Rechazadas', value: 'Rechazadas' }
 ]
 
-const renderItem = () => {
-  return <CardReserva />
+const renderItem = ({ item }) => {
+  return <CardReserva reserva={item} />
+}
+
+const header = () => {
+  const [filtroEstadoReserva, setFiltroEstadoReserva] = useState<String>('Todas')
+  return (
+    <View style={{ backgroundColor: theme.colors.secondary }}>
+      <SearchBar lightTheme placeholder='Codigo de ingreso' />
+      <View style={{ marginTop: 10 }}>
+        <SelectInput
+          data={data}
+          onSelect={(value) => setFiltroEstadoReserva(value?.value)}
+          value={filtroEstadoReserva}
+          placeholder='Estado reserva'
+        />
+      </View>
+    </View>
+  )
 }
 const ReservasCliente = () => {
-  const [filtroEstadoReserva, setFiltroEstadoReserva] =
-    useState<String>('Todas')
+  const { loading, obtenerReservas, reservas } = useObtenerReservasCliente()
+  const [refreshing, setRefreshing] = useState(false)
+  useEffect(() => {
+    obtenerReservas(undefined)
+  }, [])
 
+  const onRefresh = async () => {
+    setRefreshing(true)
+    await obtenerReservas(undefined)
+    setRefreshing(false)
+  }
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          gap: 10
-        }}
-      >
-        <ScrollView
-          nestedScrollEnabled
-          stickyHeaderIndices={[1]}
-          contentContainerStyle={{ gap: 10 }}
-        >
-          <CalendarPicker onSelectDay={() => {}} />
-          <View
-            style={{
-              backgroundColor: theme.colors.secondary,
-              paddingHorizontal: 10,
-              marginTop: 10
-            }}
-          >
-            <SearchBar lightTheme placeholder='Codigo de ingreso' />
-            <View style={{ marginTop: 10 }}>
-              <SelectInput
-                data={data}
-                onSelect={(value) => setFiltroEstadoReserva(value?.value)}
-                value={filtroEstadoReserva}
-                placeholder='Estado reserva'
-              />
-            </View>
-          </View>
-          <View style={{ paddingHorizontal: 10 }}>
-            <FlatList
-              data={[1, 2, 3, 4, 5]}
-              renderItem={renderItem}
-              contentContainerStyle={{ gap: 10 }}
-              nestedScrollEnabled
-              ListFooterComponent={<View style={{ height: 20 }} />}
-            />
-          </View>
-        </ScrollView>
-      </View>
+      <FlatList
+        data={reservas}
+        ListEmptyComponent={<StyledText>Cargando...</StyledText>}
+        ListHeaderComponent={header}
+        stickyHeaderIndices={[0]}
+        renderItem={renderItem}
+        contentContainerStyle={{ gap: 10 }}
+        ListFooterComponent={<View style={{ height: 10 }} />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      />
     </View>
   )
 }
