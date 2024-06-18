@@ -7,6 +7,7 @@ import { ClienteEntity, ReservaEntity, UsuarioEntity } from '../dominio/entities
 import { ClienteMapper } from '@/common/utils/mappers/cliente.mapper'
 import { ObtnerReservasClienteDto } from '@/dominio/dtos/obtner-reservas-cliente.dto'
 import { ReservaMapper } from '@/common/utils/mappers/reservaMapper'
+import { CancelarReservaClienteDto } from '@/dominio/dtos/cancelar-reserva-cliente.dto'
 
 const API_URL = envs.API_URL
 
@@ -53,4 +54,26 @@ const obtenerReservasCliente = async (data: ObtnerReservasClienteDto): Promise<R
   return reservas?.map((reserva) => ReservaMapper.ReservaEntityFromObject(reserva))
 }
 
-export const clienteServices = { registrarCliente, obtenerClientePorId, obtenerReservasCliente }
+const cancelarReservaCliente = async (data: CancelarReservaClienteDto): Promise<ReservaEntity> => {
+  const { cliente_id, reserva_id, token } = data
+  const config = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+  }
+
+  let endPoint = `${API_URL}/clientes/${cliente_id}/reservas/${reserva_id}/cancelar`
+
+  const response = await axios.put(endPoint, {}, config)
+  const reserva = response.data
+
+  return ReservaMapper.ReservaEntityFromObject(reserva)
+}
+export const clienteServices = {
+  registrarCliente,
+  obtenerClientePorId,
+  obtenerReservasCliente,
+  cancelarReservaCliente
+}

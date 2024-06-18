@@ -9,6 +9,7 @@ import { StyleSheet, TouchableNativeFeedback, View } from 'react-native'
 
 interface Props {
   reserva: ReservaEntity
+  onPressCancelar: (idReserva: string) => void
 }
 
 function formatDate(isoString) {
@@ -19,11 +20,11 @@ function formatDate(isoString) {
 
   return `${day}/${month}/${year}`
 }
-const CardReserva: React.FC<Props> = ({ reserva }) => {
+const CardReserva: React.FC<Props> = ({ reserva, onPressCancelar }) => {
   const fecha = reserva?.getFechaReserva() ? formatDate(reserva?.getFechaReserva()) : undefined
   let styleStatusBadge = {}
-
-  switch (reserva?.getEstado()) {
+  const estadoReserva = reserva?.getEstado()
+  switch (estadoReserva) {
     case EstadoReserva.ACEPTADA:
       styleStatusBadge = styles.statusAceptada
       break
@@ -32,6 +33,9 @@ const CardReserva: React.FC<Props> = ({ reserva }) => {
       break
     case EstadoReserva.RECHAZADA:
       styleStatusBadge = styles.statusRechazada
+      break
+    case EstadoReserva.CANCELADA:
+      styleStatusBadge = styles.statusCancelada
       break
     default:
       break
@@ -52,18 +56,20 @@ const CardReserva: React.FC<Props> = ({ reserva }) => {
           <Badge icon='time' text={reserva?.getHoraReserva()} />
         </View>
         {/* OPTIONS */}
-        <View style={styles.optionsContainer}>
-          <TouchableNativeFeedback>
-            <View style={[styles.optionButton, { backgroundColor: theme.colors.primary }]}>
-              <MyIcon nombre='close-circle' tamano={30} color='white' />
-            </View>
-          </TouchableNativeFeedback>
-          <TouchableNativeFeedback>
-            <View style={[styles.optionButton, { backgroundColor: theme.colors.tertiary }]}>
-              <MyIcon nombre='book' tamano={30} color='white' />
-            </View>
-          </TouchableNativeFeedback>
-        </View>
+        {estadoReserva === EstadoReserva.PENDIENTE && (
+          <View style={styles.optionsContainer}>
+            <TouchableNativeFeedback onPress={() => onPressCancelar(reserva?.getId())}>
+              <View style={[styles.optionButton, { backgroundColor: theme.colors.primary }]}>
+                <MyIcon nombre='close-circle' tamano={30} color='white' />
+              </View>
+            </TouchableNativeFeedback>
+            <TouchableNativeFeedback>
+              <View style={[styles.optionButton, { backgroundColor: theme.colors.tertiary }]}>
+                <MyIcon nombre='book' tamano={30} color='white' />
+              </View>
+            </TouchableNativeFeedback>
+          </View>
+        )}
       </View>
       {/* LOCATION */}
       <View style={styles.locationContainer}>
@@ -142,6 +148,9 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.green
   },
   statusRechazada: {
+    backgroundColor: theme.colors.primary
+  },
+  statusCancelada: {
     backgroundColor: theme.colors.primary
   },
   statusPendiente: {
