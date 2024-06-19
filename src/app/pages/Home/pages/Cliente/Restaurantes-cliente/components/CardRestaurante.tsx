@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 import { ImageBackground, StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
 
 import { useNavigation } from '@react-navigation/native'
@@ -156,4 +156,12 @@ const styles = StyleSheet.create({
   }
 })
 
-export default CardRestaurante
+export default memo(CardRestaurante, (prevProps, nextProps) => {
+  return (
+    prevProps.restaurante.getId() === nextProps.restaurante.getId() &&
+    prevProps.restaurante.getCalificacionPromedio() ===
+      nextProps.restaurante.getCalificacionPromedio() &&
+    prevProps.restaurante.getCantidadResenas() === nextProps.restaurante.getCantidadResenas() &&
+    prevProps.restaurante.getNombre() === nextProps.restaurante.getNombre()
+  )
+})
