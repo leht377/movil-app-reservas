@@ -1,29 +1,52 @@
-import React from 'react'
-import { ImageBackground, StyleSheet, View } from 'react-native'
+import React, { useState } from 'react'
+import { ImageBackground, StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
 
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import StyledText from '@/app/components/StyledText'
-import Star from '@/app/components/Star'
 import MyIcon from '@/app/components/MyIcon'
 import Button from '@/app/components/Button'
 import { HomeStackParamList } from '@/app/routes/types/home.stack.paramlist'
 import { RestauranteDetalladoEntity } from '@/dominio/entities'
 import theme from '@/common/theme'
 import StartCalificacion from '@/app/components/StartCalificacion'
+import { useAppSelector } from '@/redux/hooks/useAppSelector'
+import BotonFavorito from './BotonFavorito'
 
 interface Props {
   restaurante: RestauranteDetalladoEntity
+  onAddFavorito: (idRestaurante: string) => Promise<void>
+  onDeleteFavorito: (idRestaurante: string) => Promise<void>
 }
-const CardRestaurante: React.FC<Props> = ({ restaurante }) => {
+const CardRestaurante: React.FC<Props> = ({ restaurante, onAddFavorito, onDeleteFavorito }) => {
   const calificacion = restaurante?.getCalificacionPromedio()
   const { navigate } = useNavigation<StackNavigationProp<HomeStackParamList>>()
+  const { cliente } = useAppSelector((state) => state.cliente)
+  const estaEnFavorito = cliente?.getRestaurantesFavoritosIds()?.includes(restaurante?.getId())
 
+  const [disableFavorito, setDisableFavorito] = useState(false)
   if (!restaurante) return null
+
   const handleGotoRestauranteDetalle = () => {
     navigate('RestauranteDetalle', { restauranteId: restaurante.getId() })
   }
 
+  const handleAddFavorito = async () => {
+    try {
+      setDisableFavorito(true)
+      await onAddFavorito(restaurante?.getId())
+    } finally {
+      setDisableFavorito(false)
+    }
+  }
+  const handleDeleteFavorito = async () => {
+    try {
+      setDisableFavorito(true)
+      await onDeleteFavorito(restaurante?.getId())
+    } finally {
+      setDisableFavorito(false)
+    }
+  }
   const foto =
     restaurante.getUrlFotoRestaurante()[0] ||
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxEDbEHQNBO6uY1dwIHIUprr5PatZJJdLubNdtMXxROQ&s'
@@ -39,7 +62,15 @@ const CardRestaurante: React.FC<Props> = ({ restaurante }) => {
           }}
           style={styles.image}
           resizeMode='cover'
-        />
+        >
+          {cliente && (
+            <BotonFavorito
+              estaEnFavorito={estaEnFavorito}
+              onPress={estaEnFavorito ? handleDeleteFavorito : handleAddFavorito}
+              disable={disableFavorito}
+            />
+          )}
+        </ImageBackground>
       </View>
       <View style={styles.infoContainer}>
         <View style={styles.ratingContainer}>
@@ -96,6 +127,13 @@ const styles = StyleSheet.create({
   infoContainer: {
     gap: 8,
     padding: 10
+  },
+  iconFavorito: {
+    padding: 10,
+    alignSelf: 'flex-end',
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    borderRadius: 100,
+    margin: 10
   },
   ratingContainer: {
     flexDirection: 'row',

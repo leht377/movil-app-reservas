@@ -3,11 +3,19 @@ import axios from '../common/config/axios.intance'
 import { envs } from '../common/config/envs'
 import { UsuarioMapper } from '../common/utils/mappers/usuario.mapper'
 import { RegistrarClienteDto } from '../dominio/dtos/registrar-cliente.dto'
-import { ClienteEntity, ReservaEntity, UsuarioEntity } from '../dominio/entities'
+import {
+  ClienteEntity,
+  ReservaEntity,
+  RestauranteDetalladoEntity,
+  RestauranteEntity,
+  UsuarioEntity
+} from '../dominio/entities'
 import { ClienteMapper } from '@/common/utils/mappers/cliente.mapper'
 import { ObtnerReservasClienteDto } from '@/dominio/dtos/obtner-reservas-cliente.dto'
 import { ReservaMapper } from '@/common/utils/mappers/reservaMapper'
 import { CancelarReservaClienteDto } from '@/dominio/dtos/cancelar-reserva-cliente.dto'
+import { AgregarRestauranteFavoritoDto } from '@/dominio/dtos/agregar-restaurante-favorito.dto'
+import { RestauranteMapper } from '@/common/utils/mappers/restaurante.mapper'
 
 const API_URL = envs.API_URL
 
@@ -71,9 +79,50 @@ const cancelarReservaCliente = async (data: CancelarReservaClienteDto): Promise<
 
   return ReservaMapper.ReservaEntityFromObject(reserva)
 }
+const agregarRestauranteFavorito = async (
+  data: AgregarRestauranteFavoritoDto
+): Promise<ClienteEntity> => {
+  const { cliente_id, restaurante_id, token } = data
+  const config = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+  }
+
+  let endPoint = `${API_URL}/clientes/${cliente_id}/restaurantes/${restaurante_id}/addfavorito`
+
+  const response = await axios.put(endPoint, {}, config)
+  const cliente = response.data
+
+  return ClienteMapper.ClienteEntityFromObject(cliente)
+}
+
+const eliminarRestauranteFavorito = async (
+  data: AgregarRestauranteFavoritoDto
+): Promise<ClienteEntity> => {
+  const { cliente_id, restaurante_id, token } = data
+  const config = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+  }
+
+  let endPoint = `${API_URL}/clientes/${cliente_id}/restaurantes/${restaurante_id}/deletefavorito`
+
+  const response = await axios.put(endPoint, {}, config)
+  const cliente = response.data
+
+  return ClienteMapper.ClienteEntityFromObject(cliente)
+}
 export const clienteServices = {
   registrarCliente,
   obtenerClientePorId,
   obtenerReservasCliente,
-  cancelarReservaCliente
+  cancelarReservaCliente,
+  agregarRestauranteFavorito,
+  eliminarRestauranteFavorito
 }

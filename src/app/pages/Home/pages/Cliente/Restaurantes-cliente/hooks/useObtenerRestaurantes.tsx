@@ -1,3 +1,4 @@
+import { RestauranteDetalladoEntity } from '@/dominio/entities'
 import { Paginacion } from '@/dominio/interfaces/paginacion.interface'
 import { restauranteServices } from '@/services/restaurante.services'
 import React, { useEffect, useState } from 'react'
@@ -5,7 +6,7 @@ import React, { useEffect, useState } from 'react'
 const useObtenerRestaurantes = () => {
   // const { restaurantes, paginacion } = useAppSelector((state) => state.restaurante)
 
-  const [restaurantes, setRestaurantes] = useState([])
+  const [restaurantes, setRestaurantes] = useState<RestauranteDetalladoEntity[]>([])
   const [paginacion, setPaginacion] = useState<Paginacion | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
@@ -17,9 +18,7 @@ const useObtenerRestaurantes = () => {
     setError(null)
 
     try {
-      const response = await restauranteServices.obtener_resturantes(
-        paginacion?.nextPage
-      )
+      const response = await restauranteServices.obtener_resturantes(paginacion?.nextPage)
 
       if (response.paginacion?.page > 1)
         setRestaurantes([...restaurantes, ...response.restaurantes])
@@ -33,11 +32,15 @@ const useObtenerRestaurantes = () => {
     }
   }
 
+  const cambiarRestaurantes = (restaurantes: RestauranteDetalladoEntity[]) => {
+    setRestaurantes(restaurantes)
+  }
+
   useEffect(() => {
     obtenerRestaurantes()
   }, [])
 
-  return { restaurantes, loading, error, obtenerRestaurantes }
+  return { restaurantes, loading, error, obtenerRestaurantes, cambiarRestaurantes }
 }
 
 export default useObtenerRestaurantes

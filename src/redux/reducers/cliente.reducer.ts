@@ -34,6 +34,44 @@ const clienteSlice = createSlice({
     reset_status_cancelar_reserva(state) {
       state.status_cancelar_reserva = Status.IDLE
     }
+    // agregar_restaurante_favorito(state, action: PayloadAction<string>) {
+    //   const idRestaurante = action.payload
+    //   const restauranteFavoritosState = state.cliente?.getRestaurantesFavoritosIds() || []
+    //   const newStateRestaurantesFavoritos = [
+    //     ...new Set([...restauranteFavoritosState, idRestaurante])
+    //   ]
+
+    //   const clienteActualizado = new ClienteEntity(
+    //     state.cliente.getId(),
+    //     state.cliente.getUsuarioId(),
+    //     state.cliente.getNombre(),
+    //     state.cliente.getApellido(),
+    //     state.cliente.getRol(),
+    //     state.cliente.getCorreo(),
+    //     newStateRestaurantesFavoritos
+    //   )
+
+    //   state.cliente = clienteActualizado
+    // },
+    // eliminar_restaurante_favorito(state, action: PayloadAction<string>) {
+    //   const idRestaurantePayload = action.payload
+    //   const restauranteFavoritosState = state.cliente?.getRestaurantesFavoritosIds() || []
+    //   const newStateRestaurantesFavoritos = restauranteFavoritosState?.filter(
+    //     (id) => id != idRestaurantePayload
+    //   )
+
+    //   const clienteActualizado = new ClienteEntity(
+    //     state.cliente.getId(),
+    //     state.cliente.getUsuarioId(),
+    //     state.cliente.getNombre(),
+    //     state.cliente.getApellido(),
+    //     state.cliente.getRol(),
+    //     state.cliente.getCorreo(),
+    //     newStateRestaurantesFavoritos
+    //   )
+
+    //   state.cliente = clienteActualizado
+    // }
   },
   extraReducers: (builder) => {
     builder.addCase(solicitarReservaCliente.pending, (state, action) => {
@@ -91,6 +129,11 @@ export const cancelarReservaCliente = createAsyncThunk(
     }
   }
 )
-export const { set_cliente, reset_status_reserva, reset_status_cancelar_reserva } =
-  clienteSlice.actions
+export const {
+  set_cliente,
+  reset_status_reserva,
+  reset_status_cancelar_reserva
+  // agregar_restaurante_favorito,
+  // eliminar_restaurante_favorito
+} = clienteSlice.actions
 export default clienteSlice.reducer
