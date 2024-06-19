@@ -16,6 +16,7 @@ import { ReservaMapper } from '@/common/utils/mappers/reservaMapper'
 import { CancelarReservaClienteDto } from '@/dominio/dtos/cancelar-reserva-cliente.dto'
 import { AgregarRestauranteFavoritoDto } from '@/dominio/dtos/agregar-restaurante-favorito.dto'
 import { RestauranteMapper } from '@/common/utils/mappers/restaurante.mapper'
+import { ObtenerRestauranteFavoritoDto } from '@/dominio/dtos/obtener-restaurante-favorito.dto copy'
 
 const API_URL = envs.API_URL
 
@@ -42,6 +43,26 @@ const obtenerClientePorId = async (id: string): Promise<ClienteEntity> => {
   const response = await axios.get(`${API_URL}/clientes/${id}`, config)
 
   return ClienteMapper.ClienteEntityFromObject(response.data)
+}
+const obtenerRestaurantesFavoritos = async (
+  data: ObtenerRestauranteFavoritoDto
+): Promise<RestauranteDetalladoEntity[]> => {
+  const { cliente_id, token } = data
+  const config = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+  }
+
+  const response = await axios.get(
+    `${API_URL}/clientes/${cliente_id}/restaurantes/favoritos`,
+    config
+  )
+
+  const restaurantes = response.data
+  return restaurantes?.map((r) => RestauranteMapper.RestauranteDetalladoEntityFromObject(r))
 }
 
 const obtenerReservasCliente = async (data: ObtnerReservasClienteDto): Promise<ReservaEntity[]> => {
@@ -124,5 +145,6 @@ export const clienteServices = {
   obtenerReservasCliente,
   cancelarReservaCliente,
   agregarRestauranteFavorito,
-  eliminarRestauranteFavorito
+  eliminarRestauranteFavorito,
+  obtenerRestaurantesFavoritos
 }
