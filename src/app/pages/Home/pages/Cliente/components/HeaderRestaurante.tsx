@@ -6,13 +6,23 @@ import { agruparHorasServicio } from '@/common/helpers/agruparHorasServicio'
 import { agruparDiasDeServicio } from '@/common/helpers/ordenarDiasDeServicio'
 import theme from '@/common/theme'
 import { RestauranteDetalladoEntity, RestauranteEntity } from '@/dominio/entities'
-import React from 'react'
+import React, { useState } from 'react'
 import { ImageBackground, StyleSheet, View } from 'react-native'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import ModalCalificarRestaurante from './ModalCalificarRestaurante'
+import useCalificarRestaurante from '../hooks/useCalificarRestaurante'
+import Button from '@/app/components/Button'
+import useHayUsuarioLogeado from '@/app/hooks/useHayUsuarioLogeado'
+import ModalStatusCalificarRestaurante from './ModalStatusCalificarRestaurante'
 
 interface Props {
   restaurante: RestauranteDetalladoEntity
 }
 const HeaderRestaurante: React.FC<Props> = ({ restaurante }) => {
+  const [visible, setVisible] = useState(false)
+  const { calificarRestauranteCliente, cargando, status } = useCalificarRestaurante()
+
+  const usuarioLogeado = useHayUsuarioLogeado()
   const foto =
     // restaurante?.getUrlFotoRestaurante()[0] ||
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxEDbEHQNBO6uY1dwIHIUprr5PatZJJdLubNdtMXxROQ&s'
@@ -25,6 +35,11 @@ const HeaderRestaurante: React.FC<Props> = ({ restaurante }) => {
     })
     .join(' - ')
   let horas_servicio_agrupadas_12h = agruparHorasServicio(restaurante?.getHorasServicio())
+
+  const handleCalificarRestaurante = async (calificacion: number) => {
+    setVisible(false)
+    await calificarRestauranteCliente(restaurante?.getId(), calificacion)
+  }
 
   return (
     <View>
@@ -47,11 +62,25 @@ const HeaderRestaurante: React.FC<Props> = ({ restaurante }) => {
         <View style={styles.containerDescripcion}>
           <StyledText align='justify'>{restaurante?.getDescripcion()}</StyledText>
         </View>
-        <View style={styles.containerResenas}>
-          <StartCalificacion calificacion={restaurante?.getCalificacionPromedio()} />
-          <StyledText fontSize='body' fontWeight='bold'>
-            {restaurante?.getCantidadResenas()?.toLocaleString('en')} Reseñas
-          </StyledText>
+        <View style={styles.containerCalificacion}>
+          <View style={styles.containerResenas}>
+            <StartCalificacion
+              calificacion={restaurante?.getCalificacionPromedio()}
+              starSize={28}
+              disable
+            />
+            <StyledText fontSize='body' fontWeight='bold'>
+              {restaurante?.getCantidadResenas()?.toLocaleString('en')} Reseñas
+            </StyledText>
+          </View>
+          {usuarioLogeado && (
+            <Button
+              title='Calificar'
+              onPress={() => setVisible(true)}
+              color='green'
+              containerStyle={{ alignSelf: 'flex-start' }}
+            />
+          )}
         </View>
         <View style={styles.containerLocation}>
           <MyIcon nombre={'location'} tamano={25} />
@@ -82,6 +111,13 @@ const HeaderRestaurante: React.FC<Props> = ({ restaurante }) => {
           })} */}
         </View>
       </View>
+      <ModalCalificarRestaurante
+        visible={visible}
+        handleClose={() => setVisible(false)}
+        onCalificar={handleCalificarRestaurante}
+        loading={cargando}
+      />
+      <ModalStatusCalificarRestaurante onClose={() => {}} status={status} />
     </View>
   )
 }
@@ -107,9 +143,15 @@ const styles = StyleSheet.create({
   containerDescripcion: {
     paddingHorizontal: 20
   },
+  containerCalificacion: {
+    paddingHorizontal: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap'
+  },
   containerResenas: {
     flexDirection: 'row',
-    paddingHorizontal: 20,
+
     gap: 10,
     alignItems: 'center'
   },

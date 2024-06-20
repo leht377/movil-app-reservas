@@ -8,7 +8,7 @@ interface Props {
   calificacion: number
   starSize?: number
   disable?: boolean
-  onChange?: (value: number) => {}
+  onChange?: (value: number) => void
 }
 const StartCalificacion: React.FC<Props> = ({ calificacion, starSize = 24, disable, onChange }) => {
   const [rating, setRating] = useState(calificacion)

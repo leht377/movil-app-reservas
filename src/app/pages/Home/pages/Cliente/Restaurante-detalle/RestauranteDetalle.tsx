@@ -41,12 +41,16 @@ const RestauranteDetalle = () => {
   const { navigate } = useNavigation<StackNavigationProp<HomeStackParamList>>()
   const naviagtioApp = useNavigation<StackNavigationProp<AppStackParamList>>()
   const { usuario } = useAppSelector((state) => state.usuario)
-  if (loading && !restaurante) return <LoadingScreen />
+  useEffect(() => {
+    console.log(restaurante)
+  }, [restaurante])
 
   const handleNavigation = () => {
     if (usuario) navigate('RestauranteReserva', { restauranteId })
     else naviagtioApp.navigate('PerfilPage')
   }
+
+  if (loading && !restaurante) return <LoadingScreen />
   return (
     <View style={styles.container}>
       <ScrollView nestedScrollEnabled stickyHeaderIndices={[1]}>
