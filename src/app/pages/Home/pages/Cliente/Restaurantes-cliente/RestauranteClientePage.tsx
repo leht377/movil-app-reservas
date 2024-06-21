@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { ActivityIndicator, FlatList, ImageBackground, StyleSheet, View } from 'react-native'
 
 import { SearchBar } from '@rneui/themed'
@@ -9,10 +9,14 @@ import StyledText from '@/app/components/StyledText'
 import theme from '@/common/theme'
 import useAgregarFavorito from './hooks/useAgregarFavorito'
 import useEliminarFavorito from './hooks/useEliminarFavorito'
+import { useFocusEffect } from '@react-navigation/native'
+import { RefreshControl } from 'react-native-gesture-handler'
+import { MODO } from '@/common/utils/enums/modo_obtener_datos'
 
 const RestauranteClientePage = () => {
   const { loading, obtenerRestaurantes, restaurantes, cambiarRestaurantes } =
     useObtenerRestaurantes()
+  const [refreshing, setRefreshing] = useState(false)
   const { agregarFavorito } = useAgregarFavorito()
   const { eliminarFavorito } = useEliminarFavorito()
 
@@ -24,7 +28,7 @@ const RestauranteClientePage = () => {
     await eliminarFavorito(idRestaurante)
   }
 
-  const renderItem = useCallback(({ item }) => {
+  const renderItem = ({ item }) => {
     return (
       <CardRestaurante
         restaurante={item}
@@ -32,7 +36,7 @@ const RestauranteClientePage = () => {
         onDeleteFavorito={handleDeleteFavorito}
       />
     )
-  }, [])
+  }
 
   const handleMoreData = () => {
     !loading && obtenerRestaurantes()
@@ -47,6 +51,11 @@ const RestauranteClientePage = () => {
     )
   }
 
+  const onRefresh = async () => {
+    setRefreshing(true)
+    await obtenerRestaurantes()
+    setRefreshing(false)
+  }
   return (
     <View style={styles.container}>
       <SearchBar lightTheme placeholder='Buscar restaurante ...' />
@@ -55,6 +64,7 @@ const RestauranteClientePage = () => {
         data={restaurantes}
         renderItem={renderItem}
         contentContainerStyle={{ gap: 10, paddingHorizontal: 10 }}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         keyExtractor={(item) => item?.getId()}
         ListEmptyComponent={!loading && <StyledText>No hay restaurantes ...</StyledText>}
         onEndReached={() => handleMoreData()}

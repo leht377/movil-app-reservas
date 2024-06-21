@@ -20,6 +20,7 @@ import HeaderRestaurante from '../components/HeaderRestaurante'
 import LoadingScreen from '@/app/components/LoadingScreen'
 import { useAppSelector } from '@/redux/hooks/useAppSelector'
 import { AppStackParamList } from '@/app/routes/types/app.stack.paramlist'
+import { RestauranteDetalladoEntity, RestauranteEntity } from '@/dominio/entities'
 
 const renderItem = () => {
   return (
@@ -41,9 +42,6 @@ const RestauranteDetalle = () => {
   const { navigate } = useNavigation<StackNavigationProp<HomeStackParamList>>()
   const naviagtioApp = useNavigation<StackNavigationProp<AppStackParamList>>()
   const { usuario } = useAppSelector((state) => state.usuario)
-  useEffect(() => {
-    console.log(restaurante)
-  }, [restaurante])
 
   const handleNavigation = () => {
     if (usuario) navigate('RestauranteReserva', { restauranteId })
@@ -51,11 +49,12 @@ const RestauranteDetalle = () => {
   }
 
   if (loading && !restaurante) return <LoadingScreen />
+
   return (
     <View style={styles.container}>
       <ScrollView nestedScrollEnabled stickyHeaderIndices={[1]}>
         <View>
-          <HeaderRestaurante restaurante={restaurante} />
+          <HeaderRestaurante restaurante={restaurante as RestauranteDetalladoEntity} />
           <View style={styles.containerButton}>
             <Button title='Reservar' color='primary' onPress={handleNavigation} />
           </View>

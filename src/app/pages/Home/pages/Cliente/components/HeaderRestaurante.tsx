@@ -6,7 +6,7 @@ import { agruparHorasServicio } from '@/common/helpers/agruparHorasServicio'
 import { agruparDiasDeServicio } from '@/common/helpers/ordenarDiasDeServicio'
 import theme from '@/common/theme'
 import { RestauranteDetalladoEntity, RestauranteEntity } from '@/dominio/entities'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ImageBackground, StyleSheet, View } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import ModalCalificarRestaurante from './ModalCalificarRestaurante'
@@ -21,7 +21,6 @@ interface Props {
 const HeaderRestaurante: React.FC<Props> = ({ restaurante }) => {
   const [visible, setVisible] = useState(false)
   const { calificarRestauranteCliente, cargando, status } = useCalificarRestaurante()
-
   const usuarioLogeado = useHayUsuarioLogeado()
   const foto =
     // restaurante?.getUrlFotoRestaurante()[0] ||

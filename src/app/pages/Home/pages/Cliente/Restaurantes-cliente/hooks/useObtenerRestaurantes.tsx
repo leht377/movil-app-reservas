@@ -1,3 +1,4 @@
+import { MODO } from '@/common/utils/enums/modo_obtener_datos'
 import { RestauranteDetalladoEntity } from '@/dominio/entities'
 import { Paginacion } from '@/dominio/interfaces/paginacion.interface'
 import { restauranteServices } from '@/services/restaurante.services'
@@ -11,14 +12,15 @@ const useObtenerRestaurantes = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
 
-  const obtenerRestaurantes = async () => {
-    if (paginacion && !paginacion.hasNextPage) return
+  const obtenerRestaurantes = async (modo: MODO = MODO.REFRESCAR) => {
+    if (modo === MODO.MAS_DATA && paginacion && !paginacion.hasNextPage) return
 
     setLoading(true)
     setError(null)
 
+    const pagina = modo === MODO.MAS_DATA ? paginacion?.nextPage : 1
     try {
-      const response = await restauranteServices.obtener_resturantes(paginacion?.nextPage)
+      const response = await restauranteServices.obtener_resturantes(pagina)
 
       if (response.paginacion?.page > 1)
         setRestaurantes([...restaurantes, ...response.restaurantes])

@@ -30,7 +30,7 @@ const useCalificarRestaurante = () => {
       setCargando(false)
       setTimeout(() => {
         dispatch(reset_status_calificar_restaurate())
-      }, 4000)
+      }, 3000)
     }
   }
   return { calificarRestauranteCliente, cargando, status: status_calificar_restaurante }

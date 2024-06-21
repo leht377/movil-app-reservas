@@ -93,7 +93,7 @@ const ModalStatusCalificarRestaurante: React.FC<Props> = ({ onClose, status, err
       >
         <ExitosoIcon width={200} height={100} />
         <StyledText fontWeight='bold' fontSize='title' align='center'>
-          Restaurante calificaco exitosamente
+          Restaurante calificado exitosamente
         </StyledText>
       </View>
     )

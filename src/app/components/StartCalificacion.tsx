@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 
 import theme from '@/common/theme'
@@ -16,6 +16,9 @@ const StartCalificacion: React.FC<Props> = ({ calificacion, starSize = 24, disab
     setRating(value)
     onChange && onChange(value)
   }
+  useEffect(() => {
+    setRating(calificacion)
+  }, [calificacion])
   return (
     <StarRating
       rating={rating}
