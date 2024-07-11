@@ -1,3 +1,4 @@
+import LoadingDots from '@/app/components/LoadingDots'
 import Modal from '@/app/components/Modal'
 import StyledText from '@/app/components/StyledText'
 import BadRequestIcon from '@/app/icons/BadRequest.icon'
@@ -8,7 +9,6 @@ import theme from '@/common/theme'
 import Status from '@/common/utils/enums/status_asynctrunck'
 import React from 'react'
 import { ActivityIndicator, GestureResponderEvent, StyleSheet, View } from 'react-native'
-import LoadingDots from 'react-native-loading-dots'
 
 interface Props {
   onClose: (event: GestureResponderEvent) => void
@@ -39,15 +39,7 @@ const ModalStatusCancelarReserva: React.FC<Props> = ({ onClose, status, error })
           Cancelando reserva
         </StyledText>
         <View style={{ marginVertical: 20 }}>
-          <LoadingDots
-            size={18}
-            colors={[
-              theme.colors.primary,
-              theme.colors.primary,
-              theme.colors.primary,
-              theme.colors.primary
-            ]}
-          />
+          <LoadingDots />
         </View>
       </View>
     )

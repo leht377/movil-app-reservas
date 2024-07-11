@@ -1,15 +1,17 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { RestauranteDetalladoEntity } from '../../dominio/entities'
 import Status from '../../common/utils/enums/status_asynctrunck'
 import { restauranteServices } from '../../services/restaurante.services'
 import { Paginacion } from '../../dominio/interfaces/paginacion.interface'
 import { RegistrarRestauranteDto } from '@/dominio/dtos/registrat-restaurante.dtos'
 import { CalificarRestauranteDto } from '@/dominio/dtos/calificar-restaurante-dto'
+import { AxiosError } from 'axios'
 
 interface initialStateInterface {
-  restaurante_actual: null | RestauranteDetalladoEntity
+  restaurante_actual: RestauranteDetalladoEntity | null
   top_restaurantes: null | RestauranteDetalladoEntity[]
   restaurantes: [] | RestauranteDetalladoEntity[]
+
   paginacion: Paginacion
   status: Status
   status_calificar_restaurante: Status
@@ -32,6 +34,9 @@ const restaurantes = createSlice({
   reducers: {
     reset_status_calificar_restaurate(state) {
       state.status_calificar_restaurante = Status.IDLE
+    },
+    set_restaurante_actual(state, action: PayloadAction<RestauranteDetalladoEntity>) {
+      state.restaurante_actual = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -67,14 +72,12 @@ const restaurantes = createSlice({
     builder.addCase(calificarRestaurante.fulfilled, (state, action) => {
       state.status_calificar_restaurante = Status.SUCCEEDED
       const restauranteCalificado = action.payload
-      const restaurantes = state.restaurantes
-      const restaurantesActualizado = restaurantes.map((r: RestauranteDetalladoEntity) =>
-        r.getId() != restauranteCalificado?.getId() ? r : restauranteCalificado
-      )
-      state.restaurantes = restaurantesActualizado
+      state.restaurante_actual = restauranteCalificado
     })
     builder.addCase(calificarRestaurante.rejected, (state, action) => {
       state.status_calificar_restaurante = Status.FAILED
+      if (action.payload instanceof AxiosError) state.error = action.payload.response.data?.error
+      else state.error = 'Ocurrio un error desconocido'
     })
 
     // Agregar manejo de resgistrarRestaurante
@@ -91,7 +94,7 @@ const restaurantes = createSlice({
   }
 })
 
-export const { reset_status_calificar_restaurate } = restaurantes.actions
+export const { reset_status_calificar_restaurate, set_restaurante_actual } = restaurantes.actions
 export default restaurantes.reducer
 
 export const get_top_restaurantes = createAsyncThunk('restaurantes/top-restaurantes', async () => {
@@ -116,12 +119,16 @@ export const get_restaurantes = createAsyncThunk(
 
 export const calificarRestaurante = createAsyncThunk(
   'restaurantes/calificarRestaurante',
-  async (data: CalificarRestauranteDto) => {
+  async (data: CalificarRestauranteDto, { rejectWithValue }) => {
     try {
       const response = await restauranteServices.calificarRestaurante(data)
       return response
     } catch (error) {
-      console.error(error)
+      if (error instanceof AxiosError) {
+        // Use rejectWithValue to pass AxiosError data to the rejected action payload
+        return rejectWithValue(error)
+      }
+      throw error
     }
   }
 )
