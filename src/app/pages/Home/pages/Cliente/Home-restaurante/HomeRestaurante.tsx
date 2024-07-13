@@ -5,6 +5,7 @@ import Button from "@/app/components/Button";
 import StyledText from "@/app/components/StyledText";
 import MyIcon from "@/app/components/MyIcon";
 import theme from "@/common/theme";
+import CardRestaurante from "../Restaurantes-cliente/components/CardRestaurante";
 
 const HomeRestaurante = () => {
   return (
@@ -31,6 +32,9 @@ const HomeRestaurante = () => {
             />
           </View>
         </Button>
+      </View>
+      <View>
+        {/* <CardRestaurante restaurante={ }/> */}
       </View>
     </View>
   );
