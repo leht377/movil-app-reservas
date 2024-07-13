@@ -4,39 +4,38 @@ import StyledText from './StyledText'
 import theme from '../../common/theme'
 import { HashtagEntity, PlatoEntity } from '../../dominio/entities'
 interface Props {
-  plato?: PlatoEntity // TODO implementar logica para plato
+  plato: PlatoEntity // TODO implementar logica para plato
 }
 const CardPlato: React.FC<Props> = ({ plato }) => {
+  console.log(JSON.stringify(plato, null, 2))
   return (
     <View style={styles.container}>
       <StyledText fontSize='title' fontWeight='bold'>
-        Spagetti
+        {plato?.getNombre}
       </StyledText>
       <View style={styles.card}>
         {/* SECTION FOTOS */}
         <View style={styles.imageContainer}>
           <Image
             source={{
-              uri: 'https://bigoven-res.cloudinary.com/image/upload/w_300,c_fill,h_250/spagetti-120fed.jpg'
+              uri: plato.getFotoPrincipal
             }}
             style={styles.image}
             resizeMode='cover'
           />
           <View style={styles.imageColumn}>
-            <Image
-              source={{
-                uri: 'https://thecozycook.com/wp-content/uploads/2019/08/Bolognese-Sauce.jpg'
-              }}
-              style={styles.image}
-              resizeMode='cover'
-            />
-            <Image
-              source={{
-                uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJHJjuW8sGlgUa6_5TECh6VPW3BWIPnw4_jgYTYOPKnu_UWWfEkxei61cfDe8lCahPLDw&usqp=CAU'
-              }}
-              style={styles.image}
-              resizeMode='cover'
-            />
+            {plato.getFotosSecundarias.slice(0, 2).map((i) => {
+              return (
+                <Image
+                  source={{
+                    uri: i
+                  }}
+                  style={styles.image}
+                  key={i}
+                  resizeMode='cover'
+                />
+              )
+            })}
           </View>
         </View>
         {/* SECTION DATA */}
@@ -45,30 +44,22 @@ const CardPlato: React.FC<Props> = ({ plato }) => {
           <View style={styles.description}>
             <StyledText align='justify'>
               <StyledText fontWeight='bold'>Descripción: </StyledText>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-              Obcaecati maiores repellat adipisci dolorem dignissimos, sit quis
-              esse? Veritatis laudantium dolorum culpa.
+              {plato && plato?.getDescripcion}
             </StyledText>
           </View>
           {/* HASTAGS */}
           <View style={styles.hashtags}>
-            {[
-              new HashtagEntity('1', 'piza'),
-              new HashtagEntity('2', 'tomate')
-            ].map((hashtag) => (
+            {plato.getHastags.map((hashtag) => (
               <StyledText
-                key={hashtag.getId()}
+                key={hashtag?.getId()}
                 color='primary'
                 fontWeight='bold'
-              >{`#${hashtag.getNombre()}`}</StyledText>
+              >{`#${hashtag?.getNombre()}`}</StyledText>
             ))}
           </View>
           {/* PRECIO */}
           <View>
-            <StyledText
-              fontWeight='bold'
-              fontSize='title'
-            >{`$ ${'10000'} COP`}</StyledText>
+            <StyledText fontWeight='bold' fontSize='title'>{`$ ${'10000'} COP`}</StyledText>
           </View>
         </View>
       </View>

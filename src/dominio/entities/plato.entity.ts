@@ -12,7 +12,7 @@ export class PlatoEntity {
     private fotos_secundarias: string[]
   ) {}
 
-  get getId(): string {
+  getId(): string {
     return this.id
   }
 

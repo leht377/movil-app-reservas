@@ -42,7 +42,7 @@ const useObtenerRestaurantes = () => {
     obtenerRestaurantes()
   }, [])
 
-  return { restaurantes, loading, error, obtenerRestaurantes, cambiarRestaurantes }
+  return { restaurantes, loading, error, obtenerRestaurantes, cambiarRestaurantes, paginacion }
 }
 
 export default useObtenerRestaurantes

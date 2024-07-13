@@ -8,7 +8,7 @@ const Stack = createStackNavigator()
 const PerfilRoutes = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name='perfil-cliente' component={PerfilCliente} />
+      <Stack.Screen name='perfil-cliente' options={{ title: 'Perfil' }} component={PerfilCliente} />
       <Stack.Screen name='perfil-restaurante' component={PerfilRestaurante} />
     </Stack.Navigator>
   )

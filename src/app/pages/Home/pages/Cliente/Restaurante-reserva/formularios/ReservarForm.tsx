@@ -16,7 +16,7 @@ interface MyFormValues {
 
 const ReservaSchema = Yup.object().shape({
   nombre_reservante: Yup.string()
-    .min(2, 'Nombre demasiado corto!')
+    .min(6, 'Nombre demasiado corto!')
     .max(50, 'Nombre demasiado largo!')
     .required('El nombre es requerido'),
   hora_reserva: Yup.string().required('La hora de reserva es requerida'),

@@ -25,8 +25,11 @@ const SearchInput: React.FC<SearchInputProps> = ({ value, onChangeText, placehol
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'transparent',
-    borderWidth: 1,
+    backgroundColor: '#e4e5ea',
+    borderWidth: 0,
+    borderTopWidth: 0,
+    borderBottomWidth: 0,
+    borderColor: 'gray',
     padding: 0,
     justifyContent: 'center',
     alignItems: 'center',

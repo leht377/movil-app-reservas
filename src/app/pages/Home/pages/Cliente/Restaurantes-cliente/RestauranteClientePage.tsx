@@ -10,12 +10,14 @@ import theme from '@/common/theme'
 import useAgregarFavorito from './hooks/useAgregarFavorito'
 import useEliminarFavorito from './hooks/useEliminarFavorito'
 import { useFocusEffect } from '@react-navigation/native'
-import { RefreshControl } from 'react-native-gesture-handler'
+import { RefreshControl, TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { MODO } from '@/common/utils/enums/modo_obtener_datos'
+import SearchInput from '@/app/components/SearchInput'
+import MyIcon from '@/app/components/MyIcon'
+import Select from './components/Select'
 
 const RestauranteClientePage = () => {
-  const { loading, obtenerRestaurantes, restaurantes, cambiarRestaurantes } =
-    useObtenerRestaurantes()
+  const { loading, obtenerRestaurantes, restaurantes, paginacion } = useObtenerRestaurantes()
   const [refreshing, setRefreshing] = useState(false)
   const { agregarFavorito } = useAgregarFavorito()
   const { eliminarFavorito } = useEliminarFavorito()
@@ -39,7 +41,7 @@ const RestauranteClientePage = () => {
   }
 
   const handleMoreData = () => {
-    !loading && obtenerRestaurantes()
+    !loading && obtenerRestaurantes(MODO.MAS_DATA)
   }
 
   const renderFooter = () => {
@@ -58,16 +60,19 @@ const RestauranteClientePage = () => {
   }
   return (
     <View style={styles.container}>
-      <SearchBar lightTheme placeholder='Buscar restaurante ...' />
+      <SearchInput placeholder='Buscar restaurante ...' onChangeText={() => {}} value='' />
+      <View style={styles.containerFiltros}>
+        <Select />
+      </View>
 
       <FlatList
         data={restaurantes}
         renderItem={renderItem}
-        contentContainerStyle={{ gap: 10, paddingHorizontal: 10 }}
+        contentContainerStyle={{ gap: 10 }}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         keyExtractor={(item) => item?.getId()}
         ListEmptyComponent={!loading && <StyledText>No hay restaurantes ...</StyledText>}
-        onEndReached={() => handleMoreData()}
+        onEndReached={() => paginacion?.hasNextPage && handleMoreData()}
         onEndReachedThreshold={0.5}
         ListFooterComponent={renderFooter}
       />
@@ -78,8 +83,14 @@ const RestauranteClientePage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    gap: 30,
-    backgroundColor: theme.colors.secondary
+    gap: 10,
+    backgroundColor: theme.colors.secondary,
+    paddingHorizontal: 10
+  },
+  containerFiltros: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 5
   }
 })
 

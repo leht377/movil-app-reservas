@@ -30,6 +30,9 @@ const CardRestaurante: React.FC<Props> = ({ restaurante, onAddFavorito, onDelete
   const handleGotoRestauranteDetalle = () => {
     navigate('RestauranteDetalle', { restauranteId: restaurante.getId() })
   }
+  const handleGotoRestauranteReserva = () => {
+    navigate('RestauranteReserva', { restauranteId: restaurante.getId() })
+  }
 
   const handleAddFavorito = async () => {
     try {
@@ -96,13 +99,14 @@ const CardRestaurante: React.FC<Props> = ({ restaurante, onAddFavorito, onDelete
             color='primary'
             fontWeight='bold'
             containerStyle={styles.button}
-            onPress={handleGotoRestauranteDetalle}
+            onPress={handleGotoRestauranteReserva}
           />
           <Button
             title='Ver menú'
             color='primary'
             fontWeight='bold'
             containerStyle={styles.button}
+            onPress={handleGotoRestauranteDetalle}
           />
         </View>
       </View>

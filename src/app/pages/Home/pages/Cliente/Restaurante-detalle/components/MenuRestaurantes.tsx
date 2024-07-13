@@ -1,28 +1,58 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
 
 import FilterHastag from './FilterHastag/FilterHastag'
 import CardPlato from '@/app/components/CardPlato'
+import { menuServices } from '@/services/menu.services'
+import { ObtenerMenuDto } from '@/dominio/dtos/obtener-menu.dto'
+import { useAppSelector } from '@/redux/hooks/useAppSelector'
+import { MenuEntity, PlatoEntity } from '@/dominio/entities'
 
 const MenuRestaurantes = () => {
+  const [menu, setMenu] = useState<MenuEntity>(null)
+  const [platos, setPlatos] = useState<PlatoEntity[]>([])
   const onSelectFilters = (filters: string[]) => {
     console.log(filters)
   }
   const renderItem = ({ item }) => {
-    return <CardPlato />
+    return <CardPlato plato={item} />
   }
+
+  const { usuario } = useAppSelector((state) => state.usuario)
+  const obtenerMenu = async () => {
+    try {
+      const dto = ObtenerMenuDto.crear({
+        token: usuario.getTokent(),
+        menu_id: '66909d523ef9333504b74cff'
+      })
+      const menu = await menuServices.obtenerMenu(dto)
+      setMenu(menu)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  useEffect(() => {
+    obtenerMenu()
+  }, [])
+
+  useEffect(() => {
+    if (menu) setPlatos(menu.getPlatos())
+  }, [menu])
+
   return (
     <View style={styles.container}>
       <FilterHastag onSelectFilters={onSelectFilters} />
 
       {/* CARD MENU */}
-
-      <FlatList
-        data={[1, 2, 3, 4, 5, 6, 7, 8]}
-        renderItem={renderItem}
-        nestedScrollEnabled
-        keyExtractor={(item) => item}
-      />
+      {platos.length > 0 ? (
+        <FlatList
+          data={platos}
+          renderItem={renderItem}
+          nestedScrollEnabled
+          keyExtractor={(item: PlatoEntity) => item?.getId()}
+          ListFooterComponent={<View style={{ height: 20 }} />}
+        />
+      ) : null}
     </View>
   )
 }
