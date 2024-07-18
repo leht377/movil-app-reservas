@@ -7,7 +7,6 @@ interface Props {
   plato: PlatoEntity // TODO implementar logica para plato
 }
 const CardPlato: React.FC<Props> = ({ plato }) => {
-  console.log(JSON.stringify(plato, null, 2))
   return (
     <View style={styles.container}>
       <StyledText fontSize='title' fontWeight='bold'>

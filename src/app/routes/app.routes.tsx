@@ -47,9 +47,10 @@ const AppRoutes = () => {
       />
       <Tab.Screen
         name='ReservasPage'
-        component={ReservaRoutes}
+        component={usuario ? ReservaRoutes : AutenticacionRoutes}
         options={{
           title: 'Reservas',
+
           tabBarIcon: ({ color, size }) => <MyIcon color={color} tamano={size} nombre='calendar' />
         }}
       />

@@ -11,19 +11,20 @@ import { MenuEntity, PlatoEntity } from '@/dominio/entities'
 const MenuRestaurantes = () => {
   const [menu, setMenu] = useState<MenuEntity>(null)
   const [platos, setPlatos] = useState<PlatoEntity[]>([])
+
+  const { restaurante_actual } = useAppSelector((state) => state.restaurante)
+  const { usuario } = useAppSelector((state) => state.usuario)
   const onSelectFilters = (filters: string[]) => {
     console.log(filters)
   }
   const renderItem = ({ item }) => {
     return <CardPlato plato={item} />
   }
-
-  const { usuario } = useAppSelector((state) => state.usuario)
+  console.log(restaurante_actual)
   const obtenerMenu = async () => {
     try {
       const dto = ObtenerMenuDto.crear({
-        token: usuario.getTokent(),
-        menu_id: '66909d523ef9333504b74cff'
+        menu_id: restaurante_actual?.getMenuId()
       })
       const menu = await menuServices.obtenerMenu(dto)
       setMenu(menu)

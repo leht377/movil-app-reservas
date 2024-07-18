@@ -8,12 +8,13 @@ import { set_cliente } from '@/redux/reducers/cliente.reducer'
 import { set_usuario } from '@/redux/reducers/usuario.reducer'
 
 import { usuarioServices } from '@/services/usuario.services'
-import React from 'react'
+import { AxiosError } from 'axios'
+import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 
 const useLogin = () => {
   const { guardarDatosCliente } = useGuardarDatosUsuario()
-
+  const [error, setError] = useState(null)
   const autenticar = async ({ email, contrasena }) => {
     try {
       const loginDto = LoginDto.crear({ correo: email, contrasena })
@@ -27,11 +28,19 @@ const useLogin = () => {
 
       // console.log(usuario)
     } catch (error) {
-      console.error(error)
+      if (error instanceof AxiosError && error.response?.status === 401) {
+        setError('Usuario o contraseña invalida')
+      } else {
+        setError('Error desconocido')
+        console.error(error)
+      }
+      setTimeout(() => {
+        setError(null)
+      }, 3000)
     }
   }
 
-  return { autenticar }
+  return { autenticar, error }
 }
 
 export default useLogin

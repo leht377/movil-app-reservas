@@ -15,8 +15,7 @@ const obtenerMenu = async (data: ObtenerMenuDto): Promise<MenuEntity> => {
     const config: AxiosRequestConfig<ObtenerMenuDto> = {
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${data?.token}`
+        'Content-Type': 'application/json'
       }
     }
     const response = await axios.get(`${API_URL}/menus/${menu_id}`, config)
