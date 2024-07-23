@@ -20,7 +20,7 @@ const MenuRestaurantes = () => {
   const renderItem = ({ item }) => {
     return <CardPlato plato={item} />
   }
-  console.log(restaurante_actual)
+  
   const obtenerMenu = async () => {
     try {
       const dto = ObtenerMenuDto.crear({
@@ -33,7 +33,7 @@ const MenuRestaurantes = () => {
     }
   }
   useEffect(() => {
-    obtenerMenu()
+    if(restaurante_actual) obtenerMenu()
   }, [])
 
   useEffect(() => {

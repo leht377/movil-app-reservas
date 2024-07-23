@@ -7,7 +7,7 @@ export class ObtenerMenuDto {
     //   throw new Error('El campo "token" es requerido')
     // }
     if (!menu_id) {
-      throw new Error('El campo "cliente_id" es requerido')
+      throw new Error('El campo "menu_id" es requerido')
     }
     return new ObtenerMenuDto(menu_id, null)
   }
