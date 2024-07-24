@@ -1,5 +1,5 @@
-import { KeyboardAvoidingView, View, StyleSheet } from "react-native";
-
+import React from "react";
+import { KeyboardAvoidingView, View, StyleSheet, Platform } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import ChefIcon from "@/app/icons/ChefIcon";
 import LoveIcon from "@/app/icons/LoveIcon";
@@ -14,7 +14,10 @@ const RegistroRestaurantePage = () => {
   const { registrar } = useRegistrarRestaurante();
 
   return (
-    <KeyboardAvoidingView style={styles.topContainer}>
+    <KeyboardAvoidingView
+      style={styles.topContainer}
+      behavior={Platform.OS === "ios" ? "padding" : "padding"}
+    >
       <ScrollView>
         <View style={styles.container}>
           <View>

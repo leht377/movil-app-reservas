@@ -1,11 +1,12 @@
 import { envs } from '../common/config/envs'
 import axios from '../common/config/axios.intance'
 import { RestauranteMapper } from '../common/utils/mappers/restaurante.mapper'
-import { RestauranteDetalladoEntity, RestauranteEntity } from '../dominio/entities'
+import { RestauranteDetalladoEntity, RestauranteEntity, UsuarioEntity } from '../dominio/entities'
 import { Paginacion } from '../dominio/interfaces/paginacion.interface'
 import { RegistrarRestauranteDto } from '@/dominio/dtos/registrat-restaurante.dtos'
 import { AxiosRequestConfig } from 'axios'
 import { CalificarRestauranteDto } from '@/dominio/dtos/calificar-restaurante-dto'
+import { UsuarioMapper } from '@/common/utils/mappers/usuario.mapper'
 
 const API_URL = envs.API_URL
 
@@ -43,7 +44,7 @@ const obetenerRestaurantePorId = async (
 
 const registrarRestaurante = async (
   data: RegistrarRestauranteDto
-): Promise<RestauranteDetalladoEntity> => {
+): Promise<UsuarioEntity> => {
   const config: AxiosRequestConfig<RegistrarRestauranteDto> = {
     headers: {
       Accept: 'application/json',
@@ -51,7 +52,7 @@ const registrarRestaurante = async (
     }
   }
   const response = await axios.post(`${API_URL}/auth/registrar/restaurantes`, data, config)
-  return RestauranteMapper.RestauranteDetalladoEntityFromObject(response.data)
+  return UsuarioMapper.UsuarioEntityFromObject(response.data)
 }
 const calificarRestaurante = async (
   data: CalificarRestauranteDto

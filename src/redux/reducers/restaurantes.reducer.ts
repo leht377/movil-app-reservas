@@ -12,7 +12,7 @@ interface initialStateInterface {
   top_restaurantes: null | RestauranteDetalladoEntity[]
   restaurantes: [] | RestauranteDetalladoEntity[]
 
-  paginacion: Paginacion
+  paginacion: Paginacion | null
   status: Status
   status_calificar_restaurante: Status
   error: null | string
@@ -56,9 +56,8 @@ const restaurantes = createSlice({
       const { paginacion, restaurantes } = action.payload
       const isFirtsRequest = !state.paginacion
 
-      if (paginacion?.page > state?.paginacion?.page) {
-        const new_state = [...state.restaurantes, ...restaurantes]
-        state.restaurantes = new_state
+      if (paginacion?.page > (state?.paginacion?.page || 0)) {
+        state.restaurantes = [...state.restaurantes, ...restaurantes]
         state.paginacion = paginacion
       } else {
         state.restaurantes = restaurantes
@@ -80,17 +79,9 @@ const restaurantes = createSlice({
       else state.error = 'Ocurrio un error desconocido'
     })
 
-    // Agregar manejo de resgistrarRestaurante
-    builder.addCase(resgistrarRestaurante.pending, (state) => {
-      state.status = Status.LOADING
-    })
-    builder.addCase(resgistrarRestaurante.fulfilled, (state, action) => {
-      state.status = Status.SUCCEEDED
-      state.restaurante_actual = action.payload
-    })
-    builder.addCase(resgistrarRestaurante.rejected, (state, action) => {
-      state.status = Status.FAILED
-    })
+    // Agregar manejo de registrarRestaurante
+    
+    
   }
 })
 
@@ -103,6 +94,7 @@ export const get_top_restaurantes = createAsyncThunk('restaurantes/top-restauran
     return restaurantes
   } catch (error) {
     console.error(error)
+    throw error
   }
 })
 export const get_restaurantes = createAsyncThunk(
@@ -132,20 +124,4 @@ export const calificarRestaurante = createAsyncThunk(
     }
   }
 )
-export const resgistrarRestaurante = createAsyncThunk(
-  'restaurante/registrar_restaurante',
-  async (data: RegistrarRestauranteDto, { rejectWithValue }) => {
-    try {
-      const restaurante = await restauranteServices.registrarRestaurante(data)
-      return restaurante
-    } catch (error) {
-      if (!error.response) {
-        throw error
-      }
-      return rejectWithValue({
-        data: error.response.data,
-        code: error.response?.status
-      })
-    }
-  }
-)
+
