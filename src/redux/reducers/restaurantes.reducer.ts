@@ -1,5 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { RestauranteDetalladoEntity } from '../../dominio/entities'
+import { RestauranteDetalladoEntity, RestauranteEntity } from '../../dominio/entities'
 import Status from '../../common/utils/enums/status_asynctrunck'
 import { restauranteServices } from '../../services/restaurante.services'
 import { Paginacion } from '../../dominio/interfaces/paginacion.interface'
@@ -11,7 +11,7 @@ interface initialStateInterface {
   restaurante_actual: RestauranteDetalladoEntity | null
   top_restaurantes: null | RestauranteDetalladoEntity[]
   restaurantes: [] | RestauranteDetalladoEntity[]
-
+  restaurante:RestauranteEntity | null
   paginacion: Paginacion | null
   status: Status
   status_calificar_restaurante: Status
@@ -22,6 +22,7 @@ const initialState: initialStateInterface = {
   restaurante_actual: null,
   error: null,
   restaurantes: [],
+  restaurante: null,
   status: Status.IDLE,
   status_calificar_restaurante: Status.IDLE,
   top_restaurantes: null,
@@ -37,7 +38,10 @@ const restaurantes = createSlice({
     },
     set_restaurante_actual(state, action: PayloadAction<RestauranteDetalladoEntity>) {
       state.restaurante_actual = action.payload
-    }
+    },
+    set_restaurante(state, action: PayloadAction<RestauranteEntity>) {
+      state.restaurante = action.payload
+    } 
   },
   extraReducers: (builder) => {
     builder.addCase(get_top_restaurantes.pending, (state, action) => {
@@ -85,7 +89,7 @@ const restaurantes = createSlice({
   }
 })
 
-export const { reset_status_calificar_restaurate, set_restaurante_actual } = restaurantes.actions
+export const { reset_status_calificar_restaurate, set_restaurante_actual, set_restaurante} = restaurantes.actions
 export default restaurantes.reducer
 
 export const get_top_restaurantes = createAsyncThunk('restaurantes/top-restaurantes', async () => {

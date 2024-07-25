@@ -13,20 +13,24 @@ import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 
 const useLogin = () => {
-  const { guardarDatosCliente } = useGuardarDatosUsuario()
+  const { guardarDatosCliente, guardarDatosRestaurante } = useGuardarDatosUsuario()
   const [error, setError] = useState(null)
+
+
   const autenticar = async ({ email, contrasena }) => {
     try {
       const loginDto = LoginDto.crear({ correo: email, contrasena })
       const usuario = await usuarioServices.atutenticarUsuario(loginDto)
 
       if (usuario.getRol() === UsuarioRol.RESTAURANTE) {
+        guardarDatosRestaurante(usuario)
+        
       }
       if (usuario.getRol() === UsuarioRol.CLIENTE) {
         guardarDatosCliente(usuario)
       }
 
-      // console.log(usuario)
+       console.log(usuario)
     } catch (error) {
       if (error instanceof AxiosError && error.response?.status === 401) {
         setError('Usuario o contraseña invalida')

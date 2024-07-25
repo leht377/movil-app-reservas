@@ -2,6 +2,7 @@ import StyledText from "@/app/components/StyledText";
 import { View, StyleSheet } from "react-native";
 import OpcionItem from "../../Home-cliente/components/OpcionItem";
 
+
 const OpcionesRestauranteSection = () => {
   return (
     <View style={styles.container}>

@@ -1,82 +1,97 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import React, { useEffect } from 'react'
-import { StyleSheet, View } from 'react-native'
-import theme from '../../common/theme'
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React, { useEffect } from "react";
+import { StyleSheet, View } from "react-native";
+import theme from "../../common/theme";
 
-import ReservasPage from '../pages/Reservas/pages/ReservasPage'
-import FavoritosPages from '../pages/Favoritos/pages/FavoritosPages'
+import ReservasPage from "../pages/Reservas/pages/ReservasPage";
+import FavoritosPages from "../pages/Favoritos/pages/FavoritosPages";
 
-import MyIcon from '../components/MyIcon'
-import PerfilRoutes from './perfil.routes'
-import AutenticacionRoutes from './autenticacion.routes'
-import HomeRoutes from './home.routes'
-import ReservaRoutes from './reserva.routes'
-import { useAppSelector } from '@/redux/hooks/useAppSelector'
-import HomeRestaurante from '../pages/Home/pages/Cliente/Home-restaurante/HomeRestaurante'
-import useValidarUsuario from '../hooks/useValidarUsuario'
-import { AppStackParamList } from './types/app.stack.paramlist'
+import MyIcon from "../components/MyIcon";
+import PerfilRoutes from "./perfil.routes";
+import AutenticacionRoutes from "./autenticacion.routes";
+import HomeRoutes from "./home.routes";
+import ReservaRoutes from "./reserva.routes";
+import { useAppSelector } from "@/redux/hooks/useAppSelector";
+import HomeRestaurante from "../pages/Home/pages/Cliente/Home-restaurante/HomeRestaurante";
+import useValidarUsuario from "../hooks/useValidarUsuario";
+import { AppStackParamList } from "./types/app.stack.paramlist";
+import { UsuarioRol } from "@/common/utils/enums";
 
-const Tab = createBottomTabNavigator<AppStackParamList>()
+const Tab = createBottomTabNavigator<AppStackParamList>();
+
 const AppRoutes = () => {
-  const { usuario } = useAppSelector((state) => state.usuario)
-  const { validarUsuario } = useValidarUsuario()
+  const { usuario } = useAppSelector((state) => state.usuario);
+  const { validarUsuario } = useValidarUsuario();
 
   useEffect(() => {
-    if (!usuario) validarUsuario()
-  }, [])
+    if (!usuario) validarUsuario();
+  }, []);
 
+
+  const HomeComponete =usuario?.getRol() === UsuarioRol.RESTAURANTE? HomeRestaurante:HomeRoutes
   return (
     <Tab.Navigator
       screenOptions={{
         tabBarActiveTintColor: theme.colors.primary,
         tabBarInactiveTintColor: theme.colors.tertiary,
         tabBarStyle: {
-          backgroundColor: theme.colors.secondary
+          backgroundColor: theme.colors.secondary,
         },
-        headerShown: false
+        headerShown: false,
       }}
-      initialRouteName='Home'
+      initialRouteName="Home"
     >
       <Tab.Screen
-        name='Home'
-        component={HomeRoutes}
+        name="Home"
+        component={HomeComponete}
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color, size }) => <MyIcon color={color} tamano={size} nombre='home' />
+          title: "Home",
+          tabBarIcon: ({ color, size }) => (
+            <MyIcon color={color} tamano={size} nombre="home" />
+          ),
         }}
       />
-      <Tab.Screen
-        name='ReservasPage'
-        component={usuario ? ReservaRoutes : AutenticacionRoutes}
-        options={{
-          title: 'Reservas',
+      {usuario && usuario.getRol() === UsuarioRol.CLIENTE && (
+        
+        <>
+          <Tab.Screen
+            name="ReservasPage"
+            component={usuario ? ReservaRoutes : AutenticacionRoutes}
+            options={{
+              title: "Reservas",
 
-          tabBarIcon: ({ color, size }) => <MyIcon color={color} tamano={size} nombre='calendar' />
-        }}
-      />
+              tabBarIcon: ({ color, size }) => (
+                <MyIcon color={color} tamano={size} nombre="calendar" />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="FavoritosPage"
+            component={FavoritosPages}
+            options={{
+              title: "Favoritos",
+              tabBarIcon: ({ color, size }) => (
+                <MyIcon color={color} tamano={size} nombre="heart" />
+              ),
+            }}
+          />
+        </>
+      )}
+
       <Tab.Screen
-        name='FavoritosPage'
-        // component={FavoritosPages}
-        component={HomeRestaurante}
-        options={{
-          title: 'Favoritos',
-          tabBarIcon: ({ color, size }) => <MyIcon color={color} tamano={size} nombre='heart' />
-        }}
-      />
-      <Tab.Screen
-        name='PerfilPage'
+        name="PerfilPage"
         component={usuario ? PerfilRoutes : AutenticacionRoutes}
         options={{
-          title: 'Perfil',
+          title: "Perfil",
           tabBarIcon: ({ color, size }) => (
-            <MyIcon color={color} tamano={size} nombre='person-circle' />
-          )
+            <MyIcon color={color} tamano={size} nombre="person-circle" />
+          ),
         }}
       />
     </Tab.Navigator>
-  )
-}
+  );
+};
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
 
-export default AppRoutes
+export default AppRoutes;
