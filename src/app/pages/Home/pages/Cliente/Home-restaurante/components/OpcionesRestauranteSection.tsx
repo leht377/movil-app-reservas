@@ -1,16 +1,19 @@
 import StyledText from "@/app/components/StyledText";
 import { View, StyleSheet } from "react-native";
 import OpcionItem from "../../Home-cliente/components/OpcionItem";
-
+import { useAppSelector } from "@/redux/hooks/useAppSelector";
 
 const OpcionesRestauranteSection = () => {
+  const { usuario } = useAppSelector((state) => state.usuario);
+  const { restaurante } = useAppSelector((state) => state.restaurante);
+
   return (
     <View style={styles.container}>
       <View style={styles.containerPrincipio}>
         <StyledText fontWeight="bold" fontSize="title">
-          Restaurante Sabor molido{" "}
+          Restaurante {usuario? restaurante?.getNombre():"bienvenido"}
         </StyledText>
-        <StyledText fontSize="bodymini">Sabormolido@gmail.com</StyledText>
+        <StyledText fontSize="bodymini">{usuario?.getCorreo()}</StyledText>
       </View>
       <View style={styles.containerBotonesOpciones}>
         <View style={styles.row}>
