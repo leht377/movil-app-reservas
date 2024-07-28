@@ -14,6 +14,7 @@ import LoadingScreen from '@/app/components/LoadingScreen'
 import { agruparHorasServicio } from '@/common/helpers/agruparHorasServicio'
 import useSolicitarReserva from './hooks/useSolicitarReserva'
 import ModalStatusRegistroReserva from './components/ModalStatusRegistroReserva'
+import { RestauranteDetalladoEntity } from '@/dominio/entities'
 
 const RestauranteReserva = () => {
   const { params } = useRoute<RouteProp<HomeStackParamList>>()
@@ -41,7 +42,7 @@ const RestauranteReserva = () => {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <HeaderRestaurante restaurante={restaurante} />
+        <HeaderRestaurante restaurante={restaurante  as RestauranteDetalladoEntity} />
         <View style={{ paddingHorizontal: 20, marginBottom: 10 }}>
           <ReservarForm dataHoras={dataHoras} handleSubmit={handleSubmit} />
         </View>

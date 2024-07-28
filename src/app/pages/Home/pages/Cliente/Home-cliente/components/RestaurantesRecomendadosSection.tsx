@@ -5,6 +5,7 @@ import RestauranteRecomendadoItem from './RestauranteRecomendadoItem'
 import useObtenerTopRestaurantes from '../hooks/useObtenerTopRestaurantes'
 
 import StyledText from '../../../../../../components/StyledText'
+import { RestauranteDetalladoEntity, RestauranteEntity } from '@/dominio/entities'
 
 // const restaurantes = [
 //   {
@@ -416,7 +417,7 @@ const RestaurantesRecomendadosSection = () => {
         horizontal={true}
         contentContainerStyle={{ gap: 10 }}
         renderItem={({ item }) => (
-          <RestauranteRecomendadoItem key={item.getId()} restaurante={item} />
+          <RestauranteRecomendadoItem key={item.getId()} restaurante={item as RestauranteDetalladoEntity} />
         )}
       />
     </View>

@@ -75,16 +75,17 @@ const BadRequestIcon = (props: SvgProps) => (
     <Path
       d='m248.114 377.702.009 28.025-44.814-3.186 1.983-27.884 42.822 3.045zM189.717 382.557l.271-.034-2.116 11.914-24.897-1.77.85-11.951 25.892 1.841z'
       opacity={0.1}
-      style={{
-        isolation: 'isolate'
-      }}
+      
+      // style={{
+      //   isolation: 'isolate'
+      // }}
     />
     <Path
       d='M367.247 553.628c.784 3.058 103.64 6.368 104.707 5.443a21.674 21.674 0 0 0 2.474-3.827l-106.826-7.596a29.957 29.957 0 0 0-.355 5.98Z'
       opacity={0.1}
-      style={{
-        isolation: 'isolate'
-      }}
+      // style={{
+      //   isolation: 'isolate'
+      // }}
       transform='translate(-213.443 -144.598)'
     />
     <Path
