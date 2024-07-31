@@ -11,7 +11,7 @@ interface initialStateInterface {
   restaurante_actual: RestauranteDetalladoEntity | null
   top_restaurantes: null | RestauranteDetalladoEntity[]
   restaurantes: [] | RestauranteDetalladoEntity[]
-  restaurante:RestauranteEntity | null
+  restaurante:RestauranteDetalladoEntity | null
   paginacion: Paginacion | null
   status: Status
   status_calificar_restaurante: Status
@@ -39,7 +39,7 @@ const restaurantes = createSlice({
     set_restaurante_actual(state, action: PayloadAction<RestauranteDetalladoEntity>) {
       state.restaurante_actual = action.payload
     },
-    set_restaurante(state, action: PayloadAction<RestauranteEntity>) {
+    set_restaurante(state, action: PayloadAction<RestauranteDetalladoEntity>) {
       state.restaurante = action.payload
     } 
   },
