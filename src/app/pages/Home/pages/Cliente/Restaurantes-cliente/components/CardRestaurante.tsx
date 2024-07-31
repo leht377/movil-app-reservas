@@ -12,6 +12,7 @@ import theme from '@/common/theme'
 import StartCalificacion from '@/app/components/StartCalificacion'
 import { useAppSelector } from '@/redux/hooks/useAppSelector'
 import BotonFavorito from './BotonFavorito'
+import { AppStackParamList } from '@/app/routes/types/app.stack.paramlist'
 
 interface Props {
   restaurante: RestauranteDetalladoEntity
@@ -21,7 +22,9 @@ interface Props {
 const CardRestaurante: React.FC<Props> = ({ restaurante, onAddFavorito, onDeleteFavorito }) => {
   const calificacion = restaurante?.getCalificacionPromedio()
   const { navigate } = useNavigation<StackNavigationProp<HomeStackParamList>>()
+  const navigationApp = useNavigation<StackNavigationProp<AppStackParamList>>()
   const { cliente } = useAppSelector((state) => state.cliente)
+  const { usuario } = useAppSelector((state) => state.usuario)
   const estaEnFavorito = cliente?.getRestaurantesFavoritosIds()?.includes(restaurante?.getId())
 
   const [disableFavorito, setDisableFavorito] = useState(false)
@@ -31,7 +34,9 @@ const CardRestaurante: React.FC<Props> = ({ restaurante, onAddFavorito, onDelete
     navigate('RestauranteDetalle', { restauranteId: restaurante.getId() })
   }
   const handleGotoRestauranteReserva = () => {
-    navigate('RestauranteReserva', { restauranteId: restaurante.getId() })
+    if (!usuario) navigationApp.navigate("PerfilPage")
+    else navigate('RestauranteReserva', { restauranteId: restaurante.getId() })
+    
   }
 
   const handleAddFavorito = async () => {
