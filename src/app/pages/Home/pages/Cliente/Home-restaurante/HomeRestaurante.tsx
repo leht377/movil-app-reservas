@@ -1,29 +1,28 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import OpcionesRestauranteSection from "./components/OpcionesRestauranteSection";
 import Button from "@/app/components/Button";
 import StyledText from "@/app/components/StyledText";
 import MyIcon from "@/app/components/MyIcon";
 import theme from "@/common/theme";
-import CardRestaurante from "../Restaurantes-cliente/components/CardRestaurante";
+import RestauranteCarbasico from "./components/RestauranteCarbasico";
 
 const HomeRestaurante = () => {
   return (
-    <View style={styles.container}>
-      <View>
-        <OpcionesRestauranteSection />
-      </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      <OpcionesRestauranteSection />
       <View style={styles.NotificacionsBotton}>
-        <Button color="secondary" textColor="black">
+        <Button color="secondary" textColor="black" containerStyle={{elevation:3}} >
           <View style={styles.iconLeft}>
             <MyIcon
               nombre={"notifications-sharp"}
               tamano={25}
               color={theme.colors.primary}
             />
+            
           </View>
 
-          <StyledText>Tiene 5 reservas por confirmar </StyledText>
+          <StyledText>Tiene 5 reservas por confirmar</StyledText>
           <View style={styles.iconRight}>
             <MyIcon
               nombre={"close"}
@@ -33,16 +32,18 @@ const HomeRestaurante = () => {
           </View>
         </Button>
       </View>
-      <View>
-        {/* <CardRestaurante restaurante={ }/> */}
+      <View style={styles.card}>
+        <RestauranteCarbasico />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
+    backgroundColor: theme.colors.secondary,
+  
   },
   iconLeft: {
     flex: 1,
@@ -52,12 +53,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "flex-end",
   },
-
   NotificacionsBotton: {
-    marginTop: 40,
-    marginBottom: 10,
-    marginLeft: 20,
-    marginRight: 20,
+    margin: 20,    
+  },
+  card: {
+    paddingBottom: 50,
   },
 });
+
 export default HomeRestaurante;
