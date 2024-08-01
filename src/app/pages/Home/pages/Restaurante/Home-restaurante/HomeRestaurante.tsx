@@ -5,7 +5,7 @@ import Button from "@/app/components/Button";
 import StyledText from "@/app/components/StyledText";
 import MyIcon from "@/app/components/MyIcon";
 import theme from "@/common/theme";
-import RestauranteCarbasico from "./components/RestauranteCarbasico";
+import RestauranteCarbasico from "../components/RestauranteCarbasico";
 
 const HomeRestaurante = () => {
   return (

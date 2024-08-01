@@ -12,10 +12,10 @@ import AutenticacionRoutes from "./autenticacion.routes";
 import HomeRoutes from "./home.routes";
 import ReservaRoutes from "./reserva.routes";
 import { useAppSelector } from "@/redux/hooks/useAppSelector";
-import HomeRestaurante from "../pages/Home/pages/Cliente/Home-restaurante/HomeRestaurante";
 import useValidarUsuario from "../hooks/useValidarUsuario";
 import { AppStackParamList } from "./types/app.stack.paramlist";
 import { UsuarioRol } from "@/common/utils/enums";
+import HomeRestauranteRoutes from "./homeRestaurante.routes";
 
 const Tab = createBottomTabNavigator<AppStackParamList>();
 
@@ -28,7 +28,7 @@ const AppRoutes = () => {
   }, []);
 
 
-  const HomeComponete =usuario?.getRol() === UsuarioRol.RESTAURANTE? HomeRestaurante:HomeRoutes
+  const HomeComponete =usuario?.getRol() === UsuarioRol.RESTAURANTE? HomeRestauranteRoutes:HomeRoutes
   return (
     <Tab.Navigator
       screenOptions={{
