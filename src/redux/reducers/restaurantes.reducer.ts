@@ -6,15 +6,17 @@ import { Paginacion } from '../../dominio/interfaces/paginacion.interface'
 import { RegistrarRestauranteDto } from '@/dominio/dtos/registrat-restaurante.dtos'
 import { CalificarRestauranteDto } from '@/dominio/dtos/calificar-restaurante-dto'
 import { AxiosError } from 'axios'
+import { ActualizarRestauranteDto } from '@/dominio/dtos/actualizar-restaurante.dto'
 
 interface initialStateInterface {
   restaurante_actual: RestauranteDetalladoEntity | null
   top_restaurantes: null | RestauranteDetalladoEntity[]
   restaurantes: [] | RestauranteDetalladoEntity[]
-  restaurante:RestauranteDetalladoEntity | null
+  restaurante: RestauranteDetalladoEntity | null
   paginacion: Paginacion | null
   status: Status
   status_calificar_restaurante: Status
+  status_actualizar_restaurante: Status
   error: null | string
 }
 
@@ -25,6 +27,7 @@ const initialState: initialStateInterface = {
   restaurante: null,
   status: Status.IDLE,
   status_calificar_restaurante: Status.IDLE,
+  status_actualizar_restaurante: Status.IDLE,
   top_restaurantes: null,
   paginacion: null
 }
@@ -36,12 +39,15 @@ const restaurantes = createSlice({
     reset_status_calificar_restaurate(state) {
       state.status_calificar_restaurante = Status.IDLE
     },
+    reset_status_actualizar_restaurate(state) {
+      state.status_actualizar_restaurante = Status.IDLE
+    },
     set_restaurante_actual(state, action: PayloadAction<RestauranteDetalladoEntity>) {
       state.restaurante_actual = action.payload
     },
     set_restaurante(state, action: PayloadAction<RestauranteDetalladoEntity>) {
       state.restaurante = action.payload
-    } 
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(get_top_restaurantes.pending, (state, action) => {
@@ -83,13 +89,30 @@ const restaurantes = createSlice({
       else state.error = 'Ocurrio un error desconocido'
     })
 
+    builder.addCase(actualizarRestauranteAsy.pending, (state, action) => {
+      state.status_actualizar_restaurante = Status.LOADING
+    })
+    builder.addCase(actualizarRestauranteAsy.fulfilled, (state, action) => {
+      state.status_actualizar_restaurante = Status.SUCCEEDED
+      const restauranteAc = action.payload
+      state.restaurante = restauranteAc
+    })
+    builder.addCase(actualizarRestauranteAsy.rejected, (state, action) => {
+      state.status_actualizar_restaurante = Status.FAILED
+      if (action.payload instanceof AxiosError) state.error = action.payload.response?.data?.error
+      else state.error = 'Ocurrio un error desconocido'
+    })
+
     // Agregar manejo de registrarRestaurante
-    
-    
   }
 })
 
-export const { reset_status_calificar_restaurate, set_restaurante_actual, set_restaurante} = restaurantes.actions
+export const {
+  reset_status_calificar_restaurate,
+  set_restaurante_actual,
+  set_restaurante,
+  reset_status_actualizar_restaurate
+} = restaurantes.actions
 export default restaurantes.reducer
 
 export const get_top_restaurantes = createAsyncThunk('restaurantes/top-restaurantes', async () => {
@@ -129,3 +152,17 @@ export const calificarRestaurante = createAsyncThunk(
   }
 )
 
+export const actualizarRestauranteAsy = createAsyncThunk(
+  'restaurantes/actualizarRestaurante',
+  async (data: ActualizarRestauranteDto, { rejectWithValue }) => {
+    try {
+      const response = await restauranteServices.actualizarRestaurante(data)
+      return response
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return rejectWithValue(error)
+      }
+      throw error
+    }
+  }
+)

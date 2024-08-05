@@ -1,10 +1,11 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { HomeRestauranteStackParamslist } from "./types/homeRestaurante.stack.paramslist";
-import HomeRestaurante from "../pages/Home/pages/Restaurante/Home-restaurante/HomeRestaurante";
-import AdministrarRestaurante from "../pages/Home/pages/Restaurante/Administrar-Restaurante/AdministrarRestaurante";
-import AdministrarMenu from "../pages/Home/pages/Restaurante/Adminstrar-Menu/AdministrarMenu";
-import AdministrarReserva from "../pages/Home/pages/Restaurante/Administrar-Reserva/AdministrarReserva";
-import FotosInstalaciones from "../pages/Home/pages/Restaurante/Fotos-Instaciones/FotosInstalaciones";
+
+import AdministrarRestaurante from "../pages/Home/pages/restaurante/Administrar-Restaurante/AdministrarRestaurante";
+import FotosInstalaciones from "../pages/Home/pages/restaurante/Fotos-Instaciones/FotosInstalaciones";
+import AdministrarReserva from "../pages/Home/pages/restaurante/Administrar-Reserva/AdministrarReserva";
+import AdministrarMenu from "../pages/Home/pages/restaurante/Adminstrar-Menu/AdministrarMenu";
+import HomeRestaurante from "../pages/Home/pages/restaurante/Home-restaurante/HomeRestaurante";
 
 const Stack = createStackNavigator<HomeRestauranteStackParamslist>();
 

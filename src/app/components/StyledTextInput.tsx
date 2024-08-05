@@ -24,6 +24,7 @@ interface StyledTextInputProps {
   label?: string
   value?: string
   disable?: boolean
+  multiline?: boolean
   onChage?: (e: NativeSyntheticEvent<TextInputChangeEventData>) => void
   onChangeText?: (text: string) => void
 }
@@ -38,7 +39,8 @@ const StyledTextInput: React.FC<StyledTextInputProps> = ({
   value,
   onChage,
   onChangeText,
-  disable = false
+  disable = false,
+  multiline
 }) => {
   const isTypePassword = keyboardType === 'password'
   const keyboardTypeImpl: KeyboardTypeOptions = isTypePassword ? 'default' : keyboardType
@@ -69,6 +71,7 @@ const StyledTextInput: React.FC<StyledTextInputProps> = ({
           value={value}
           readOnly={disable}
           editable={disable}
+          multiline={multiline}
         />
         {isTypePassword && (
           <Button color='transparent' onPress={handleShowPassword}>

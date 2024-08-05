@@ -7,6 +7,7 @@ import { RegistrarRestauranteDto } from '@/dominio/dtos/registrat-restaurante.dt
 import { AxiosRequestConfig } from 'axios'
 import { CalificarRestauranteDto } from '@/dominio/dtos/calificar-restaurante-dto'
 import { UsuarioMapper } from '@/common/utils/mappers/usuario.mapper'
+import { ActualizarRestauranteDto } from '@/dominio/dtos/actualizar-restaurante.dto'
 
 const API_URL = envs.API_URL
 
@@ -42,9 +43,7 @@ const obetenerRestaurantePorId = async (
   return RestauranteMapper.RestauranteDetalladoEntityFromObject(restaurante)
 }
 
-const registrarRestaurante = async (
-  data: RegistrarRestauranteDto
-): Promise<UsuarioEntity> => {
+const registrarRestaurante = async (data: RegistrarRestauranteDto): Promise<UsuarioEntity> => {
   const config: AxiosRequestConfig<RegistrarRestauranteDto> = {
     headers: {
       Accept: 'application/json',
@@ -72,11 +71,30 @@ const calificarRestaurante = async (
   )
   return RestauranteMapper.RestauranteDetalladoEntityFromObject(response.data)
 }
+const actualizarRestaurante = async (
+  data: ActualizarRestauranteDto
+): Promise<RestauranteDetalladoEntity> => {
+  const { restaurante_id, token } = data
+  const config: AxiosRequestConfig = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${token}`
+    }
+  }
+  const response = await axios.put(
+    `${API_URL}/restaurantes/${restaurante_id}`,
+    data.formDataRestaurante,
+    config
+  )
+  return RestauranteMapper.RestauranteDetalladoEntityFromObject(response.data)
+}
 
 export const restauranteServices = {
   obtener_top_resturantes,
   obtener_resturantes,
   obetenerRestaurantePorId,
   registrarRestaurante,
-  calificarRestaurante
+  calificarRestaurante,
+  actualizarRestaurante
 }

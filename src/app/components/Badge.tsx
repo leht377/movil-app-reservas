@@ -8,6 +8,7 @@ interface Props {
   color?: ColorValue
   textColor?: StyledTextProps['color']
   radiusBadge?: number
+  iconColor?:string
   text: string
 }
 
@@ -16,7 +17,8 @@ const Badge: React.FC<Props> = ({
   text,
   color,
   radiusBadge,
-  textColor
+  textColor,
+  iconColor
 }) => {
   return (
     <View
@@ -27,7 +29,7 @@ const Badge: React.FC<Props> = ({
       ]}
     >
       <View style={styles.content}>
-        {icon && <MyIcon tamano={18} nombre={icon} />}
+        {icon && <MyIcon tamano={18} nombre={icon} color={iconColor} />}
         <StyledText
           fontWeight='bold'
           fontSize='bodymini'
