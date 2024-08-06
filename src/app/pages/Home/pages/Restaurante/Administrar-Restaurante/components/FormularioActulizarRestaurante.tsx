@@ -12,25 +12,38 @@ import Badge from '@/app/components/Badge'
 import MyIcon from '@/app/components/MyIcon'
 import { DiasServicioRestaurante, HorasServicioRestaurante } from '@/common/utils/enums'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
-import useActualizarRestaurante from './hooks/useActualizarRestaurante'
-
-const initialValues = {
-  descripcion: '',
-  locacion: '',
-  foto: null,
-  horasServicio: [],
-  diasServicio: []
-}
+import useActualizarRestaurante from '../hooks/useActualizarRestaurante'
+import ModalStatusActualizarDataRestaurante from './ModalStatusActualizarDataRestaurante'
+import { useAppSelector } from '@/redux/hooks/useAppSelector'
+import AlertRestauranteVisible from './AlertRestauranteVisible'
 
 const dataDiasServicio = Object.keys(DiasServicioRestaurante).map((d) => ({ label: d, value: d }))
 
 const FormularioActulizarRestaurante = () => {
   const [image, setImage] = useState<ImagePicker.ImagePickerAsset>(null)
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false)
+  const { restaurante } = useAppSelector((state) => state.restaurante)
   const [timeField, setTimeField] = useState(null)
   const [horasServicio, setHorasServicio] = useState([])
   const [diasServicio, setDiasServicio] = useState([])
-  const { actualizarDataRestaurante, status_actualizacion } = useActualizarRestaurante()
+  const [visibleAlert, setVisibleAlert] = useState(true)
+
+  const { actualizarDataRestaurante, status_actualizacion, error, loading } =
+    useActualizarRestaurante()
+  const initialValues = {
+    descripcion: restaurante ? restaurante.getDescripcion() : '',
+    locacion: restaurante ? restaurante.getLocacion() : '',
+    foto: null,
+    horasServicio: restaurante ? restaurante.getHorasServicio() : [],
+    diasServicio: restaurante ? restaurante.getDiasServicio() : []
+  }
+
+  useEffect(() => {
+    if (!restaurante) return
+    setDiasServicio(restaurante.getDiasServicio())
+    setHorasServicio(restaurante.getHorasServicio())
+    setVisibleAlert(!restaurante.getVisible())
+  }, [restaurante])
 
   const handleSubmit = async (values: any) => {
     const d = {
@@ -39,20 +52,16 @@ const FormularioActulizarRestaurante = () => {
       horas_servicios: values?.horasServicio,
       dias_servicios: values?.diasServicio
     }
-    console.log(d)
     await actualizarDataRestaurante(d)
+    setImage(null)
   }
-
-  useEffect(() => {
-    console.log(status_actualizacion)
-  }, [status_actualizacion])
 
   const elegirImage = async (setFieldValue: (Field: string, value: any) => void) => {
     let resultado = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1
+      quality: 0.5
     })
     if (!resultado.canceled) {
       const selecionarImgen = resultado.assets[0]
@@ -103,30 +112,57 @@ const FormularioActulizarRestaurante = () => {
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
       {({ setFieldValue, handleSubmit, values }) => (
         <View style={styles.container}>
+          <AlertRestauranteVisible
+            visible={visibleAlert}
+            onPressInvisible={() => setVisibleAlert(false)}
+          />
+
           <View>
             <FormikMultilineTextInput
               name='descripcion'
               placeholder='Descripción del restaurante'
               label='Descripción'
             />
-            <FormikTextInput name='locacion' placeholder='Locación' label='Locación' />
+            <FormikTextInput name='locacion' placeholder='Locación' label='Locación' disable />
             <StyledText style={styles.text}>Foto del restuarante</StyledText>
-            <View style={styles.row}>
-              {image && (
-                <View style={styles.imageContainer}>
-                  <Image source={{ uri: image.uri }} style={styles.imagePreview} />
-                </View>
+            <View style={[styles.row, { alignItems: 'flex-end' }]}>
+              {restaurante?.getUrlFotoRestaurante() && !image ? (
+                <React.Fragment>
+                  <View style={styles.imageContainer}>
+                    <Image
+                      source={{ uri: restaurante?.getUrlFotoRestaurante()[0] }}
+                      style={styles.imagePreview}
+                    />
+                  </View>
+                  <TouchableOpacity onPress={() => elegirImage(setFieldValue)}>
+                    <View style={styles.buttonImageSelect}>
+                      <MyIcon nombre={'cloud-upload-sharp'} tamano={20} color='white' />
+                      <StyledText color='secondary'>Cambiar foto</StyledText>
+                    </View>
+                  </TouchableOpacity>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  {image && (
+                    <View style={styles.imageContainer}>
+                      <Image source={{ uri: image.uri }} style={styles.imagePreview} />
+                    </View>
+                  )}
+                  <View style={[styles.inputContainer, { display: 'none' }]}>
+                    <FormikTextInput name='foto' placeholder='Foto' disable={true} />
+                  </View>
+                  <TouchableOpacity onPress={() => elegirImage(setFieldValue)}>
+                    <View style={styles.buttonImageSelect}>
+                      <MyIcon nombre={'images-outline'} tamano={20} color='white' />
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => setImage(null)}>
+                    <View style={styles.buttonImageTrash}>
+                      <MyIcon nombre={'trash'} tamano={20} color='white' />
+                    </View>
+                  </TouchableOpacity>
+                </React.Fragment>
               )}
-              <View style={styles.inputContainer}>
-                <FormikTextInput name='foto' placeholder='Foto' disable={true} />
-              </View>
-              <Button
-                title='Seleccionar'
-                color='primary'
-                buttonStyle={{ flex: 1 }}
-                fontWeight='bold'
-                onPress={() => elegirImage(setFieldValue)}
-              />
             </View>
             <View>
               <StyledText style={styles.text}>Horas de servicio</StyledText>
@@ -173,6 +209,8 @@ const FormularioActulizarRestaurante = () => {
                 title='Actualizar'
                 color='primary'
                 fontWeight='bold'
+                disabled={loading}
+                loading={loading}
                 onPress={
                   handleSubmit as (
                     values: GestureResponderEvent | React.FormEvent<HTMLFormElement> | undefined
@@ -188,6 +226,11 @@ const FormularioActulizarRestaurante = () => {
             onConfirm={(t) => handleConfirm(t, setFieldValue)}
             onCancel={() => setTimePickerVisibility(false)}
             minuteInterval={10}
+          />
+          <ModalStatusActualizarDataRestaurante
+            status={status_actualizacion}
+            error={error}
+            onClose={() => {}}
           />
         </View>
       )}
@@ -205,19 +248,33 @@ const styles = StyleSheet.create({
     gap: 5
   },
   imageContainer: {
-    width: 50,
-    height: 50,
+    width: 80,
+    height: 80,
     borderRadius: 10,
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: theme.colors.secondary
   },
   imagePreview: {
-    width: 50,
-    height: 50
+    width: 80,
+    height: 80
   },
   inputContainer: {
     flex: 1
+  },
+  buttonImageTrash: {
+    backgroundColor: theme.colors.tertiary,
+    padding: 10,
+    borderRadius: 10,
+    flexDirection: 'row',
+    gap: 5
+  },
+  buttonImageSelect: {
+    backgroundColor: theme.colors.primary,
+    padding: 10,
+    borderRadius: 10,
+    flexDirection: 'row',
+    gap: 5
   },
   input: {
     flex: 1

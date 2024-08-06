@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   },
   inputDefaultStyle: {
     fontSize: theme.fontSize.body,
-    fontWeight: '800',
+
     flex: 1,
     color: theme.colors.quaternary
   }

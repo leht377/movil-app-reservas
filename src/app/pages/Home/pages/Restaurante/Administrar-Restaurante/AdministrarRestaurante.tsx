@@ -1,7 +1,8 @@
-import { ScrollView, StyleSheet, View } from "react-native";
-import RestauranteCarbasico from "../components/RestauranteCarbasico";
-import FormularioActulizarRestaurante from "./components/FormularioActulizarRestaurante";
-import theme from "@/common/theme";
+import { ScrollView, StyleSheet, View } from 'react-native'
+import RestauranteCarbasico from '../components/RestauranteCarbasico'
+import FormularioActulizarRestaurante from './components/FormularioActulizarRestaurante'
+import theme from '@/common/theme'
+import StyledText from '@/app/components/StyledText'
 
 const AdministrarRestaurante = () => {
   return (
@@ -14,19 +15,18 @@ const AdministrarRestaurante = () => {
         <FormularioActulizarRestaurante />
       </View>
     </ScrollView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: theme.colors.secondary,
+    backgroundColor: theme.colors.secondary
   },
   card: {
-    marginTop: 20,
-    marginBottom:30
+    marginBottom: 10
   },
-  formulario:{
-   marginBottom:30
+  formulario: {
+    marginBottom: 30
   }
-});
-export default AdministrarRestaurante;
+})
+export default AdministrarRestaurante

@@ -5,10 +5,12 @@ import {
   actualizarRestauranteAsy,
   reset_status_actualizar_restaurate
 } from '@/redux/reducers/restaurantes.reducer'
+import { useState } from 'react'
 
 const useActualizarRestaurante = () => {
   const { usuario } = useAppSelector((state) => state.usuario)
-  const { restaurante, status_actualizar_restaurante } = useAppSelector(
+  const [loading, setLoading] = useState(false)
+  const { restaurante, status_actualizar_restaurante, error } = useAppSelector(
     (state) => state.restaurante
   )
   const dispacth = useAppDispatch()
@@ -16,6 +18,7 @@ const useActualizarRestaurante = () => {
   const actualizarDataRestaurante = async (data: any) => {
     if (!usuario || !restaurante) return
     try {
+      setLoading(true)
       const restauranteDto = ActualizarRestauranteDto.crear({
         ...data,
         restaurante_id: restaurante.getId(),
@@ -27,11 +30,17 @@ const useActualizarRestaurante = () => {
     } finally {
       setTimeout(() => {
         dispacth(reset_status_actualizar_restaurate())
+        setLoading(false)
       }, 2000)
     }
   }
 
-  return { status_actualizacion: status_actualizar_restaurante, actualizarDataRestaurante }
+  return {
+    status_actualizacion: status_actualizar_restaurante,
+    actualizarDataRestaurante,
+    loading,
+    error
+  }
 }
 
 export default useActualizarRestaurante

@@ -16,7 +16,7 @@ const HomeRestauranteRoutes = () => {
       <Stack.Screen
         name={"AdministrarRestaurante"}
         component={AdministrarRestaurante}
-        options={{ headerShown: true, title: "" }}
+        options={{ headerShown: true, title: "Administrar" }}
       />
 
       <Stack.Screen

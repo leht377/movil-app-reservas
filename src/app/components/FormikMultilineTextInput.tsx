@@ -29,6 +29,7 @@ const FormikMultilineTextInput: React.FC<FormikMultilineTextInputProps> = ({
         style={styles.multiline}
         placeholder={placeholder}
         // editable={!disable}
+
         multiline={true}
       />
       {meta.error && meta.touched && (
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
     borderRadius: 5
   },
   multiline: {
-    height: 100,
+    height: 130,
     paddingTop: 10,
     textAlignVertical: 'top' // Ensure text starts from the top
   }
