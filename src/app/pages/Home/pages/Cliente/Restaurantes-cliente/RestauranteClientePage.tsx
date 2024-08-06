@@ -60,15 +60,17 @@ const RestauranteClientePage = () => {
   }
   return (
     <View style={styles.container}>
-      <SearchInput placeholder='Buscar restaurante ...' onChangeText={() => {}} value='' />
-      <View style={styles.containerFiltros}>
-        <Select />
+      <View style={{ paddingHorizontal: 10, gap: 10 }}>
+        <SearchInput placeholder='Buscar restaurante ...' onChangeText={() => {}} value='' />
+        <View style={styles.containerFiltros}>
+          <Select />
+        </View>
       </View>
 
       <FlatList
         data={restaurantes}
         renderItem={renderItem}
-        contentContainerStyle={{ gap: 10 }}
+        contentContainerStyle={{ gap: 10, paddingHorizontal: 10 }}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         keyExtractor={(item) => item?.getId()}
         ListEmptyComponent={!loading && <StyledText>No hay restaurantes ...</StyledText>}
@@ -84,8 +86,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     gap: 10,
-    backgroundColor: theme.colors.secondary,
-    paddingHorizontal: 10
+    backgroundColor: theme.colors.secondary
   },
   containerFiltros: {
     flexDirection: 'row',
