@@ -12,7 +12,7 @@ const useObtenerRestaurantes = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
 
-  const obtenerRestaurantes = async (modo: MODO = MODO.REFRESCAR) => {
+  const obtenerRestaurantes = async (modo: MODO = MODO.REFRESCAR, search: string = null) => {
     if (modo === MODO.MAS_DATA && paginacion && !paginacion.hasNextPage) return
 
     setLoading(true)
@@ -20,7 +20,7 @@ const useObtenerRestaurantes = () => {
 
     const pagina = modo === MODO.MAS_DATA ? paginacion?.nextPage : 1
     try {
-      const response = await restauranteServices.obtener_resturantes(pagina)
+      const response = await restauranteServices.obtener_resturantes(pagina, search)
 
       if (response.paginacion?.page > 1)
         setRestaurantes([...restaurantes, ...response.restaurantes])

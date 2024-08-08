@@ -21,12 +21,16 @@ const obtener_top_resturantes = async (): Promise<RestauranteDetalladoEntity[] |
 }
 
 const obtener_resturantes = async (
-  page: number = 1
+  page: number = 1,
+  search: string = null
 ): Promise<{
   restaurantes: RestauranteDetalladoEntity[] | []
   paginacion: Paginacion
 }> => {
-  const response = await axios.get(`${API_URL}/restaurantes?page=${page}&limit=10`)
+  const endpoint = search
+    ? `${API_URL}/restaurantes?page=${page}&limit=10&nombre=${search}`
+    : `${API_URL}/restaurantes?page=${page}&limit=10`
+  const response = await axios.get(endpoint)
   const { restaurantes, paginacion } = response.data
 
   const restaurantesMapeados = restaurantes?.map((res) =>
