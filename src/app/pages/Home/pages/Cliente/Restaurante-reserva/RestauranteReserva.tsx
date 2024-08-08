@@ -35,14 +35,14 @@ const RestauranteReserva = () => {
     return fueExitoso
   }
 
-  if (loading && !restaurante) return <LoadingScreen />
+  if (loading || !restaurante) return <LoadingScreen />
   const horas = agruparHorasServicio(restaurante?.getHorasServicio())
   const dataHoras = horas?.flat()?.map((hora) => ({ label: hora, value: hora }))
 
   return (
     <View style={styles.container}>
       <ScrollView>
-        <HeaderRestaurante restaurante={restaurante  as RestauranteDetalladoEntity} />
+        <HeaderRestaurante restaurante={restaurante as RestauranteDetalladoEntity} />
         <View style={{ paddingHorizontal: 20, marginBottom: 10 }}>
           <ReservarForm dataHoras={dataHoras} handleSubmit={handleSubmit} />
         </View>

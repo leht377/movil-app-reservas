@@ -48,7 +48,7 @@ const RestauranteDetalle = () => {
     else naviagtioApp.navigate('PerfilPage')
   }
 
-  if (loading && !restaurante) return <LoadingScreen />
+  if (loading || !restaurante) return <LoadingScreen />
 
   return (
     <View style={styles.container}>
@@ -64,8 +64,7 @@ const RestauranteDetalle = () => {
     </View>
   )
 }
-{
-}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

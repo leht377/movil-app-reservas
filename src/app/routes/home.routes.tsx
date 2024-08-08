@@ -26,7 +26,7 @@ const HomeRoutes = () => {
       <Stack.Screen
         name='RestauranteReserva'
         component={RestauranteReserva}
-        options={{ headerShown: true, title: '' }}
+        options={{ headerShown: true, title: '', presentation: 'modal' }}
       />
     </Stack.Navigator>
   )
