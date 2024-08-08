@@ -69,7 +69,7 @@ const SelectInput: React.FC<PropsSelectInput> = ({
 
 const styles = StyleSheet.create({
   dropdownButtonStyle: {
-    flex: 1,
+    // flex: 1,
     height: 50,
     borderWidth: 1,
     borderColor: theme.colors.tertiary,
