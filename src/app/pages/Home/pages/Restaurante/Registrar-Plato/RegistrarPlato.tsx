@@ -1,12 +1,12 @@
-import StyledText from "@/app/components/StyledText";
 import theme from "@/common/theme";
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import FormularioRegistroPlato from "./components/FormularioRegistroPlato";
 
-const AdministrarReserva = () => {
+const RegistrarPlato = () => {
   return (
     <View style={styles.container}>
-      <StyledText>gjjgjqfcsddvsvrv</StyledText>
+      <FormularioRegistroPlato />
     </View>
   );
 };
@@ -14,6 +14,7 @@ const AdministrarReserva = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.secondary,
+    flex:1,
   },
 });
-export default AdministrarReserva;
+export default RegistrarPlato;

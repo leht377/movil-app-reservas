@@ -4,4 +4,5 @@ export type HomeRestauranteStackParamslist ={
     AdministrarMenu: undefined
     AdmnistrarReserva: undefined
     FotosInstaciones: undefined
+    RegistrarPlato: undefined
 }
