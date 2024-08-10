@@ -118,7 +118,7 @@ export const cancelarReservaCliente = createAsyncThunk(
   'cliente/cancelarReservaCliente',
   async (data: CancelarReservaClienteDto, { rejectWithValue }) => {
     try {
-      const response = await clienteServices.cancelarReservaCliente(data)
+      const response = await reservaServices.cancelarReservaCliente(data)
       return response
     } catch (error) {
       if (error instanceof AxiosError) {

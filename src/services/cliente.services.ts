@@ -83,23 +83,6 @@ const obtenerReservasCliente = async (data: ObtnerReservasClienteDto): Promise<R
   return reservas?.map((reserva) => ReservaMapper.ReservaEntityFromObject(reserva))
 }
 
-const cancelarReservaCliente = async (data: CancelarReservaClienteDto): Promise<ReservaEntity> => {
-  const { cliente_id, reserva_id, token } = data
-  const config = {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
-    }
-  }
-
-  let endPoint = `${API_URL}/clientes/${cliente_id}/reservas/${reserva_id}/cancelar`
-
-  const response = await axios.put(endPoint, {}, config)
-  const reserva = response.data
-
-  return ReservaMapper.ReservaEntityFromObject(reserva)
-}
 const agregarRestauranteFavorito = async (
   data: AgregarRestauranteFavoritoDto
 ): Promise<ClienteEntity> => {
@@ -143,7 +126,6 @@ export const clienteServices = {
   registrarCliente,
   obtenerClientePorId,
   obtenerReservasCliente,
-  cancelarReservaCliente,
   agregarRestauranteFavorito,
   eliminarRestauranteFavorito,
   obtenerRestaurantesFavoritos

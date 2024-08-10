@@ -63,11 +63,11 @@ const CardReserva: React.FC<Props> = ({ reserva, onPressCancelar }) => {
                 <MyIcon nombre='close-circle' tamano={30} color='white' />
               </View>
             </TouchableNativeFeedback>
-            <TouchableNativeFeedback>
+            {/* <TouchableNativeFeedback>
               <View style={[styles.optionButton, { backgroundColor: theme.colors.tertiary }]}>
                 <MyIcon nombre='book' tamano={30} color='white' />
               </View>
-            </TouchableNativeFeedback>
+            </TouchableNativeFeedback> */}
           </View>
         )}
       </View>
@@ -104,9 +104,9 @@ const CardReserva: React.FC<Props> = ({ reserva, onPressCancelar }) => {
 
         {reserva?.getCodIngreso() && (
           <View style={styles.codeContainer}>
-            <StyledText fontWeight='bold'>CODIGO DE INGRESO</StyledText>
+            <StyledText fontWeight='bold'>CODIGO RESERVA</StyledText>
             <StyledText color='primary' fontWeight='bold' fontSize='title'>
-              {reserva?.getCodIngreso()?.split('-')[1]}
+              {reserva?.getCodIngreso()}
             </StyledText>
           </View>
         )}
@@ -134,7 +134,8 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     gap: 10,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    flexWrap: 'wrap'
   },
   badgeContainer: {
     flexDirection: 'row',
