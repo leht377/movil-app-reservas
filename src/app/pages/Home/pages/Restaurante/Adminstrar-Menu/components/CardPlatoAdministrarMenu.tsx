@@ -12,7 +12,6 @@ const CardPlatoAdministrarMenu = () => {
         Nombre del plato
       </StyledText>
       <View style={styles.card}>
-        {/* SECTION FOTOS */}
         <View style={styles.imageContainer}>
           <Image
             source={{

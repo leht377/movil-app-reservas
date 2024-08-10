@@ -45,6 +45,7 @@ const AdministrarMenu = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.secondary,
+    flex:1,
   },
   searchInput: {
     margin: 20,
