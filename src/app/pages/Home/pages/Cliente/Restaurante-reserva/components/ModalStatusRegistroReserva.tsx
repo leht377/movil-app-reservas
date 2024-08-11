@@ -2,6 +2,7 @@ import LoadingDots from '@/app/components/LoadingDots'
 import Modal from '@/app/components/Modal'
 import StyledText from '@/app/components/StyledText'
 import BadRequestIcon from '@/app/icons/BadRequest.icon'
+import ExitosoIcon from '@/app/icons/Exitoso.icon'
 import LoadingIcon from '@/app/icons/Loading.icon'
 import ReservaIcon from '@/app/icons/ReservaIcon'
 import ServerErrorIcon from '@/app/icons/ServerError.icon'
@@ -81,8 +82,19 @@ const ModalStatusRegistroReserva: React.FC<Props> = ({ onClose, status, error })
 
   const Exitoso = () => {
     return (
-      <View>
-        <StyledText>Reserva solicitada exitosamente</StyledText>
+      <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: 5,
+          overflow: 'hidden',
+          flexDirection: 'column'
+        }}
+      >
+        <ExitosoIcon width={200} height={100} />
+        <StyledText fontWeight='bold' fontSize='title' align='center'>
+          Reserva realizada exitosamente
+        </StyledText>
       </View>
     )
   }
