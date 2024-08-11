@@ -29,6 +29,10 @@ const ModalFiltros = ({ isVisible, onClose, hastags, onSelectHastag }) => {
               isPlus={true}
             />
           )}
+          contentContainerStyle={{
+            gap: 5
+          }}
+          numColumns={2}
           keyExtractor={(item) => item.getId()}
         />
       </View>
@@ -46,9 +50,7 @@ const FilterHastag = ({ onSelectFilters }) => {
   ])
 
   const [hastagLibres, setHastagsLibres] = useState<HashtagEntity[]>([])
-  const [hastagsSelecionados, setHastagsSelecionados] = useState<
-    HashtagEntity[]
-  >([])
+  const [hastagsSelecionados, setHastagsSelecionados] = useState<HashtagEntity[]>([])
 
   useEffect(() => {
     setHastagsLibres(hastags)
@@ -93,11 +95,7 @@ const FilterHastag = ({ onSelectFilters }) => {
       ))}
 
       <TouchableWithoutFeedback onPress={() => setVisible(true)}>
-        <MyIcon
-          nombre={'add-circle-sharp'}
-          tamano={32}
-          color={theme.colors.primary}
-        />
+        <MyIcon nombre={'add-circle-sharp'} tamano={32} color={theme.colors.primary} />
       </TouchableWithoutFeedback>
 
       <ModalFiltros

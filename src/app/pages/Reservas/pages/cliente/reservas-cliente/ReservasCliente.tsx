@@ -38,7 +38,7 @@ const ReservasCliente = () => {
   const [reservasFiltradas, setReservasFiltradas] = useState<ReservaEntity[]>()
   const [refreshing, setRefreshing] = useState(false)
   const [filtroEstadoReserva, setFiltroEstadoReserva] = useState<EstadoReserva | undefined>(
-    undefined
+    EstadoReserva.PENDIENTE
   )
 
   const [modalDesicionVisible, setModalDesicionVisible] = useState<boolean>(false)

@@ -4,9 +4,10 @@ import theme from '@/common/theme'
 import { EstadoReserva } from '@/common/utils/enums'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
+import FilterBadgeReserva from './FilterBadgeReserva'
+import StyledText from '@/app/components/StyledText'
 
 const data = [
-  { label: 'Todas', value: undefined },
   { label: 'Aceptadas', value: EstadoReserva.ACEPTADA },
   { label: 'Pendientes', value: EstadoReserva.PENDIENTE },
   { label: 'Canceladas', value: EstadoReserva.CANCELADA },
@@ -15,20 +16,37 @@ const data = [
 const HeaderReservas = ({ inputValue, onChangeText, estadoReserva, onChageEstadoReserva }) => {
   return (
     <View
-      style={{ backgroundColor: theme.colors.secondary, paddingTop: 20, paddingHorizontal: 10 }}
+      style={{
+        backgroundColor: theme.colors.secondary,
+        paddingTop: 20,
+        paddingHorizontal: 10,
+        gap: 5
+      }}
     >
       <SearchInput
         value={inputValue}
         onChangeText={onChangeText}
         placeholder='Nombre restaurante'
       />
-      <View style={{ marginTop: 10, width: '70%' }}>
-        <SelectInput
+      <StyledText fontSize='title' fontWeight='bold'>
+        Filtrar reservas
+      </StyledText>
+      <View style={{ flexWrap: 'wrap', flexDirection: 'row', gap: 5 }}>
+        {/* <SelectInput
           data={data}
           onSelect={(value) => onChageEstadoReserva(value?.value)}
           value={estadoReserva}
           placeholder='Seleccionar estado'
-        />
+        /> */}
+
+        {data?.map((e) => (
+          <FilterBadgeReserva
+            title={e.label}
+            onPress={() => onChageEstadoReserva(e.value)}
+            key={e.value}
+            isPlus={estadoReserva === e.value}
+          />
+        ))}
       </View>
     </View>
   )
