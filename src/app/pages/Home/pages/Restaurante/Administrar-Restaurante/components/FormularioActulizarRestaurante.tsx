@@ -83,7 +83,7 @@ const FormularioActulizarRestaurante = () => {
 
   const handleConfirm = (time, setFieldValue: (Field: string, value: any) => void) => {
     setTimePickerVisibility(false)
-    const hours = time.getHours()
+    const hours = time.getHours() === '0 ' ? '00' : time.getHours()
     const minutes = '0'
     const newState = [
       ...new Set([...horasServicio, `${hours}:${minutes.toString().padStart(2, '0')}`])

@@ -13,9 +13,9 @@ const useLogOut = () => {
   const LogOut = async () => {
     try {
       if (usuario) {
-        dispacth(set_usuario(null))
-        dispacth(set_cliente(null))
         await removeValue('usuario')
+        dispacth(set_cliente(null))
+        dispacth(set_usuario(null))
       }
     } catch (error) {
       console.error(error)

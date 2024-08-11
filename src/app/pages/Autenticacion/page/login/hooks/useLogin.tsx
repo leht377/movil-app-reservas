@@ -16,7 +16,6 @@ const useLogin = () => {
   const { guardarDatosCliente, guardarDatosRestaurante } = useGuardarDatosUsuario()
   const [error, setError] = useState(null)
 
-
   const autenticar = async ({ email, contrasena }) => {
     try {
       const loginDto = LoginDto.crear({ correo: email, contrasena })
@@ -24,13 +23,10 @@ const useLogin = () => {
 
       if (usuario.getRol() === UsuarioRol.RESTAURANTE) {
         guardarDatosRestaurante(usuario)
-        
       }
       if (usuario.getRol() === UsuarioRol.CLIENTE) {
         guardarDatosCliente(usuario)
       }
-
-       console.log(usuario)
     } catch (error) {
       if (error instanceof AxiosError && error.response?.status === 401) {
         setError('Usuario o contraseña invalida')
