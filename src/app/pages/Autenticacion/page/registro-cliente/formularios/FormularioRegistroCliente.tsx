@@ -30,7 +30,7 @@ const RegistroClienteSchema = Yup.object().shape({
   email: Yup.string().email('Correo invalido').required('El correo es requerido')
 })
 
-const FormularioRegistroCliente = ({ onSubmit }) => {
+const FormularioRegistroCliente = ({ onSubmit, loading }) => {
   const handleSubmitForm = ({ nombre, apellido, email, constrasena }) => {
     onSubmit({ nombre: nombre, correo: email, apellido: apellido, contrasena: constrasena })
   }
@@ -51,6 +51,8 @@ const FormularioRegistroCliente = ({ onSubmit }) => {
           <Button
             color='primary'
             buttonStyle={{ paddingVertical: 10 }}
+            disabled={loading}
+            loading={loading}
             onPress={
               handleSubmit as (
                 values: GestureResponderEvent | React.FormEvent<HTMLFormElement> | undefined

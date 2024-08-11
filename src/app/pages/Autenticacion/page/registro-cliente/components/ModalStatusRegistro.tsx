@@ -10,9 +10,10 @@ import BadRequestIcon from '../../../../../icons/BadRequest.icon'
 interface Props {
   isVisible: boolean
   onClose: (event: GestureResponderEvent) => void
+  error: string
 }
 
-const ModalStatusRegistro: React.FC<Props> = ({ isVisible, onClose }) => {
+const ModalStatusRegistro: React.FC<Props> = ({ isVisible, onClose, error }) => {
   return (
     <Modal isVisible={isVisible} onClose={onClose}>
       <View
@@ -24,18 +25,6 @@ const ModalStatusRegistro: React.FC<Props> = ({ isVisible, onClose }) => {
           flexDirection: 'column'
         }}
       >
-        {/* <LoadingIcon width={120} height={120} /> */}
-        {/* <ErrorIcon width={120} height={120} /> */}
-        {/* <ServerErrorIcon width={120} height={120} /> */}
-        {/* <StyledText
-          fontSize='title'
-          style={{ flexShrink: 1 }}
-          fontWeight='bold'
-          color='quaternary'
-          align='center'
-        >
-          Error
-        </StyledText> */}
         <BadRequestIcon width={120} height={120} />
         <StyledText
           fontSize='title'
@@ -44,7 +33,7 @@ const ModalStatusRegistro: React.FC<Props> = ({ isVisible, onClose }) => {
           color='quaternary'
           align='center'
         >
-          🛑 El correo ya se ecuentra registrado
+          {error}
         </StyledText>
       </View>
     </Modal>

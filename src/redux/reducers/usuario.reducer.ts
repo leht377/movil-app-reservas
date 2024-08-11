@@ -22,7 +22,7 @@ const usuarioSlice = createSlice({
     error: null
   },
   reducers: {
-    reset_status(state, action) {
+    reset_status(state) {
       state.status = Status.IDLE
     },
     set_usuario(state, action: PayloadAction<UsuarioEntity>) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native'
 import StyledText from '../../../../components/StyledText'
 import FormularioRegistroCliente from './formularios/FormularioRegistroCliente'
@@ -10,11 +10,16 @@ import { ScrollView } from 'react-native'
 import Modal from '../../../../components/Modal'
 import ModalStatusRegistro from './components/ModalStatusRegistro'
 import useRegistrarCliente from './hooks/useRegistrarCliente'
+import Status from '@/common/utils/enums/status_asynctrunck'
 
 const RegistroCliente = () => {
   const [modalVisible, setModalVisible] = useState(false)
-  const { registrar } = useRegistrarCliente()
+  const { registrar, error, loading, status } = useRegistrarCliente()
 
+  useEffect(() => {
+    if (status === Status.FAILED) setModalVisible(true)
+    else setModalVisible(false)
+  }, [status])
   return (
     <KeyboardAvoidingView
       style={styles.topContainer}
@@ -25,7 +30,7 @@ const RegistroCliente = () => {
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <PersonFile />
           </View>
-          <FormularioRegistroCliente onSubmit={registrar} />
+          <FormularioRegistroCliente onSubmit={registrar} loading={loading} />
           <View style={styles.containerPoliticas}>
             <StyledText fontSize='bodymini' align='center'>
               Al continuar, aceptas las{' '}
@@ -54,7 +59,11 @@ const RegistroCliente = () => {
           </View>
         </View>
       </ScrollView>
-      <ModalStatusRegistro isVisible={modalVisible} onClose={() => setModalVisible(false)} />
+      <ModalStatusRegistro
+        isVisible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        error={error}
+      />
     </KeyboardAvoidingView>
   )
 }
