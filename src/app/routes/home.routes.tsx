@@ -12,7 +12,7 @@ const Stack = createStackNavigator<HomeStackParamList>()
 const HomeRoutes = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name='HomePage' component={HomeCliente} />
+      <Stack.Screen name='HomePage' component={HomeCliente} options={{ headerShown: false }} />
       <Stack.Screen
         name='Restaurantes'
         component={RestauranteClientePage}
@@ -21,12 +21,16 @@ const HomeRoutes = () => {
       <Stack.Screen
         name='RestauranteDetalle'
         component={RestauranteDetalle}
-        options={{ headerShown: true, title: '', presentation: 'modal' }}
+        options={{ headerShown: true, title: 'Restaurante', presentation: 'modal' }}
       />
       <Stack.Screen
         name='RestauranteReserva'
         component={RestauranteReserva}
-        options={{ headerShown: true, title: '', presentation: 'modal' }}
+        options={{
+          headerShown: true,
+          title: 'Restaurante',
+          presentation: 'modal'
+        }}
       />
     </Stack.Navigator>
   )

@@ -28,9 +28,9 @@ const HeaderReservas = ({ inputValue, onChangeText, estadoReserva, onChageEstado
         onChangeText={onChangeText}
         placeholder='Nombre restaurante'
       />
-      <StyledText fontSize='title' fontWeight='bold'>
+      {/* <StyledText fontSize='title' fontWeight='bold'>
         Filtrar reservas
-      </StyledText>
+      </StyledText> */}
       <View style={{ flexWrap: 'wrap', flexDirection: 'row', gap: 5 }}>
         {/* <SelectInput
           data={data}

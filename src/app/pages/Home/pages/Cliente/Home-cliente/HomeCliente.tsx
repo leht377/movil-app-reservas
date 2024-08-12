@@ -8,10 +8,12 @@ import { Image } from 'react-native'
 import HeaderHome from './components/HeaderHome'
 import { SearchBar } from '@rneui/themed'
 import theme from '@/common/theme'
+import { StatusBar } from 'expo-status-bar'
 
 const HomeCliente = () => {
   return (
     <View style={styles.container}>
+      <StatusBar />
       <View style={styles.header}>
         <HeaderHome />
       </View>

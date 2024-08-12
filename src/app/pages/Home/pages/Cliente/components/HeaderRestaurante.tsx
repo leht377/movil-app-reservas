@@ -23,7 +23,7 @@ const HeaderRestaurante: React.FC<Props> = ({ restaurante }) => {
   const { calificarRestauranteCliente, cargando, status } = useCalificarRestaurante()
   const usuarioLogeado = useHayUsuarioLogeado()
   const foto =
-    // restaurante?.getUrlFotoRestaurante()[0] ||
+    restaurante?.getUrlFotoRestaurante()[0] ||
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxEDbEHQNBO6uY1dwIHIUprr5PatZJJdLubNdtMXxROQ&s'
 
   let dias_servicio_agrupados = agruparDiasDeServicio(restaurante?.getDiasServicio() ?? [])

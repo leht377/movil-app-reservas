@@ -13,7 +13,7 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer>
         <NativeViewGestureHandler disallowInterruption={true}>
-          <View style={{ flex: 1, backgroundColor:"black" }}>
+          <View style={{ flex: 1 }}>
             <Provider store={store}>
               <AppRoutes />
             </Provider>

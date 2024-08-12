@@ -20,7 +20,7 @@ const MenuRestaurantes = () => {
   const renderItem = ({ item }) => {
     return <CardPlato plato={item} />
   }
-  
+
   const obtenerMenu = async () => {
     try {
       const dto = ObtenerMenuDto.crear({
@@ -33,7 +33,7 @@ const MenuRestaurantes = () => {
     }
   }
   useEffect(() => {
-    if(restaurante_actual) obtenerMenu()
+    if (restaurante_actual) obtenerMenu()
   }, [])
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const MenuRestaurantes = () => {
 
   return (
     <View style={styles.container}>
-      <FilterHastag onSelectFilters={onSelectFilters} />
+      {/* <FilterHastag onSelectFilters={onSelectFilters} /> */}
 
       {/* CARD MENU */}
       {platos.length > 0 ? (
