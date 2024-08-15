@@ -3,11 +3,29 @@ import Button from "@/app/components/Button";
 import MyIcon from "@/app/components/MyIcon";
 import StyledText from "@/app/components/StyledText";
 import theme from "@/common/theme";
-import React, { useState } from "react";
-import { StyleSheet } from "react-native";
-import { View } from "react-native";
+import { EstadoReserva } from "@/common/utils/enums";
+import { ReservaEntity } from "@/dominio/entities";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 
-const CardReservaPendiente = () => {
+interface Props {
+  reserva: ReservaEntity;
+}
+
+function formatDate(isoString) {
+  const date = new Date(isoString);
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const year = date.getUTCFullYear();
+  return `${day}/${month}/${year}`;
+}
+
+const CardReservaPendiente: React.FC<Props> = ({ reserva }) => {
+  const fecha = reserva?.getFechaReserva()
+    ? formatDate(reserva?.getFechaReserva())
+    : undefined;
+  const estado = reserva?.getEstado();
+
   return (
     <View style={styles.container}>
       <View>
@@ -16,47 +34,53 @@ const CardReservaPendiente = () => {
           fontSize="title"
           style={styles.restaurantName}
         >
-          Nombre Restaurante
+          {reserva?.getNombreRestaurante()}
         </StyledText>
       </View>
 
       <View style={styles.row}>
-        {/* BADGE */}
         <View style={styles.badgeContainer}>
-          <Badge icon="today" text="" />
-          <Badge icon="time" text="" />
+          <Badge icon="today" text={fecha} />
+          <Badge icon="time" text={reserva?.getHoraReserva()} />
         </View>
       </View>
 
-      {/* LOCATION */}
       <View style={styles.locationContainer}>
         <MyIcon nombre="person" tamano={25} />
         <StyledText fontWeight="bold" fontSize="title">
-          Luis Eduardo
+          {reserva?.getNombreCliente()}
         </StyledText>
       </View>
 
       <View style={styles.locationContainer}>
         <MyIcon nombre="people" tamano={25} />
         <StyledText fontWeight="bold" fontSize="title">
-          5 acompañantes
+          {reserva?.getCantidadPersonas()}
         </StyledText>
       </View>
 
-      <View style={styles.statusContainer}>
-        <View style={styles.Butones}>
-          <Button color="green" title="Aceptar" />
+      {estado === EstadoReserva.ACEPTADA ? (
+        <>
+          <View style={styles.codeContainer}>
+            <StyledText fontWeight="bold">CODIGO DE INGRESO</StyledText>
+            <StyledText color="primary" fontWeight="bold" fontSize="title">
+              {reserva?.getCodIngreso()}
+            </StyledText>
+          </View>
+          <View style={styles.Butones}>
+            <Button color="primary" title="Cancelar" />
+          </View>
+        </>
+      ) : (
+        <View style={styles.statusContainer}>
+          <View style={styles.Butones}>
+            <Button color="green" title="Aceptar" />
+          </View>
+          <View style={styles.Butones}>
+            <Button color="primary" title="Cancelar" />
+          </View>
         </View>
-        <View style={styles.Butones}>
-          <Button color="primary" title="Cancelar" />
-        </View>
-      </View>
-      {/* <View style={styles.codeContainer}>
-        <StyledText fontWeight="bold">CODIGO DE INGRESO</StyledText>
-        <StyledText color="primary" fontWeight="bold" fontSize="title">
-          431231
-        </StyledText>
-      </View> */}
+      )}
     </View>
   );
 };
@@ -72,8 +96,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     marginBottom: 20,
-    marginTop:10,
-   
+    marginTop: 10,
   },
   restaurantName: {
     fontSize: 28,
@@ -94,7 +117,6 @@ const styles = StyleSheet.create({
   },
   statusContainer: {
     flexDirection: "row",
-
     marginTop: 20,
     gap: 10,
   },

@@ -1,19 +1,51 @@
 import Button from "@/app/components/Button";
 import StyledText from "@/app/components/StyledText";
 import theme from "@/common/theme";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
+  FlatList,
   Image,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
 } from "react-native";
 import CardReservaPendiente from "./components/CardReservaPendiente";
 import SearchInput from "@/app/components/SearchInput";
+import useObtenerReservaRestaurante from "./hooks/useObtenerReservaRestaurante";
+import { ReservaEntity } from "@/dominio/entities";
+import { EstadoReserva } from "@/common/utils/enums";
+import ListEmpty from "@/app/pages/Reservas/pages/cliente/reservas-cliente/components/ListEmpty";
+import { RefreshControl } from "react-native-gesture-handler";
 
 const AdministrarReserva = () => {
-  const [selectedButton, setSelectedButton] = useState("Pendientes");
+  const { loading, obtenerReservas, reservas } = useObtenerReservaRestaurante();
+  const [reservasFiltradas, setReservasFiltradas] = useState<ReservaEntity[]>(
+    []
+  );
+  const [refreshing, setRefreshing] = useState(false);
+  const [filtroEstadoReserva, setFiltroEstadoReserva] = useState<EstadoReserva>(
+    EstadoReserva.PENDIENTE
+  );
+
+  const filterReservas = () => {
+    if (!reservas) return [];
+    return reservas.filter((r) => r.getEstado() === filtroEstadoReserva);
+  };
+
+  useEffect(() => {
+    setReservasFiltradas(filterReservas());
+  }, [filtroEstadoReserva, reservas]);
+
+  useEffect(() => {
+    obtenerReservas(filtroEstadoReserva);
+  }, [filtroEstadoReserva]);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await obtenerReservas(filtroEstadoReserva);
+    setRefreshing(false);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.ContenedorImagen}>
@@ -22,50 +54,74 @@ const AdministrarReserva = () => {
           style={styles.image}
         />
       </View>
-      <ScrollView>
-        <View style={styles.containerFecha}>
-          <View style={styles.Fecha}>
-            <StyledText fontWeight="bold" fontSize="title">
-              Día
-            </StyledText>
-            <StyledText fontWeight="bold" fontSize="title">
-              24 Marzo 2024
-            </StyledText>
-          </View>
-          <View style={styles.buton}>
-            <Button color="primary" fontWeight="bold" title="No reservas" />
-          </View>
-        </View>
-        <View style={styles.searchInput}>
-          <SearchInput
-            placeholder="Nombre del reservante o código"
-            value=""
-            onChangeText={() => {}}
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          {["Pendientes", "Aceptadas", "Rechazadas"].map((title) => (
-            <TouchableOpacity
-              key={title}
-              style={[
-                styles.button,
-                selectedButton === title && styles.buttonSelected,
-              ]}
-              onPress={() => setSelectedButton(title)}
-            >
-              <StyledText
-                color={selectedButton === title ? "secondary" : "quaternary"}
-                fontWeight="bold"
-              >
-                {title}
-              </StyledText>
-            </TouchableOpacity>
-          ))}
-        </View>
-        <CardReservaPendiente />
-      </ScrollView>
 
-      
+      <View style={styles.containerFecha}>
+        <View style={styles.Fecha}>
+          <StyledText fontWeight="bold" fontSize="title">
+            Día
+          </StyledText>
+          <StyledText fontWeight="bold" fontSize="title">
+            24 Marzo 2024
+          </StyledText>
+        </View>
+        <View style={styles.buton}>
+          <Button color="primary" fontWeight="bold" title="No reservas" />
+        </View>
+      </View>
+
+      <FlatList
+        ListHeaderComponent={() => (
+          <>
+            <View style={styles.searchInput}>
+              <SearchInput
+                placeholder="Nombre del reservante o código"
+                value=""
+                onChangeText={() => {}}
+              />
+            </View>
+            <View style={styles.buttonContainer}>
+              {[
+                { label: "Pendientes", estado: EstadoReserva.PENDIENTE },
+                { label: "Aceptadas", estado: EstadoReserva.ACEPTADA },
+                { label: "Rechazadas", estado: EstadoReserva.RECHAZADA },
+                { label: "Cancelada", estado: EstadoReserva.CANCELADA },
+              ].map(({ label, estado }) => (
+                <TouchableOpacity
+                  key={label}
+                  style={[
+                    styles.button,
+                    filtroEstadoReserva === estado && styles.buttonSelected,
+                  ]}
+                  onPress={() => setFiltroEstadoReserva(estado)}
+                >
+                  <StyledText
+                    color={
+                      filtroEstadoReserva === estado
+                        ? "secondary"
+                        : "quaternary"
+                    }
+                    fontWeight="bold"
+                  >
+                    {label}
+                  </StyledText>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </>
+        )}
+        data={reservasFiltradas}
+        renderItem={({ item }) =>
+          loading ? (
+            <ListEmpty loading={loading} />
+          ) : (
+            <CardReservaPendiente reserva={item} />
+          )
+        }
+        ListEmptyComponent={<ListEmpty loading={loading} />}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      />
     </View>
   );
 };
@@ -89,8 +145,7 @@ const styles = StyleSheet.create({
   containerFecha: {
     flexDirection: "row",
     gap: 20,
-    marginLeft: 20,
-    marginRight: 20,
+    marginHorizontal: 20,
     marginTop: 40,
     marginBottom: 20,
   },
@@ -107,15 +162,14 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginLeft: 10,
-    marginTop: 30,
-    marginBottom: 30,
+    margin: 10,
+    gap: 6,
+    flexWrap: "wrap",
   },
   button: {
     borderWidth: 2,
     borderColor: theme.colors.primary,
     borderRadius: 100,
-
     padding: 10,
     paddingHorizontal: 20,
     backgroundColor: "transparent",
@@ -123,7 +177,6 @@ const styles = StyleSheet.create({
   buttonSelected: {
     backgroundColor: theme.colors.primary,
   },
-  buttonText: {},
-  buttonTextSelected: {},
 });
+
 export default AdministrarReserva;
