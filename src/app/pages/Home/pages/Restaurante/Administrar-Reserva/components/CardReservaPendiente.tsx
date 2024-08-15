@@ -10,6 +10,8 @@ import { StyleSheet, View } from "react-native";
 
 interface Props {
   reserva: ReservaEntity;
+  onPressAceptar?: (idReserva: string) => void;
+  onPressRechazar?: (idReserva: string) => void;
 }
 
 function formatDate(isoString) {
@@ -20,7 +22,11 @@ function formatDate(isoString) {
   return `${day}/${month}/${year}`;
 }
 
-const CardReservaPendiente: React.FC<Props> = ({ reserva }) => {
+const CardReservaPendiente: React.FC<Props> = ({
+  reserva,
+  onPressAceptar,
+  onPressRechazar,
+}) => {
   const fecha = reserva?.getFechaReserva()
     ? formatDate(reserva?.getFechaReserva())
     : undefined;
@@ -51,22 +57,24 @@ const CardReservaPendiente: React.FC<Props> = ({ reserva }) => {
           {reserva?.getNombreCliente()}
         </StyledText>
       </View>
+      <View style={{ flexDirection: "row", gap: 140 }}>
+        <View style={styles.locationContainer}>
+          <MyIcon nombre="people" tamano={25} />
+          <StyledText fontWeight="bold" fontSize="title">
+            {reserva?.getCantidadPersonas()}
+          </StyledText>
+        </View>
 
-      <View style={styles.locationContainer}>
-        <MyIcon nombre="people" tamano={25} />
-        <StyledText fontWeight="bold" fontSize="title">
-          {reserva?.getCantidadPersonas()}
-        </StyledText>
+        <View style={styles.codeContainer}>
+          <StyledText fontWeight="bold">CODIGO DE INGRESO</StyledText>
+          <StyledText color="primary" fontWeight="bold" fontSize="title">
+            {reserva?.getCodIngreso()}
+          </StyledText>
+        </View>
       </View>
 
       {estado === EstadoReserva.ACEPTADA ? (
         <>
-          <View style={styles.codeContainer}>
-            <StyledText fontWeight="bold">CODIGO DE INGRESO</StyledText>
-            <StyledText color="primary" fontWeight="bold" fontSize="title">
-              {reserva?.getCodIngreso()}
-            </StyledText>
-          </View>
           <View style={styles.Butones}>
             <Button color="primary" title="Cancelar" />
           </View>
@@ -74,10 +82,18 @@ const CardReservaPendiente: React.FC<Props> = ({ reserva }) => {
       ) : (
         <View style={styles.statusContainer}>
           <View style={styles.Butones}>
-            <Button color="green" title="Aceptar" />
+            <Button
+              color="green"
+              title="Aceptar"
+              onPress={() => onPressAceptar?.(reserva.getId())}
+            />
           </View>
           <View style={styles.Butones}>
-            <Button color="primary" title="Cancelar" />
+            <Button
+              color="primary"
+              title="Rachazar"
+              onPress={() => onPressRechazar?.(reserva.getId())}
+            />
           </View>
         </View>
       )}

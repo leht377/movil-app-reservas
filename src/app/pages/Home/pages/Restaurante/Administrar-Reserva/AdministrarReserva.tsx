@@ -16,6 +16,8 @@ import { ReservaEntity } from "@/dominio/entities";
 import { EstadoReserva } from "@/common/utils/enums";
 import ListEmpty from "@/app/pages/Reservas/pages/cliente/reservas-cliente/components/ListEmpty";
 import { RefreshControl } from "react-native-gesture-handler";
+import useAceptarReservaRestaurante from "./hooks/useAceptarReservaRestaurante";
+import ModalStatusAceptarReserva from "./components/ModalStatusAceptarReserva";
 
 const AdministrarReserva = () => {
   const { loading, obtenerReservas, reservas } = useObtenerReservaRestaurante();
@@ -26,7 +28,8 @@ const AdministrarReserva = () => {
   const [filtroEstadoReserva, setFiltroEstadoReserva] = useState<EstadoReserva>(
     EstadoReserva.PENDIENTE
   );
-
+  const { aceptarReserva, statusAceptarReserva, errorAceptarReserva } =
+    useAceptarReservaRestaurante();
   const filterReservas = () => {
     if (!reservas) return [];
     return reservas.filter((r) => r.getEstado() === filtroEstadoReserva);
@@ -46,15 +49,18 @@ const AdministrarReserva = () => {
     setRefreshing(false);
   };
 
+  const handleAceptarReserva = async (idReserva: string) => {
+    const reserva = await aceptarReserva(idReserva);
+
+    if (reserva) {
+      await onRefresh();
+    }
+  };
+
+  const handleRechazarReserva = async (idReserva: string) => {};
+
   return (
     <View style={styles.container}>
-      <View style={styles.ContenedorImagen}>
-        <Image
-          source={{ uri: "https://via.placeholder.com/150" }}
-          style={styles.image}
-        />
-      </View>
-
       <View style={styles.containerFecha}>
         <View style={styles.Fecha}>
           <StyledText fontWeight="bold" fontSize="title">
@@ -63,9 +69,6 @@ const AdministrarReserva = () => {
           <StyledText fontWeight="bold" fontSize="title">
             24 Marzo 2024
           </StyledText>
-        </View>
-        <View style={styles.buton}>
-          <Button color="primary" fontWeight="bold" title="No reservas" />
         </View>
       </View>
 
@@ -114,13 +117,21 @@ const AdministrarReserva = () => {
           loading ? (
             <ListEmpty loading={loading} />
           ) : (
-            <CardReservaPendiente reserva={item} />
+            <CardReservaPendiente
+              reserva={item}
+              onPressAceptar={handleAceptarReserva}
+            />
           )
         }
         ListEmptyComponent={<ListEmpty loading={loading} />}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
+      />
+      <ModalStatusAceptarReserva
+        status={statusAceptarReserva}
+        error={errorAceptarReserva}
+        onClose={() => {}}
       />
     </View>
   );
