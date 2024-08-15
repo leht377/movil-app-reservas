@@ -1,29 +1,26 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {
-  RestauranteDetalladoEntity,
-  RestauranteEntity,
-} from "../../dominio/entities";
-import Status from "../../common/utils/enums/status_asynctrunck";
-import { restauranteServices } from "../../services/restaurante.services";
-import { Paginacion } from "../../dominio/interfaces/paginacion.interface";
-import { RegistrarRestauranteDto } from "@/dominio/dtos/registrat-restaurante.dtos";
-import { CalificarRestauranteDto } from "@/dominio/dtos/calificar-restaurante-dto";
-import { AxiosError } from "axios";
-import { ActualizarRestauranteDto } from "@/dominio/dtos/actualizar-restaurante.dto";
-import { AceptarReservaDto } from "@/dominio/dtos/aceptar-restaurante.dto";
-import { reservaServices } from "@/services/reserva.services";
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { RestauranteDetalladoEntity, RestauranteEntity } from '../../dominio/entities'
+import Status from '../../common/utils/enums/status_asynctrunck'
+import { restauranteServices } from '../../services/restaurante.services'
+import { Paginacion } from '../../dominio/interfaces/paginacion.interface'
+import { RegistrarRestauranteDto } from '@/dominio/dtos/registrat-restaurante.dtos'
+import { CalificarRestauranteDto } from '@/dominio/dtos/calificar-restaurante-dto'
+import { AxiosError } from 'axios'
+import { ActualizarRestauranteDto } from '@/dominio/dtos/actualizar-restaurante.dto'
+import { AceptarReservaDto } from '@/dominio/dtos/aceptar-restaurante.dto'
+import { reservaServices } from '@/services/reserva.services'
 
 interface initialStateInterface {
-  restaurante_actual: RestauranteDetalladoEntity | null;
-  top_restaurantes: null | RestauranteDetalladoEntity[];
-  restaurantes: [] | RestauranteDetalladoEntity[];
-  restaurante: RestauranteDetalladoEntity | null;
-  paginacion: Paginacion | null;
-  status: Status;
-  status_calificar_restaurante: Status;
-  status_actualizar_restaurante: Status;
-  error: null | string;
-  status_aceptar_reserva: Status;
+  restaurante_actual: RestauranteDetalladoEntity | null
+  top_restaurantes: null | RestauranteDetalladoEntity[]
+  restaurantes: [] | RestauranteDetalladoEntity[]
+  restaurante: RestauranteDetalladoEntity | null
+  paginacion: Paginacion | null
+  status: Status
+  status_calificar_restaurante: Status
+  status_actualizar_restaurante: Status
+  error: null | string
+  status_aceptar_reserva: Status
 }
 
 const initialState: initialStateInterface = {
@@ -36,181 +33,172 @@ const initialState: initialStateInterface = {
   status_actualizar_restaurante: Status.IDLE,
   top_restaurantes: null,
   paginacion: null,
-  status_aceptar_reserva: Status.IDLE,
-};
+  status_aceptar_reserva: Status.IDLE
+}
 
 const restaurantes = createSlice({
-  name: "restaurantes",
+  name: 'restaurantes',
   initialState: initialState,
   reducers: {
     reset_status_calificar_restaurate(state) {
-      state.status_calificar_restaurante = Status.IDLE;
+      state.status_calificar_restaurante = Status.IDLE
     },
     reset_status_actualizar_restaurate(state) {
-      state.status_actualizar_restaurante = Status.IDLE;
+      state.status_actualizar_restaurante = Status.IDLE
     },
-    set_restaurante_actual(
-      state,
-      action: PayloadAction<RestauranteDetalladoEntity>
-    ) {
-      state.restaurante_actual = action.payload;
+    set_restaurante_actual(state, action: PayloadAction<RestauranteDetalladoEntity>) {
+      state.restaurante_actual = action.payload
     },
     set_restaurante(state, action: PayloadAction<RestauranteDetalladoEntity>) {
-      state.restaurante = action.payload;
+      state.restaurante = action.payload
     },
 
     reset_status_aceptar_reserva_restaurante(state) {
-      state.status_aceptar_reserva = Status.IDLE;
-    },
+      state.status_aceptar_reserva = Status.IDLE
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(get_top_restaurantes.pending, (state, action) => {
-      state.status = Status.LOADING;
-    });
+      state.status = Status.LOADING
+    })
     builder.addCase(get_top_restaurantes.fulfilled, (state, action) => {
-      state.status = Status.SUCCEEDED;
-      state.top_restaurantes = action.payload;
-    });
+      state.status = Status.SUCCEEDED
+      state.top_restaurantes = action.payload
+    })
     builder.addCase(get_top_restaurantes.rejected, (state, action) => {
-      state.status = Status.FAILED;
-    });
+      state.status = Status.FAILED
+    })
 
     builder.addCase(get_restaurantes.fulfilled, (state, action) => {
-      state.status = Status.SUCCEEDED;
-      const { paginacion, restaurantes } = action.payload;
-      const isFirtsRequest = !state.paginacion;
+      state.status = Status.SUCCEEDED
+      const { paginacion, restaurantes } = action.payload
+      const isFirtsRequest = !state.paginacion
 
       if (paginacion?.page > (state?.paginacion?.page || 0)) {
-        state.restaurantes = [...state.restaurantes, ...restaurantes];
-        state.paginacion = paginacion;
+        state.restaurantes = [...state.restaurantes, ...restaurantes]
+        state.paginacion = paginacion
       } else {
-        state.restaurantes = restaurantes;
-        state.paginacion = paginacion;
+        state.restaurantes = restaurantes
+        state.paginacion = paginacion
       }
-    });
+    })
 
     builder.addCase(calificarRestaurante.pending, (state, action) => {
-      state.status_calificar_restaurante = Status.LOADING;
-    });
+      state.status_calificar_restaurante = Status.LOADING
+    })
     builder.addCase(calificarRestaurante.fulfilled, (state, action) => {
-      state.status_calificar_restaurante = Status.SUCCEEDED;
-      const restauranteCalificado = action.payload;
-      state.restaurante_actual = restauranteCalificado;
-    });
+      state.status_calificar_restaurante = Status.SUCCEEDED
+      const restauranteCalificado = action.payload
+      state.restaurante_actual = restauranteCalificado
+    })
     builder.addCase(calificarRestaurante.rejected, (state, action) => {
-      state.status_calificar_restaurante = Status.FAILED;
-      if (action.payload instanceof AxiosError)
-        state.error = action.payload.response.data?.error;
-      else state.error = "Ocurrio un error desconocido";
-    });
+      state.status_calificar_restaurante = Status.FAILED
+      if (action.payload instanceof AxiosError) state.error = action.payload.response.data?.error
+      else state.error = 'Ocurrio un error desconocido'
+    })
 
     builder.addCase(actualizarRestauranteAsy.pending, (state, action) => {
-      state.status_actualizar_restaurante = Status.LOADING;
-    });
+      state.status_actualizar_restaurante = Status.LOADING
+    })
     builder.addCase(actualizarRestauranteAsy.fulfilled, (state, action) => {
-      state.status_actualizar_restaurante = Status.SUCCEEDED;
-      const restauranteAc = action.payload;
-      state.restaurante = restauranteAc;
-    });
+      state.status_actualizar_restaurante = Status.SUCCEEDED
+      const restauranteAc = action.payload
+      state.restaurante = restauranteAc
+    })
     builder.addCase(actualizarRestauranteAsy.rejected, (state, action) => {
-      state.status_actualizar_restaurante = Status.FAILED;
-      if (action.payload instanceof AxiosError)
-        state.error = action.payload.response?.data?.error;
-      else state.error = "Ocurrio un error desconocido";
-    });
+      state.status_actualizar_restaurante = Status.FAILED
+      if (action.payload instanceof AxiosError) state.error = action.payload.response?.data?.error
+      else state.error = 'Ocurrio un error desconocido'
+    })
 
     // Agregar manejo de registrarRestaurante
 
     builder.addCase(aceptarReservaRestaurante.pending, (state, action) => {
-      state.status_aceptar_reserva = Status.LOADING;
-    });
+      state.status_aceptar_reserva = Status.LOADING
+    })
     builder.addCase(aceptarReservaRestaurante.rejected, (state, action) => {
-      state.status_aceptar_reserva = Status.FAILED;
-      if (action.payload instanceof AxiosError)
-        state.error = action.payload.response.data?.error;
-      else state.error = "Ocurrio un error desconocido";
-    });
-    builder.addCase(aceptarReservaRestaurante.rejected, (state, action) => {
-      state.status_aceptar_reserva = Status.SUCCEEDED;
-    });
-  },
-});
+      state.status_aceptar_reserva = Status.FAILED
+      if (action.payload instanceof AxiosError) state.error = action.payload.response.data?.error
+      else state.error = 'Ocurrio un error desconocido'
+    })
+    builder.addCase(aceptarReservaRestaurante.fulfilled, (state, action) => {
+      state.status_aceptar_reserva = Status.SUCCEEDED
+    })
+  }
+})
 
 export const {
   reset_status_calificar_restaurate,
   set_restaurante_actual,
   set_restaurante,
   reset_status_actualizar_restaurate,
-  reset_status_aceptar_reserva_restaurante,
-} = restaurantes.actions;
-export default restaurantes.reducer;
+  reset_status_aceptar_reserva_restaurante
+} = restaurantes.actions
+export default restaurantes.reducer
 
-export const get_top_restaurantes = createAsyncThunk(
-  "restaurantes/top-restaurantes",
-  async () => {
-    try {
-      const restaurantes = await restauranteServices.obtener_top_resturantes();
-      return restaurantes;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+export const get_top_restaurantes = createAsyncThunk('restaurantes/top-restaurantes', async () => {
+  try {
+    const restaurantes = await restauranteServices.obtener_top_resturantes()
+    return restaurantes
+  } catch (error) {
+    console.error(error)
+    throw error
   }
-);
+})
 export const get_restaurantes = createAsyncThunk(
-  "restaurantes/restaurantes",
+  'restaurantes/restaurantes',
   async (page: number) => {
     try {
-      const response = await restauranteServices.obtener_resturantes(page);
-      return response;
+      const response = await restauranteServices.obtener_resturantes(page)
+      return response
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
   }
-);
+)
 
 export const calificarRestaurante = createAsyncThunk(
-  "restaurantes/calificarRestaurante",
+  'restaurantes/calificarRestaurante',
   async (data: CalificarRestauranteDto, { rejectWithValue }) => {
     try {
-      const response = await restauranteServices.calificarRestaurante(data);
-      return response;
+      const response = await restauranteServices.calificarRestaurante(data)
+      return response
     } catch (error) {
       if (error instanceof AxiosError) {
         // Use rejectWithValue to pass AxiosError data to the rejected action payload
-        return rejectWithValue(error);
+        return rejectWithValue(error)
       }
-      throw error;
+      throw error
     }
   }
-);
+)
 
 export const actualizarRestauranteAsy = createAsyncThunk(
-  "restaurantes/actualizarRestaurante",
+  'restaurantes/actualizarRestaurante',
   async (data: ActualizarRestauranteDto, { rejectWithValue }) => {
     try {
-      const response = await restauranteServices.actualizarRestaurante(data);
-      return response;
+      const response = await restauranteServices.actualizarRestaurante(data)
+      return response
     } catch (error) {
       if (error instanceof AxiosError) {
-        return rejectWithValue(error);
+        return rejectWithValue(error)
       }
-      throw error;
+      throw error
     }
   }
-);
+)
 
 export const aceptarReservaRestaurante = createAsyncThunk(
-  "restaurante/aceptarReservaRestaurante",
+  'restaurante/aceptarReservaRestaurante',
   async (data: AceptarReservaDto, { rejectWithValue }) => {
     try {
-      const response = await reservaServices.aceptarReservaRestaurante(data);
-      return response;
+      const response = await reservaServices.aceptarReservaRestaurante(data)
+      return response
     } catch (error) {
       if (error instanceof AxiosError) {
-        return rejectWithValue(error);
+        return rejectWithValue(error)
       }
-      throw error;
+      throw error
     }
   }
-);
+)

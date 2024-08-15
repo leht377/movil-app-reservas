@@ -56,7 +56,7 @@ const ReservasCliente = () => {
 
   const onRefresh = async () => {
     setRefreshing(true)
-    await obtenerReservas(undefined)
+    await obtenerReservas(filtroEstadoReserva)
     setRefreshing(false)
   }
 
