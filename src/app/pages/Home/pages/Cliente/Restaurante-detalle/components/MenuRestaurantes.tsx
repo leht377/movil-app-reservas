@@ -33,7 +33,7 @@ const MenuRestaurantes = () => {
     }
   }
   useEffect(() => {
-    if (restaurante_actual) obtenerMenu()
+    if (restaurante_actual && restaurante_actual?.getMenuId()) obtenerMenu()
   }, [])
 
   useEffect(() => {

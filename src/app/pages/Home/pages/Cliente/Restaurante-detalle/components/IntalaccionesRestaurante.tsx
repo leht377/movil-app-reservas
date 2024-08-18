@@ -1,4 +1,5 @@
 import theme from '@/common/theme'
+import { useAppSelector } from '@/redux/hooks/useAppSelector'
 import React, { useState } from 'react'
 import { FlatList } from 'react-native'
 import { Image } from 'react-native'
@@ -12,16 +13,7 @@ const renderItem = ({ item }) => {
           style={styles.image}
           resizeMode='cover'
           source={{
-            uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDC0aJlngjKLK0aMm6KDC92aJ7cdQcxtw5aQ&s'
-          }}
-        />
-      </View>
-      <View style={styles.imageWrapper}>
-        <Image
-          style={styles.image}
-          resizeMode='cover'
-          source={{
-            uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDC0aJlngjKLK0aMm6KDC92aJ7cdQcxtw5aQ&s'
+            uri: item?.uri
           }}
         />
       </View>
@@ -30,14 +22,18 @@ const renderItem = ({ item }) => {
 }
 
 const IntalaccionesRestaurante = () => {
+  const { restaurante_actual } = useAppSelector((state) => state.restaurante)
   return (
     <View style={styles.container}>
       <FlatList
-        data={[1, 2, 3]}
+        data={restaurante_actual.getUrlFotosInstalaciones()}
         renderItem={renderItem}
+        numColumns={2}
+        columnWrapperStyle={{ gap: 10 }}
         contentContainerStyle={styles.contentContainer}
         nestedScrollEnabled
-        keyExtractor={(item) => item.toString()}
+
+        // keyExtractor={(item) => item?.id}
       />
     </View>
   )
@@ -55,8 +51,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     flex: 0.5,
     height: 200,
-    flexDirection: 'row',
-    gap: 10
+    flexDirection: 'row'
   },
   imageWrapper: {
     flex: 1,
