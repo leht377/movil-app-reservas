@@ -9,6 +9,8 @@ import { AxiosError } from 'axios'
 import { ActualizarRestauranteDto } from '@/dominio/dtos/actualizar-restaurante.dto'
 import { AceptarReservaDto } from '@/dominio/dtos/aceptar-restaurante.dto'
 import { reservaServices } from '@/services/reserva.services'
+import { UploadFotoIntalacionDto } from '@/dominio/dtos/upload-foto-instalacion.dto'
+import { DeleteFotoIntalacionDto } from '@/dominio/dtos/delete-foto-instalacion.dto'
 
 interface initialStateInterface {
   restaurante_actual: RestauranteDetalladoEntity | null
@@ -124,6 +126,32 @@ const restaurantes = createSlice({
     builder.addCase(aceptarReservaRestaurante.fulfilled, (state, action) => {
       state.status_aceptar_reserva = Status.SUCCEEDED
     })
+
+    builder.addCase(uploadFotoInstalacionRestaurante.pending, (state, action) => {
+      state.status_aceptar_reserva = Status.LOADING
+    })
+    builder.addCase(uploadFotoInstalacionRestaurante.rejected, (state, action) => {
+      // state.status_aceptar_reserva = Status.FAILED
+      if (action.payload instanceof AxiosError) state.error = action.payload.response?.data?.error
+      else state.error = 'Ocurrio un error desconocido'
+    })
+    builder.addCase(uploadFotoInstalacionRestaurante.fulfilled, (state, action) => {
+      // state.status_aceptar_reserva = Status.SUCCEEDED
+      state.restaurante = action.payload
+    })
+
+    builder.addCase(deleteFotoInstalacionRestaurante.pending, (state, action) => {
+      // state.status_aceptar_reserva = Status.LOADING
+    })
+    builder.addCase(deleteFotoInstalacionRestaurante.rejected, (state, action) => {
+      // state.status_aceptar_reserva = Status.FAILED
+      if (action.payload instanceof AxiosError) state.error = action.payload.response?.data?.error
+      else state.error = 'Ocurrio un error desconocido'
+    })
+    builder.addCase(deleteFotoInstalacionRestaurante.fulfilled, (state, action) => {
+      // state.status_aceptar_reserva = Status.SUCCEEDED
+      state.restaurante = action.payload
+    })
   }
 })
 
@@ -193,6 +221,34 @@ export const aceptarReservaRestaurante = createAsyncThunk(
   async (data: AceptarReservaDto, { rejectWithValue }) => {
     try {
       const response = await reservaServices.aceptarReservaRestaurante(data)
+      return response
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return rejectWithValue(error)
+      }
+      throw error
+    }
+  }
+)
+export const uploadFotoInstalacionRestaurante = createAsyncThunk(
+  'restaurante/uploadFotoInstalacionRestaurante',
+  async (data: UploadFotoIntalacionDto, { rejectWithValue }) => {
+    try {
+      const response = await restauranteServices.uploadFotoIntalacion(data)
+      return response
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return rejectWithValue(error)
+      }
+      throw error
+    }
+  }
+)
+export const deleteFotoInstalacionRestaurante = createAsyncThunk(
+  'restaurante/deleteFotoInstalacionRestaurante',
+  async (data: DeleteFotoIntalacionDto, { rejectWithValue }) => {
+    try {
+      const response = await restauranteServices.deleteFotoIntalacion(data)
       return response
     } catch (error) {
       if (error instanceof AxiosError) {

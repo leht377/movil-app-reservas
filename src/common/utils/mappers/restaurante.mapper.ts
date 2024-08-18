@@ -43,7 +43,7 @@ export class RestauranteMapper {
     //   throw CustomErrors.internalServer('url_fotos_instalacciones del restaurante perdido')
     // if (!fechas_bloqueadas_reservas)
     //   throw CustomErrors.internalServer('fechas_bloqueadas_reservas del restaurante perdido')
-
+    const mapFotos = url_fotos_instalaciones?.map((e) => ({ id: e?._id ?? e?.id, uri: e?.uri }))
     return new RestauranteEntity(
       restaurante_id,
       usuario_id,
@@ -56,7 +56,7 @@ export class RestauranteMapper {
       horas_servicio,
       dias_servicio,
       url_foto_restaurante,
-      url_fotos_instalaciones,
+      mapFotos,
       fechas_bloqueadas_reservas,
       calificacion_promedio,
       menu_id

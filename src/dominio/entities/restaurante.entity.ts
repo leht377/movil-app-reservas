@@ -1,3 +1,8 @@
+export interface IurlFotoIntalaciones {
+  id: string
+  uri: string
+}
+
 export class RestauranteEntity {
   constructor(
     private readonly id: string,
@@ -11,7 +16,7 @@ export class RestauranteEntity {
     private horas_servicio: string[],
     private dias_servicio: string[],
     private url_foto_restaurante: string,
-    private url_fotos_instalaciones: string[],
+    private url_fotos_instalaciones: IurlFotoIntalaciones[],
     private fechas_bloqueadas_reservas: Date[],
     private readonly calificacion_promedio: number,
     private readonly menu_id?: string
@@ -68,7 +73,7 @@ export class RestauranteEntity {
     return this.url_foto_restaurante
   }
 
-  getUrlFotosInstalaciones(): string[] {
+  getUrlFotosInstalaciones(): IurlFotoIntalaciones[] {
     return this.url_fotos_instalaciones
   }
 

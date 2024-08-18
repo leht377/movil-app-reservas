@@ -1,4 +1,4 @@
-import { RestauranteEntity } from './restaurante.entity'
+import { IurlFotoIntalaciones, RestauranteEntity } from './restaurante.entity'
 
 export class RestauranteDetalladoEntity extends RestauranteEntity {
   private rol: string
@@ -16,7 +16,7 @@ export class RestauranteDetalladoEntity extends RestauranteEntity {
     horas_servicio: string[],
     dias_servicio: string[],
     url_foto_restaurante: string,
-    url_fotos_instalaciones: string[],
+    url_fotos_instalaciones: IurlFotoIntalaciones[],
     fechas_bloqueadas_reservas: Date[],
     rol: string,
     correo: string,
