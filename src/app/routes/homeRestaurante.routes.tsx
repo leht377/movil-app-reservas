@@ -3,7 +3,7 @@ import { HomeRestauranteStackParamslist } from './types/homeRestaurante.stack.pa
 
 import AdministrarRestaurante from '../pages/Home/pages/Restaurante/Administrar-Restaurante/AdministrarRestaurante'
 import FotosInstalaciones from '../pages/Home/pages/Restaurante/Fotos-Instaciones/FotosInstalaciones'
-import AdministrarReserva from '../pages/Home/pages/Restaurante/Administrar-Reserva/AdministrarReserva'
+import AdministrarReserva from '../pages/Reservas/pages/restaurante/reserva-restaurante/AdministrarReserva'
 import AdministrarMenu from '../pages/Home/pages/Restaurante/Adminstrar-Menu/AdministrarMenu'
 import HomeRestaurante from '../pages/Home/pages/Restaurante/Home-restaurante/HomeRestaurante'
 import RegistrarPlato from '../pages/Home/pages/Restaurante/Registrar-Plato/RegistrarPlato'
