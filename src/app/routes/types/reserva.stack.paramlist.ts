@@ -1,3 +1,4 @@
 export type ReservaStackParamList = {
-  ReservaCliente: undefined
-}
+  ReservaCliente: undefined;
+  ReservaRestaurante: undefined;
+};
