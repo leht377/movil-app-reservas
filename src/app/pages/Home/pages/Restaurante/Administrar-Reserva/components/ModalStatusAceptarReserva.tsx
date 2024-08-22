@@ -15,9 +15,11 @@ interface Props {
   onClose: (event: GestureResponderEvent) => void
   error?: string
   status: Status
+  texto:string
+  texto1:string
 }
 
-const ModalStatusAceptarReserva: React.FC<Props> = ({ onClose, status, error }) => {
+const ModalStatusAceptarReserva: React.FC<Props> = ({ onClose, status, error , texto, texto1}) => {
   const Loading = () => {
     return (
       <View
@@ -37,7 +39,7 @@ const ModalStatusAceptarReserva: React.FC<Props> = ({ onClose, status, error }) 
           color='quaternary'
           align='center'
         >
-          Aceptando reserva
+         {texto}
         </StyledText>
         <View style={{ marginVertical: 20 }}>
           <LoadingDots />
@@ -93,7 +95,7 @@ const ModalStatusAceptarReserva: React.FC<Props> = ({ onClose, status, error }) 
       >
         <ExitosoIcon width={200} height={100} />
         <StyledText fontWeight='bold' fontSize='title' align='center'>
-          Reserva Aceptada exitosamente
+          {texto1}
         </StyledText>
       </View>
     )

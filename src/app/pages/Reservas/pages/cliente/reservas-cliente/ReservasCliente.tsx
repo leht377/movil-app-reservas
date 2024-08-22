@@ -81,6 +81,8 @@ const ReservasCliente = () => {
     const fueExitoso = await cancelarReserva(idRestauranteSeleccionado)
     if (fueExitoso) obtenerReservas(filtroEstadoReserva)
   }
+
+  
   return (
     <View style={styles.container}>
       <FlatList

@@ -6,7 +6,7 @@ import { ReservaMapper } from "@/common/utils/mappers/reservaMapper";
 import { CancelarReservaClienteDto } from "@/dominio/dtos/cancelar-reserva-cliente.dto";
 import { ReservaEntity } from "@/dominio/entities";
 import { AceptarReservaDto } from "@/dominio/dtos/aceptar-restaurante.dto";
-import { rechazarReservaRestauranteDto } from "@/dominio/dtos/rechazar-reserva-restaurante.dto";
+import { RechazarReservaRestauranteDto } from "@/dominio/dtos/rechazar-reserva-restaurante.dto";
 
 const API_URL = envs.API_URL;
 
@@ -69,7 +69,7 @@ const aceptarReservaRestaurante = async (
 };
 
 const rechazarReservaRestaurante = async (
-  data: rechazarReservaRestauranteDto
+  data: RechazarReservaRestauranteDto
 ): Promise<ReservaEntity> => {
   try {
     const { reserva_id, token, ...body } = data;
