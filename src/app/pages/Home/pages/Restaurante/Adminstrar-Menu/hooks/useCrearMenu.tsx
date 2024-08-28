@@ -37,14 +37,14 @@ const useCrearMenu = () => {
 
       setTimeout(() => {
         resetStatus()
-      }, 3000)
+      }, 2000)
     } catch (error: any) {
       console.error(error)
       setError(error.message || 'Error al crear el menú')
       setStatus(Status.FAILED)
       setTimeout(() => {
         resetStatus()
-      }, 3000)
+      }, 2000)
     }
   }
 
