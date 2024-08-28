@@ -4,38 +4,42 @@ import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
 import theme from "@/common/theme";
 import Button from "@/app/components/Button";
 import MyIcon from "@/app/components/MyIcon";
+import { PlatoEntity } from "@/dominio/entities";
 
-const CardPlatoAdministrarMenu = () => {
+interface Props {
+  plato: PlatoEntity;
+}
+
+const CardPlatoAdministrarMenu: React.FC<Props> = ({ plato }) => {
   return (
     <View style={styles.container}>
       <StyledText fontSize="title" fontWeight="bold">
-        Nombre del plato
+        {plato?.getNombre}
       </StyledText>
       <View style={styles.card}>
         <View style={styles.imageContainer}>
           <Image
             source={{
-              uri: "https://via.placeholder.com/150",
+              uri: plato.getFotoPrincipal,
             }}
             style={styles.image}
             resizeMode="cover"
           />
           <View style={styles.imageColumn}>
-            <Image
-              source={{
-                uri: "https://via.placeholder.com/150",
-              }}
-              style={styles.image}
-              resizeMode="cover"
-            />
+            {plato.getFotosSecundarias.slice(0, 2).map((i) => {
+              return (
+                <Image
+                  source={{
+                    uri: i,
+                  }}
+                  style={styles.image}
+                  key={i}
+                  resizeMode="cover"
+                />
+              );
+            })}
+
             <View style={styles.imageSeparator} />
-            <Image
-              source={{
-                uri: "https://via.placeholder.com/150",
-              }}
-              style={styles.image}
-              resizeMode="cover"
-            />
           </View>
         </View>
         {/* SECTION DATA */}
@@ -44,17 +48,18 @@ const CardPlatoAdministrarMenu = () => {
           <View style={styles.description}>
             <StyledText align="justify">
               <StyledText fontWeight="bold">Descripción: </StyledText>
-              Aquí va la descripción del plato.
+              {plato && plato?.getDescripcion}
             </StyledText>
           </View>
           {/* HASTAGS */}
           <View style={styles.hashtags}>
-            <StyledText color="primary" fontWeight="bold">
-              #Hashtag1
-            </StyledText>
-            <StyledText color="primary" fontWeight="bold">
-              #Hashtag2
-            </StyledText>
+            {plato.getHastags.map((hashtag) => (
+              <StyledText
+                key={hashtag?.getId()}
+                color="primary"
+                fontWeight="bold"
+              >{`#${hashtag?.getNombre()}`}</StyledText>
+            ))}
           </View>
 
           <View style={styles.botones}>
@@ -115,6 +120,7 @@ const styles = StyleSheet.create({
     gap: 10,
     backgroundColor: theme.colors.secondary,
     minHeight: 120,
+    padding: 20,
   },
   card: {
     borderRadius: 5,
@@ -123,7 +129,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   imageContainer: {
-    height: 160,
+    height: 140,
     flexDirection: "row",
     gap: 2,
   },

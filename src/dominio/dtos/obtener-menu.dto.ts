@@ -1,14 +1,17 @@
 export class ObtenerMenuDto {
-  private constructor(public readonly menu_id: string, public readonly token: string) {}
+  private constructor(
+    public readonly menu_id: string,
+    public readonly token: string
+  ) {}
   static crear(object: { [key: string]: any }): ObtenerMenuDto {
-    const { menu_id, token } = object
+    const { menu_id, token } = object;
 
     // if (!token) {
     //   throw new Error('El campo "token" es requerido')
     // }
     if (!menu_id) {
-      throw new Error('El campo "menu_id" es requerido')
+      throw new Error('El campo "menu_id" es requerido');
     }
-    return new ObtenerMenuDto(menu_id, null)
+    return new ObtenerMenuDto(menu_id, null);
   }
 }

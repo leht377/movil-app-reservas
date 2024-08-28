@@ -2,7 +2,6 @@ import MyIcon from "@/app/components/MyIcon";
 import StyledText from "@/app/components/StyledText";
 import theme from "@/common/theme";
 import React, { useState } from "react";
-import { Touchable } from "react-native";
 import {
   FlatList,
   Modal,
@@ -15,15 +14,17 @@ import {
 export interface SelectorProps {
   titulo: string;
   options: string[];
+  onSelect: (option: string) => void; // Nueva prop
 }
 
-const Selector: React.FC<SelectorProps> = ({ titulo, options }) => {
+const Selector: React.FC<SelectorProps> = ({ titulo, options, onSelect }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState("Todo");
 
   const handleSelectOption = (option: string) => {
     setSelectedOption(option);
     setModalVisible(false);
+    onSelect(option); // Llamada a la función de devolución de llamada
   };
 
   return (
@@ -82,14 +83,16 @@ const Selector: React.FC<SelectorProps> = ({ titulo, options }) => {
             onPress={() => setModalVisible(false)}
           >
             <View style={styles.modalContent}>
-            <View style={styles.optionsContainer}>
-                {options.map((option) => (
+              <View style={styles.optionsContainer}>
+                {options.map((option, index) => (
                   <TouchableOpacity
-                    key={option}
+                    key={index}
                     style={styles.option}
                     onPress={() => handleSelectOption(option)}
                   >
-                    <StyledText color="secondary" fontWeight="bold">{option}</StyledText>
+                    <StyledText color="secondary" fontWeight="bold">
+                      {option}
+                    </StyledText>
                   </TouchableOpacity>
                 ))}
               </View>
@@ -117,15 +120,14 @@ const styles = StyleSheet.create({
   optionsContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap:10
+    gap: 10,
   },
   option: {
     padding: 10,
     borderBottomColor: "#ccc",
-    borderRadius:9,
-    backgroundColor:theme.colors.primary
-    
+    borderRadius: 9,
+    backgroundColor: theme.colors.primary,
   },
- 
 });
+
 export default Selector;
