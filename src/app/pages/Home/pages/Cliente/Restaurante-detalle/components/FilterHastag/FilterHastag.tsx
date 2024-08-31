@@ -1,111 +1,131 @@
-import React, { useEffect, useState } from 'react'
-import { FlatList, ListRenderItem, StyleSheet, View } from 'react-native'
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import React, { useEffect, useState } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import FilterBadge from "./FilterBadge";
+import Modal from "@/app/components/Modal";
+import { HashtagEntity } from "@/dominio/entities";
+import MyIcon from "@/app/components/MyIcon";
+import theme from "@/common/theme";
 
-import FilterBadge from './FilterBadge'
-import Modal from '@/app/components/Modal'
-import { HashtagEntity } from '@/dominio/entities'
-import MyIcon from '@/app/components/MyIcon'
-import theme from '@/common/theme'
+interface FilterHastagProps {
+  hashtags: HashtagEntity[];
+  selectedHashtags: string[];
+  onChange: (selectedItems: string[]) => void;
+  placeholder: string;
+  label: string;
+}
 
-const ModalFiltros = ({ isVisible, onClose, hastags, onSelectHastag }) => {
+const ModalFiltros = ({
+  isVisible,
+  onClose,
+  hashtags,
+  onSelectHashtag,
+}: {
+  isVisible: boolean;
+  onClose: () => void;
+  hashtags: HashtagEntity[];
+  onSelectHashtag: (id: string) => void;
+}) => {
   return (
     <Modal isVisible={isVisible} onClose={onClose}>
-      <View
-        style={{
-          flexDirection: 'row',
-          gap: 2,
-          flexWrap: 'wrap',
-          justifyContent: 'flex-start',
-          alignItems: 'center'
-        }}
-      >
+      <View style={styles.modalContainer}>
         <FlatList
-          data={hastags}
+          data={hashtags}
           renderItem={({ item }) => (
             <FilterBadge
               title={`# ${item?.getNombre()}`}
-              onPress={() => onSelectHastag(item?.getId())}
+              onPress={() => onSelectHashtag(item?.getId())}
               isPlus={true}
             />
           )}
-          contentContainerStyle={{
-            gap: 5
-          }}
+          contentContainerStyle={styles.flatListContainer}
           numColumns={2}
           keyExtractor={(item) => item.getId()}
         />
       </View>
     </Modal>
-  )
-}
+  );
+};
 
-const FilterHastag = ({ onSelectFilters }) => {
-  const [hastags, setHastags] = useState<HashtagEntity[]>([
-    new HashtagEntity('3', 'romeo'),
-    new HashtagEntity('4', 'julieta'),
-    new HashtagEntity('8', 'morocha'),
-    new HashtagEntity('9', 'sondeo'),
-    new HashtagEntity('10', 'pushh')
-  ])
-
-  const [hastagLibres, setHastagsLibres] = useState<HashtagEntity[]>([])
-  const [hastagsSelecionados, setHastagsSelecionados] = useState<HashtagEntity[]>([])
-
-  useEffect(() => {
-    setHastagsLibres(hastags)
-    setHastagsSelecionados([])
-  }, [hastags])
-
-  const [visible, setVisible] = useState(false)
-
-  const handleAddHastags = (id) => {
-    const hastag = hastagLibres.find((h) => h.getId() === id)
-    if (!hastag) return
-    setHastagsSelecionados([...hastagsSelecionados, hastag])
-    setHastagsLibres(hastagLibres.filter((h) => h.getId() != id))
-  }
-
-  const handleDeleteHastags = (id) => {
-    const hastag = hastagsSelecionados.find((h) => h.getId() === id)
-    if (!hastag) return
-    setHastagsSelecionados(hastagsSelecionados.filter((h) => h.getId() != id))
-    setHastagsLibres([...hastagLibres, hastag])
-  }
+const FilterHastag: React.FC<FilterHastagProps> = ({
+  hashtags,
+  selectedHashtags,
+  onChange,
+  placeholder,
+  label,
+}) => {
+  const [availableHashtags, setAvailableHashtags] = useState<HashtagEntity[]>([]);
+  const [selectedHashtagsState, setSelectedHashtagsState] = useState<HashtagEntity[]>([]);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    onSelectFilters(hastagsSelecionados)
-  }, [hastagsSelecionados])
+    setAvailableHashtags(hashtags);
+    setSelectedHashtagsState(hashtags.filter((h) => selectedHashtags.includes(h.getId())));
+  }, [hashtags, selectedHashtags]);
+
+  const handleAddHashtag = (id: string) => {
+    const hashtag = availableHashtags.find((h) => h.getId() === id);
+    if (!hashtag) return;
+    const updatedSelectedHashtags = [...selectedHashtagsState, hashtag];
+    setSelectedHashtagsState(updatedSelectedHashtags);
+    setAvailableHashtags(availableHashtags.filter((h) => h.getId() !== id));
+    onChange(updatedSelectedHashtags.map((h) => h.getId()));
+  };
+
+  const handleDeleteHashtag = (id: string) => {
+    const hashtag = selectedHashtagsState.find((h) => h.getId() === id);
+    if (!hashtag) return;
+    const updatedSelectedHashtags = selectedHashtagsState.filter((h) => h.getId() !== id);
+    setSelectedHashtagsState(updatedSelectedHashtags);
+    setAvailableHashtags([...availableHashtags, hashtag]);
+    onChange(updatedSelectedHashtags.map((h) => h.getId()));
+  };
+
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        gap: 2,
-        flexWrap: 'wrap',
-        justifyContent: 'flex-start',
-        alignItems: 'center'
-      }}
-    >
-      {hastagsSelecionados.map((item) => (
+    <View style={styles.container}>
+      {selectedHashtagsState.map((item) => (
         <FilterBadge
           title={`# ${item?.getNombre()}`}
-          onPress={() => handleDeleteHastags(item?.getId())}
+          onPress={() => handleDeleteHashtag(item?.getId())}
           key={item?.getId()}
         />
       ))}
 
       <TouchableWithoutFeedback onPress={() => setVisible(true)}>
-        <MyIcon nombre={'add-circle-sharp'} tamano={32} color={theme.colors.primary} />
+        <MyIcon
+          nombre={"add-circle-sharp"}
+          tamano={32}
+          color={theme.colors.primary}
+        />
       </TouchableWithoutFeedback>
 
       <ModalFiltros
         isVisible={visible}
         onClose={() => setVisible(false)}
-        hastags={hastagLibres}
-        onSelectHastag={handleAddHastags}
+        hashtags={availableHashtags}
+        onSelectHashtag={handleAddHashtag}
       />
     </View>
-  )
-}
+  );
+};
 
-export default FilterHastag
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    gap: 2,
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  modalContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  flatListContainer: {
+    gap: 5,
+  },
+});
+
+export default FilterHastag;

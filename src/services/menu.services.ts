@@ -6,7 +6,7 @@ import { ObtenerMenuDto } from "@/dominio/dtos/obtener-menu.dto";
 import { MenuMapper } from "@/common/utils/mappers/menu.mapper";
 import { MenuEntity, PlatoEntity } from "@/dominio/entities";
 import { RegistrarMenuDto } from "@/dominio/dtos/registrar-menu.dto";
-import { ResgistrarPlatoDto } from "@/dominio/dtos/regsitrar-plato.dto";
+import { RegistrarPlatoDto } from "@/dominio/dtos/regsitrar-plato.dto";
 import { PaltoMapper } from "@/common/utils/mappers/plato.mapper";
 
 const API_URL = envs.API_URL;
@@ -47,12 +47,12 @@ const registrarMenu = async (data: RegistrarMenuDto): Promise<MenuEntity> => {
 };
 
 const registrarPlato = async (
-  data: ResgistrarPlatoDto
+  data: RegistrarPlatoDto
 ): Promise<PlatoEntity> => {
   try {
     const { menu_id, ...body } = data;
 
-    const config: AxiosRequestConfig<ResgistrarPlatoDto> = {
+    const config: AxiosRequestConfig<RegistrarPlatoDto> = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -65,6 +65,7 @@ const registrarPlato = async (
     );
     return PaltoMapper.platoEntityFromObject(response.data);
   } catch (error) {
+    console.error(error);
     throw error;
   }
 };

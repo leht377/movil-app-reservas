@@ -38,22 +38,6 @@ const AdministrarMenu = () => {
   useEffect(() => {
     console.log(restaurante);
   }, [restaurante]);
-  // useEffect(() => {
-  //   if (menu) {
-  //     if (categoriaSeleccionada) {
-  //       const platosFiltrados = menu
-  //         .getPlatos()
-  //         .filter((plato) =>
-  //           plato.getCategorias.some(
-  //             (categoria) => categoria.getNombre() === categoriaSeleccionada
-  //           )
-  //         );
-  //       setPlatos(platosFiltrados);
-  //     } else {
-  //       setPlatos(menu.getPlatos());
-  //     }
-  //   }
-  // }, [menu, categoriaSeleccionada]);
 
   useEffect(() => {
     if (menu) {
