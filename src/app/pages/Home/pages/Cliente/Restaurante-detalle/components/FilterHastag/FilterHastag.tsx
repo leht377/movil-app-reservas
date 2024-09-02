@@ -59,8 +59,12 @@ const FilterHastag: React.FC<FilterHastagProps> = ({
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    setAvailableHashtags(hashtags);
-    setSelectedHashtagsState(hashtags.filter((h) => selectedHashtags.includes(h.getId())));
+    const available = hashtags.filter((h) => !selectedHashtags.includes(h.getId()));
+    const selected = hashtags.filter((h) => selectedHashtags.includes(h.getId()));
+    setAvailableHashtags(available);
+    setSelectedHashtagsState(selected);
+    // setAvailableHashtags(hashtags);
+    // setSelectedHashtagsState(hashtags.filter((h) => selectedHashtags.includes(h.getId())));
   }, [hashtags, selectedHashtags]);
 
   const handleAddHashtag = (id: string) => {

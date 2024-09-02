@@ -10,6 +10,7 @@ const useRegistrarPlato = () => {
   const [status, setStatus] = useState<Status>(Status.IDLE);
   const [error, setError] = useState<string | null>(null);
   const { restaurante } = useAppSelector((state) => state.restaurante);
+  const { usuario } = useAppSelector((state) => state.usuario);
 
   const resetStatus = () => {
     setStatus(Status.IDLE);
@@ -32,6 +33,7 @@ const useRegistrarPlato = () => {
         ...data,
         restaurante_id: restaurante.getId(),
         menu_id: restaurante.getMenuId(),
+        token: usuario.getTokent(),
       });
 
       const nuevoPlato = await menuServices.registrarPlato(dto);
@@ -40,7 +42,6 @@ const useRegistrarPlato = () => {
       setTimeout(() => {
         resetStatus();
       }, 2000);
-      
     } catch (error: any) {
       console.error(error);
       setError(error.message || "Error al registrar el plato");
