@@ -1,88 +1,83 @@
-import Button from "@/app/components/Button";
-import FormikMultilineTextInput from "@/app/components/FormikMultilineTextInput";
-import FormikTextInput from "@/app/components/FormikTextInput";
-import SelectInput from "@/app/components/SelectInput";
-import { Formik } from "formik";
-import React, { useState } from "react";
-import {
-  GestureResponderEvent,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
-import { View } from "react-native";
-import * as ImagePicker from "expo-image-picker";
-import StyledText from "@/app/components/StyledText";
-import MyIcon from "@/app/components/MyIcon";
-import theme from "@/common/theme";
-import MenuRestaurantes from "../../../Cliente/Restaurante-detalle/components/MenuRestaurantes";
-import useObtenerCategorias from "../../Adminstrar-Menu/hooks/useObtenerCategorias";
-import MultiSelectInput from "@/app/components/MultiSelectInput";
-import FilterHastag from "../../../Cliente/Restaurante-detalle/components/FilterHastag/FilterHastag";
-import useObtenerHashtag from "../hooks/useObtenerHashtag";
-import { string } from "yup";
-import useRegistrarPlato from "../hooks/useRegistrarPlato";
-import * as Yup from "yup";
-import ErrorText from "@/app/components/ErrorText";
+import Button from '@/app/components/Button'
+import FormikMultilineTextInput from '@/app/components/FormikMultilineTextInput'
+import FormikTextInput from '@/app/components/FormikTextInput'
+import SelectInput from '@/app/components/SelectInput'
+import { Formik } from 'formik'
+import React, { useState } from 'react'
+import { GestureResponderEvent, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { View } from 'react-native'
+import * as ImagePicker from 'expo-image-picker'
+import StyledText from '@/app/components/StyledText'
+import MyIcon from '@/app/components/MyIcon'
+import theme from '@/common/theme'
+import MenuRestaurantes from '../../../Cliente/Restaurante-detalle/components/MenuRestaurantes'
+import useObtenerCategorias from '../../Adminstrar-Menu/hooks/useObtenerCategorias'
+import MultiSelectInput from '@/app/components/MultiSelectInput'
+import FilterHastag from '../../../Cliente/Restaurante-detalle/components/FilterHastag/FilterHastag'
+import useObtenerHashtag from '../hooks/useObtenerHashtag'
+import { string } from 'yup'
+import useRegistrarPlato from '../hooks/useRegistrarPlato'
+import * as Yup from 'yup'
+import ErrorText from '@/app/components/ErrorText'
 const FormularioRegistroPlato = () => {
-  const { categorias, loading } = useObtenerCategorias();
-  const { hashtag, loading: loadingHashtags } = useObtenerHashtag();
-  const { registrarPlato, status, error } = useRegistrarPlato();
+  const { categorias, loading } = useObtenerCategorias()
+  const { hashtag, loading: loadingHashtags } = useObtenerHashtag()
+  const { registrarPlato, status, error } = useRegistrarPlato()
   const [images, setImages] = useState({
     fotoPrincipal: null,
     foto2: null,
-    foto3: null,
-  });
+    foto3: null
+  })
 
   const initialValues = {
-    nombre: "",
-    descripcion: "",
+    nombre: '',
+    descripcion: '',
     categorias_ids: [],
     hashtags_ids: [],
-    url_foto_principal: "",
-    url_fotos_secundarias: [],
-  };
+    url_foto_principal: '',
+    url_fotos_secundarias: []
+  }
 
   const RegistroPlatoSchema = Yup.object().shape({
     nombre: Yup.string()
-      .max(50, "Nombre demasiado largo!")
-      .min(3, "Nombre demasiado corto!")
-      .required("El nombre es requerido"),
+      .max(50, 'Nombre demasiado largo!')
+      .min(3, 'Nombre demasiado corto!')
+      .required('El nombre es requerido'),
 
     descripcion: Yup.string()
-      .max(200, "Descripción demasiado larga!")
-      .min(50, "Descripción demasiado corta!")
-      .required("La descripción es requerida"),
+      .max(200, 'Descripción demasiado larga!')
+      .min(50, 'Descripción demasiado corta!')
+      .required('La descripción es requerida'),
 
     categorias_ids: Yup.array()
       .of(Yup.string())
-      .min(1, "Debe seleccionar al menos una categoría")
-      .required("Las categorías son requeridas")
+      .min(1, 'Debe seleccionar al menos una categoría')
+      .required('Las categorías son requeridas')
       .test(
-        "is-array",
-        "Las categorías deben ser un array",
+        'is-array',
+        'Las categorías deben ser un array',
         (value) => Array.isArray(value) // Comprobación explícita de si es un array
       ),
 
     hashtags_ids: Yup.array()
       .of(Yup.string())
-      .min(1, "Debe incluir al menos un hashtag")
-      .required("Los hashtags son requeridos")
+      .min(1, 'Debe incluir al menos un hashtag')
+      .required('Los hashtags son requeridos')
       .test(
-        "is-array",
-        "Los hashtags deben ser un array",
+        'is-array',
+        'Los hashtags deben ser un array',
         (value) => Array.isArray(value) // Comprobación explícita de si es un array
       ),
 
     url_foto_principal: Yup.string()
-      .min(1, "Debe incluir al menos una foto")
-      .required("La URL de la foto principal es requerida"),
+      .min(1, 'Debe incluir al menos una foto')
+      .required('La URL de la foto principal es requerida'),
 
     url_fotos_secundarias: Yup.array()
       .of(Yup.string())
-      .min(2, "Debe incluir al menos una foto secundaria") // Asegúrate de que haya al menos una foto secundaria
-      .required("Las fotos secundarias son requeridas"),
-  });
+      .min(2, 'Debe incluir al menos una foto secundaria') // Asegúrate de que haya al menos una foto secundaria
+      .required('Las fotos secundarias son requeridas')
+  })
 
   const elegirImagenes = async (
     key: string,
@@ -92,53 +87,49 @@ const FormularioRegistroPlato = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 0.5,
-    });
+      quality: 0.5
+    })
     if (!resultado.canceled) {
-      const uri = resultado.assets[0].uri;
+      const uri = resultado.assets[0].uri
 
       setImages((prevImages) => ({
         ...prevImages,
-        [key]: uri,
-      }));
+        [key]: uri
+      }))
 
-      if (key === "fotoPrincipal") {
-        setFieldValue("url_foto_principal", uri);
+      if (key === 'fotoPrincipal') {
+        setFieldValue('url_foto_principal', uri)
       } else {
-        const updatedSecondaryPhotos = { ...images, [key]: uri };
+        const updatedSecondaryPhotos = { ...images, [key]: uri }
         const secondaryPhotosArray = [
           updatedSecondaryPhotos.foto2,
-          updatedSecondaryPhotos.foto3,
-        ].filter(Boolean);
-        setFieldValue("url_fotos_secundarias", secondaryPhotosArray);
+          updatedSecondaryPhotos.foto3
+        ].filter(Boolean)
+        setFieldValue('url_fotos_secundarias', secondaryPhotosArray)
         // const updatedSecondaryPhotos = [
         //   ...(key === "foto2" ? [uri, images.foto3]: [images.foto2, uri]).filter(Boolean)
         // ]
         // setFieldValue("url_fotos_secundarias", updatedSecondaryPhotos)
       }
     }
-  };
+  }
 
   const handleSubmit = async (values) => {
     try {
-      console.log("Hashtags enviados:", values.hashtags_ids);
-      console.log("categorias enviadas", values.categorias_ids);
       const data = {
         nombre: values.nombre,
         descripcion: values.descripcion,
         categorias_ids: values.categorias_ids,
         hashtags_ids: values.hashtags_ids,
-        url_foto_principal: images.fotoPrincipal || "",
-        url_fotos_secundarias: [images.foto2, images.foto3].filter(Boolean),
-      };
+        url_foto_principal: images.fotoPrincipal || '',
+        url_fotos_secundarias: [images.foto2, images.foto3].filter(Boolean)
+      }
 
-      await registrarPlato(data);
-      alert("Plato registrado con éxito!");
+      await registrarPlato(data)
     } catch (error) {
-      console.error(error);
-      alert("Error al registrar el plato");
+      console.error(error)
     }
-  };
+  }
 
   return (
     <Formik
@@ -150,9 +141,9 @@ const FormularioRegistroPlato = () => {
         <View>
           <View style={styles.input}>
             <FormikTextInput
-              name="nombre"
-              placeholder="Nombre del plato"
-              label="Nombre del plato"
+              name='nombre'
+              placeholder='Nombre del plato'
+              label='Nombre del plato'
             />
             {/* {console.error(errors && errors)} */}
             {loading ? (
@@ -161,28 +152,23 @@ const FormularioRegistroPlato = () => {
               <MultiSelectInput
                 options={categorias.map((categoria) => ({
                   label: categoria.getNombre(),
-                  value: categoria.getId(),
+                  value: categoria.getId()
                 }))}
                 selectedValues={values.categorias_ids}
-                onSelect={(selectedItems) =>
-                  setFieldValue("categorias_ids", selectedItems)
-                }
-                placeholder="Selecciona varias categorías"
-                label="Categorías"
+                onSelect={(selectedItems) => setFieldValue('categorias_ids', selectedItems)}
+                placeholder='Selecciona varias categorías'
+                label='Categorías'
               />
             )}
-            <ErrorText
-              error={errors.categorias_ids}
-              touched={errors.categorias_ids}
-            />
+            <ErrorText error={errors.categorias_ids} touched={errors.categorias_ids} />
 
             <FormikMultilineTextInput
-              name="descripcion"
-              placeholder="Descripción"
-              label="Descripción"
+              name='descripcion'
+              placeholder='Descripción'
+              label='Descripción'
             />
             <View>
-              <StyledText fontWeight="bold" fontSize="title">
+              <StyledText fontWeight='bold' fontSize='title'>
                 Hashtag
               </StyledText>
               {loadingHashtags ? (
@@ -191,66 +177,50 @@ const FormularioRegistroPlato = () => {
                 <FilterHastag
                   hashtags={hashtag}
                   selectedHashtags={values.hashtags_ids}
-                  onChange={(selectedItems) =>
-                    setFieldValue("hashtags_ids", selectedItems)
-                  }
-                  placeholder="Selecciona hashtags"
-                  label="Hashtags"
+                  onChange={(selectedItems) => setFieldValue('hashtags_ids', selectedItems)}
+                  placeholder='Selecciona hashtags'
+                  label='Hashtags'
                 />
               )}
-              <ErrorText
-                error={errors.hashtags_ids}
-                touched={errors.hashtags_ids}
-              />
+              <ErrorText error={errors.hashtags_ids} touched={errors.hashtags_ids} />
               {/* <MenuRestaurantes /> */}
             </View>
           </View>
           <View style={styles.imageContainer}>
-            {["fotoPrincipal", "foto2", "foto3"].map((key, index) => (
+            {['fotoPrincipal', 'foto2', 'foto3'].map((key, index) => (
               <View key={key} style={styles.imageSection}>
                 <StyledText style={styles.text}>Foto {index + 1}</StyledText>
-                <View style={{ flexDirection: "row", gap: 10 }}>
+                <View style={{ flexDirection: 'row', gap: 10 }}>
                   {images[key] && (
-                    <Image
-                      source={{ uri: images[key] }}
-                      style={styles.imagePreview}
-                    />
+                    <Image source={{ uri: images[key] }} style={styles.imagePreview} />
                   )}
 
                   <TouchableOpacity
                     onPress={() => elegirImagenes(key, setFieldValue)}
                     style={styles.buttonImageSelect}
                   >
-                    <MyIcon
-                      nombre="cloud-upload-sharp"
-                      tamano={20}
-                      color="white"
-                    />
-                    <StyledText color="secondary">Seleccionar</StyledText>
+                    <MyIcon nombre='cloud-upload-sharp' tamano={20} color='white' />
+                    <StyledText color='secondary'>Seleccionar</StyledText>
                   </TouchableOpacity>
                 </View>
-                {key !== "fotoPrincipal" &&
-                  !values.url_fotos_secundarias.length && (
-                    <ErrorText
-                      error={errors.url_fotos_secundarias}
-                      touched={errors.url_fotos_secundarias}
-                    />
-                  )}
+                {key !== 'fotoPrincipal' && !values.url_fotos_secundarias.length && (
+                  <ErrorText
+                    error={errors.url_fotos_secundarias}
+                    touched={errors.url_fotos_secundarias}
+                  />
+                )}
               </View>
             ))}
           </View>
 
           <View style={styles.Button}>
             <Button
-              color="primary"
-              title="Registrar"
-              fontWeight="bold"
+              color='primary'
+              title='Registrar'
+              fontWeight='bold'
               onPress={
                 handleSubmit as (
-                  values:
-                    | GestureResponderEvent
-                    | React.FormEvent<HTMLFormElement>
-                    | undefined
+                  values: GestureResponderEvent | React.FormEvent<HTMLFormElement> | undefined
                 ) => void
               }
             />
@@ -258,46 +228,46 @@ const FormularioRegistroPlato = () => {
         </View>
       )}
     </Formik>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   input: {
     margin: 10,
-    gap: 10,
+    gap: 10
   },
   Button: {
     margin: 10,
-    paddingBottom: 10,
+    paddingBottom: 10
   },
   imageContainer: {
-    margin: 10,
+    margin: 10
   },
   imageSection: {
-    marginBottom: 20,
+    marginBottom: 20
   },
   imagePreview: {
     width: 80,
     height: 80,
     borderRadius: 10,
-    overflow: "hidden",
+    overflow: 'hidden',
     borderWidth: 1,
-    borderColor: theme.colors.quaternary,
+    borderColor: theme.colors.quaternary
   },
   buttonImageSelect: {
     marginTop: 40,
     backgroundColor: theme.colors.primary,
     padding: 10,
     borderRadius: 10,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 10,
-    height: "50%",
+    height: '50%'
   },
   text: {
     marginBottom: 5,
     fontSize: 16,
-    fontWeight: "bold",
-  },
-});
-export default FormularioRegistroPlato;
+    fontWeight: 'bold'
+  }
+})
+export default FormularioRegistroPlato
