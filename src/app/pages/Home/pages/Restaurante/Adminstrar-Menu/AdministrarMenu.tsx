@@ -1,6 +1,6 @@
 import SearchInput from "@/app/components/SearchInput";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
+import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, View } from "react-native";
 import Selector from "./components/Selector";
 import theme from "@/common/theme";
 import Button from "@/app/components/Button";
@@ -20,15 +20,14 @@ import ModalStatusAceptarReserva from "@/app/pages/Reservas/pages/restaurante/re
 const AdministrarMenu = () => {
   const { navigate } =
     useNavigation<StackNavigationProp<HomeRestauranteStackParamslist>>();
+  const [refreshing, setRefreshing] = useState(false);
   const [menu, setMenu] = useState<MenuEntity>(null);
   const [platos, setPlatos] = useState<PlatoEntity[]>([]);
   const [busqueda, setBusqueda] = useState<string>("");
   const [categoriaSeleccionada, setCategoriaSeleccionada] =
     useState<string>("");
   const { restaurante } = useAppSelector((state) => state.restaurante);
-
   const { categorias, loading } = useObtenerCategorias();
-
   const { status, error, crearMenu } = useCrearMenu();
 
   const renderItem = ({ item }) => {
@@ -76,6 +75,12 @@ const AdministrarMenu = () => {
   useEffect(() => {
     if (restaurante && restaurante?.getMenuId()) obtenerMenu();
   }, []);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await obtenerMenu();
+    setRefreshing(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -127,6 +132,9 @@ const AdministrarMenu = () => {
           nestedScrollEnabled
           keyExtractor={(item: PlatoEntity) => item.getId()}
           ListFooterComponent={<View style={{ height: 20 }} />}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         />
       ) : null}
 

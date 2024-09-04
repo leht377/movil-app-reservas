@@ -86,20 +86,7 @@ const AdministrarReserva = () => {
     setModalDesicionVisible(false);
   };
 
-  // const handleChangueInput = (text: string) => {
-  //   setInputValue(text);
-  //   const data = text
-  //     ? reservas?.filter(
-  //         (r) =>
-  //           r
-  //             ?.getNombreCliente()
-  //             ?.toLowerCase()
-  //             .includes(text?.toLowerCase()) ||
-  //           r?.getCodIngreso()?.toLowerCase().includes(text?.toLowerCase())
-  //       )
-  //     : reservas;
-  //   setReservasFiltradas(data);
-  // };
+ 
 
   const handleChangueInput = (text: string) => {
     setInputValue(text);
