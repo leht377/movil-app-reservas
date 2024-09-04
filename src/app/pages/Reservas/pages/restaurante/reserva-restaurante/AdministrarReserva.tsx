@@ -86,8 +86,6 @@ const AdministrarReserva = () => {
     setModalDesicionVisible(false);
   };
 
- 
-
   const handleChangueInput = (text: string) => {
     setInputValue(text);
     const data = text
@@ -103,6 +101,13 @@ const AdministrarReserva = () => {
     setReservasFiltradas(data);
   };
 
+  const today = new Date();
+  const day = today.toLocaleString("es-ES", { weekday: "long" });
+  const date = today.toLocaleDateString("es-ES", {
+    day: "numeric",
+    month: "long",
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.containerFecha}>
@@ -111,7 +116,7 @@ const AdministrarReserva = () => {
             Día
           </StyledText>
           <StyledText fontWeight="bold" fontSize="title">
-            24 Marzo 2024
+            {day} {date}
           </StyledText>
         </View>
       </View>

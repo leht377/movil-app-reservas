@@ -34,7 +34,7 @@ const Modal = ({ isVisible, children, onClose }) => {
 const styles = StyleSheet.create({
   modalContent: {
     height: "auto",
-    minHeight: "60%",
+    minHeight: "40%",
     maxHeight: 300,
     width: "100%",
     backgroundColor: theme.colors.secondary,

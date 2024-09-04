@@ -73,12 +73,15 @@ const CardReservaPendiente: React.FC<Props> = ({
         </View>
       </View>
 
-      {estado === EstadoReserva.RECHAZADA  || estado === EstadoReserva.CANCELADA? null : estado ===
-        EstadoReserva.ACEPTADA ? (
-        <View >
-          <Button color="primary" title="Cancelar" />
-        </View>
-      ) : (
+      {estado === EstadoReserva.RECHAZADA ||
+      estado === EstadoReserva.CANCELADA ||
+      estado === EstadoReserva.ACEPTADA ? null : (
+        //  estado ===
+        //   EstadoReserva.ACEPTADA ? (
+        //   <View >
+        //     <Button color="primary" title="Cancelar" />
+        //   </View>
+        // ) :
         <View style={styles.statusContainer}>
           <View style={styles.Butones}>
             <Button

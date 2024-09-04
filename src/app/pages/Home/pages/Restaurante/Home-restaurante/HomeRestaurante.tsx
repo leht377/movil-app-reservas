@@ -8,30 +8,29 @@ import theme from "@/common/theme";
 import RestauranteCarbasico from "../components/RestauranteCarbasico";
 
 const HomeRestaurante = () => {
+  const today = new Date();
+  const day = today.toLocaleString("es-ES", { weekday: "long" });
+  const date = today.toLocaleDateString("es-ES", {
+    day: "numeric",
+    month: "long",
+  });
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <OpcionesRestauranteSection />
-      <View style={styles.NotificacionsBotton}>
-        <Button color="secondary" textColor="black" containerStyle={{elevation:3}} >
-          <View style={styles.iconLeft}>
-            <MyIcon
-              nombre={"notifications-sharp"}
-              tamano={25}
-              color={theme.colors.primary}
-            />
-            
-          </View>
 
-          <StyledText>Tiene 5 reservas por confirmar</StyledText>
-          <View style={styles.iconRight}>
-            <MyIcon
-              nombre={"close"}
-              tamano={25}
-              color={theme.colors.tertiary}
-            />
-          </View>
-        </Button>
+      <View style={styles.welcomeContainer}>
+        <StyledText style={styles.welcomeText}>
+          ¡Bienvenido de nuevo! 🌞
+        </StyledText>
+        <View style={{ paddingTop: 10 }}>
+          <StyledText>
+            Hoy es {day}, {date}. ¡Esperamos que tengas un gran día lleno de
+            reservas!
+          </StyledText>
+        </View>
       </View>
+
       <View style={styles.card}>
         <RestauranteCarbasico />
       </View>
@@ -43,7 +42,6 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     backgroundColor: theme.colors.secondary,
-  
   },
   iconLeft: {
     flex: 1,
@@ -53,11 +51,31 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "flex-end",
   },
-  NotificacionsBotton: {
-    margin: 20,    
-  },
+
   card: {
     paddingBottom: 50,
+  },
+  welcomeContainer: {
+    margin: 20,
+    padding: 15,
+    borderRadius: 10,
+    backgroundColor: "#fff",
+    elevation: 3,
+    alignItems: "center",
+  },
+  welcomeText: {
+    fontSize: 20,
+    color: theme.colors.primary,
+    fontWeight: "bold",
+  },
+  subWelcomeText: {
+    fontSize: 14,
+    color: theme.colors.tertiary,
+    marginTop: 5,
+    textAlign: "center",
+  },
+  iconContainer: {
+    marginTop: 10,
   },
 });
 

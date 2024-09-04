@@ -2,7 +2,6 @@ import StyledText from "@/app/components/StyledText";
 import React from "react";
 import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
 import theme from "@/common/theme";
-import Button from "@/app/components/Button";
 import MyIcon from "@/app/components/MyIcon";
 import { PlatoEntity } from "@/dominio/entities";
 
@@ -19,95 +18,61 @@ const CardPlatoAdministrarMenu: React.FC<Props> = ({ plato }) => {
       <View style={styles.card}>
         <View style={styles.imageContainer}>
           <Image
-            source={{
-              uri: plato.getFotoPrincipal,
-            }}
+            source={{ uri: plato.getFotoPrincipal }}
             style={styles.image}
             resizeMode="cover"
           />
           <View style={styles.imageColumn}>
-            {plato.getFotosSecundarias.slice(0, 2).map((i) => {
-              return (
-                <Image
-                  source={{
-                    uri: i,
-                  }}
-                  style={styles.image}
-                  key={i}
-                  resizeMode="cover"
-                />
-              );
-            })}
-
+            {plato.getFotosSecundarias.slice(0, 2).map((i) => (
+              <Image
+                source={{ uri: i }}
+                style={styles.image}
+                key={i}
+                resizeMode="cover"
+              />
+            ))}
             <View style={styles.imageSeparator} />
           </View>
         </View>
-        {/* SECTION DATA */}
+
         <View style={styles.dataContainer}>
-          {/* DESCRIPCION */}
           <View style={styles.description}>
             <StyledText align="justify">
               <StyledText fontWeight="bold">Descripción: </StyledText>
-              {plato && plato?.getDescripcion}
+              {plato?.getDescripcion}
             </StyledText>
           </View>
-          {/* HASTAGS */}
-          <View style={styles.hashtags}>
-            {plato.getHastags.map((hashtag) => (
-              <StyledText
-                key={hashtag?.getId()}
-                color="primary"
-                fontWeight="bold"
-              >{`#${hashtag?.getNombre()}`}</StyledText>
+
+          {/* CATEGORÍAS */}
+          <View style={styles.categoriesContainer}>
+            <StyledText fontWeight="bold">Categorías: </StyledText>
+            {plato.getCategorias.map((categoria) => (
+              <View style={styles.categoryChip} key={categoria?.getId()}>
+                <StyledText
+                  color="primary"
+                  fontWeight="bold"
+                  fontSize="bodymini"
+                >
+                  {`#${categoria?.getNombre()}`}
+                </StyledText>
+              </View>
             ))}
           </View>
 
-          <View style={styles.botones}>
-            <View
-              style={{
-                backgroundColor: theme.colors.primary,
-                padding: 4,
-                borderRadius: 4,
-              }}
-            >
-              <TouchableOpacity onPress={() => {}}>
-                <MyIcon
-                  nombre={"trash-outline"}
-                  tamano={30}
-                  color={theme.colors.secondary}
-                />
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                backgroundColor: theme.colors.green,
-                padding: 4,
-                borderRadius: 4,
-              }}
-            >
-              <TouchableOpacity onPress={() => {}}>
-                <MyIcon
-                  nombre={"pencil"}
-                  tamano={30}
-                  color={theme.colors.secondary}
-                />
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                backgroundColor: theme.colors.tertiary,
-                padding: 4,
-                borderRadius: 4,
-              }}
-            >
-              <TouchableOpacity onPress={() => {}}>
-                <MyIcon
-                  nombre={"eye"}
-                  tamano={30}
-                  color={theme.colors.secondary}
-                />
-              </TouchableOpacity>
-            </View>
+          {/* HASHTAGS */}
+          <View style={styles.hashtagsContainer}>
+            <StyledText fontWeight="bold">Hashtags: </StyledText>
+            {plato.getHastags.map((hashtag) => (
+              <View style={styles.hashtagChip} key={hashtag?.getId()}>
+                <StyledText
+                  fontWeight="bold"
+                  fontSize="bodymini"
+                  color="primary"
+                >
+                  {`#${hashtag?.getNombre()}`}
+                </StyledText>
+              </View>
+            ))}
           </View>
         </View>
       </View>
@@ -145,19 +110,36 @@ const styles = StyleSheet.create({
   },
   dataContainer: {
     padding: 10,
-    gap: 2,
+    gap: 4, // Aumentar para mejor separación visual
   },
   description: {
     flexDirection: "row",
+    marginBottom: 2,
   },
-  hashtags: {
+  categoriesContainer: {
     flexDirection: "row",
-    gap: 5,
+    flexWrap: "wrap",
+    gap: 4, // Mejor separación entre categorías
+    marginBottom: 2,
   },
-  botones: {
+  categoryChip: {
+    backgroundColor: theme.colors.secondary, // Color de fondo más visible
+    // paddingVertical: 6,
+    // paddingHorizontal: 12,
+    // borderRadius: 20,
+    // elevation: 3,
+  },
+  hashtagsContainer: {
     flexDirection: "row",
-    gap: 10,
-    marginTop: 20,
+    flexWrap: "wrap",
+    gap: 4, // Mejor separación entre hashtags
+  },
+  hashtagChip: {
+    backgroundColor: theme.colors.secondary, // Color de fondo más visible
+    // paddingVertical: 6,
+    // paddingHorizontal: 12,
+    // borderRadius: 20,
+    // elevation: 3,
   },
 });
 

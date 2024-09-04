@@ -34,9 +34,9 @@ const AdministrarMenu = () => {
     return <CardPlatoAdministrarMenu plato={item} />;
   };
 
-  useEffect(() => {
-    console.log(restaurante);
-  }, [restaurante]);
+  // useEffect(() => {
+  //   console.log(restaurante);
+  // }, [restaurante]);
 
   useEffect(() => {
     if (menu) {
