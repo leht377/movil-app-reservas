@@ -18,7 +18,7 @@ const HeaderReservas = ({ inputValue, onChangeText, estadoReserva, onChageEstado
     <View
       style={{
         backgroundColor: theme.colors.secondary,
-        paddingTop: 20,
+
         paddingHorizontal: 10,
         gap: 5
       }}

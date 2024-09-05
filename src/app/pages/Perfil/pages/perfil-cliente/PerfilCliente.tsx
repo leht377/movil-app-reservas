@@ -7,6 +7,7 @@ import LoveIcon from '@/app/icons/LoveIcon'
 import theme from '@/common/theme'
 import { useAppSelector } from '@/redux/hooks/useAppSelector'
 import React from 'react'
+import { StatusBar } from 'react-native'
 import { StyleSheet, TouchableNativeFeedback, View } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
@@ -63,8 +64,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.secondary,
     flex: 1,
-
-    position: 'relative'
+    position: 'relative',
+    paddingTop: StatusBar.currentHeight
   }
 })
 

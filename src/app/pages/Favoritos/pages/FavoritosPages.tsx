@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, StatusBar, StyleSheet, Text, View } from 'react-native'
 import useObtenerRestaurantesFavoritos from './hooks/useObtenerRestaurantesFavoritos'
 import { FlatList, RefreshControl } from 'react-native-gesture-handler'
 import SearchInput from '@/app/components/SearchInput'
@@ -93,7 +93,7 @@ const FavoritosPages = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
+    paddingTop: StatusBar.currentHeight,
     gap: 20,
     backgroundColor: theme.colors.secondary
   }

@@ -4,7 +4,7 @@ import MyIcon from '@/app/components/MyIcon'
 import StyledText from '@/app/components/StyledText'
 import theme from '@/common/theme'
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, TouchableNativeFeedback } from 'react-native'
+import { ActivityIndicator, StatusBar, TouchableNativeFeedback } from 'react-native'
 import { StyleSheet, View } from 'react-native'
 import CardReserva from '../../components/CardReserva'
 import { ScrollView } from 'react-native'
@@ -82,7 +82,6 @@ const ReservasCliente = () => {
     if (fueExitoso) obtenerReservas(filtroEstadoReserva)
   }
 
-  
   return (
     <View style={styles.container}>
       <FlatList
@@ -128,7 +127,8 @@ const ReservasCliente = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.secondary,
-    flex: 1
+    flex: 1,
+    paddingTop: StatusBar.currentHeight
   }
 })
 

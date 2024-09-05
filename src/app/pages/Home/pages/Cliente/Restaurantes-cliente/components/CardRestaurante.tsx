@@ -34,9 +34,8 @@ const CardRestaurante: React.FC<Props> = ({ restaurante, onAddFavorito, onDelete
     navigate('RestauranteDetalle', { restauranteId: restaurante.getId() })
   }
   const handleGotoRestauranteReserva = () => {
-    if (!usuario) navigationApp.navigate("PerfilPage")
+    if (!usuario) navigationApp.navigate('PerfilPage')
     else navigate('RestauranteReserva', { restauranteId: restaurante.getId() })
-    
   }
 
   const handleAddFavorito = async () => {
@@ -94,24 +93,28 @@ const CardRestaurante: React.FC<Props> = ({ restaurante, onAddFavorito, onDelete
         </View>
         <View style={styles.locationContainer}>
           <MyIcon nombre={'location'} tamano={20} />
-          <StyledText fontWeight='bold' fontSize='title'>
+          <StyledText
+            fontWeight='bold'
+            fontSize='title'
+            style={{ flexWrap: 'wrap', flexShrink: 1 }}
+          >
             {restaurante?.getLocacion()}
           </StyledText>
         </View>
         <View style={styles.buttonContainer}>
-          <Button
-            title='Reservar'
-            color='primary'
-            fontWeight='bold'
-            containerStyle={styles.button}
-            onPress={handleGotoRestauranteReserva}
-          />
           <Button
             title='Ver menú'
             color='primary'
             fontWeight='bold'
             containerStyle={styles.button}
             onPress={handleGotoRestauranteDetalle}
+          />
+          <Button
+            title='Reservar'
+            color='primary'
+            fontWeight='bold'
+            containerStyle={styles.button}
+            onPress={handleGotoRestauranteReserva}
           />
         </View>
       </View>

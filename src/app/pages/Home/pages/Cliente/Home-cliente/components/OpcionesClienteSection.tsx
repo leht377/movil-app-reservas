@@ -9,12 +9,13 @@ import StyledText from '../../../../../../components/StyledText'
 import { HomeStackParamList } from '../../../../../../routes/types/home.stack.paramlist'
 import { useAppSelector } from '@/redux/hooks/useAppSelector'
 import { AppStackParamList } from '@/app/routes/types/app.stack.paramlist'
+import useLogOut from '@/app/hooks/useLogOut'
 
 const OpcionesClienteSection = () => {
   const { navigate } = useNavigation<StackNavigationProp<HomeStackParamList>>()
   const { usuario } = useAppSelector((state) => state.usuario)
   const { cliente } = useAppSelector((state) => state.cliente)
-
+  const { LogOut } = useLogOut()
   const appNavigation = useNavigation<StackNavigationProp<AppStackParamList>>()
   return (
     <View style={styles.container}>
@@ -39,7 +40,7 @@ const OpcionesClienteSection = () => {
               : () => appNavigation.navigate('PerfilPage')
           }
         />
-        {usuario && <OpcionItem iconName='log-out' text='Cerrar sessión' />}
+        {usuario && <OpcionItem iconName='log-out' text='Cerrar sessión' onPress={LogOut} />}
       </View>
     </View>
   )

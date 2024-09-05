@@ -44,7 +44,7 @@ const RegistroCliente = () => {
               </StyledText>
             </StyledText>
           </View>
-          <View>
+          {/* <View>
             <Button
               containerStyle={styles.containerButtonStyle}
               buttonStyle={styles.buttonStyle}
@@ -56,7 +56,7 @@ const RegistroCliente = () => {
                 Registrarse con Google
               </StyledText>
             </Button>
-          </View>
+          </View> */}
         </View>
       </ScrollView>
       <ModalStatusRegistro

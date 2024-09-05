@@ -13,7 +13,11 @@ const PerfilRoutes = () => {
         options={{ title: '', headerShown: false }}
         component={PerfilCliente}
       />
-      <Stack.Screen name='perfil-restaurante' component={PerfilRestaurante} />
+      <Stack.Screen
+        name='perfil-restaurante'
+        options={{ title: '', headerShown: false }}
+        component={PerfilRestaurante}
+      />
     </Stack.Navigator>
   )
 }
