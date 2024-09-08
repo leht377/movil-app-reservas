@@ -104,7 +104,7 @@ const CardReserva: React.FC<Props> = ({ reserva, onPressCancelar }) => {
 
         {reserva?.getCodIngreso() && (
           <View style={styles.codeContainer}>
-            <StyledText fontWeight='bold'>CODIGO RESERVA</StyledText>
+            <StyledText fontWeight='bold'>CÓDIGO RESERVA</StyledText>
             <StyledText color='primary' fontWeight='bold' fontSize='title'>
               {reserva?.getCodIngreso()}
             </StyledText>

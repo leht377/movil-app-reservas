@@ -40,7 +40,7 @@ const OpcionesClienteSection = () => {
               : () => appNavigation.navigate('PerfilPage')
           }
         />
-        {usuario && <OpcionItem iconName='log-out' text='Cerrar sessión' onPress={LogOut} />}
+        {usuario && <OpcionItem iconName='log-out' text='Cerrar session' onPress={LogOut} />}
       </View>
     </View>
   )

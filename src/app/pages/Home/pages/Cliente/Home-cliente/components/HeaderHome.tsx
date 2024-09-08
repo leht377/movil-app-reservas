@@ -15,7 +15,7 @@ const HeaderHome = () => {
     <View style={styles.container}>
       <View style={styles.containerText}>
         <StyledText color='secondary' fontWeight='bold' style={{ fontSize: 30 }}>
-          Estas en busqueda de un restaurante
+          Estas en búsqueda de un restaurante
         </StyledText>
         <Button
           title='Explorar'
