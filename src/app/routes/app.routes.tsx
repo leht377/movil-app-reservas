@@ -1,11 +1,10 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import React, { useEffect } from 'react'
-import { StyleSheet, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, View, ActivityIndicator } from 'react-native'
 import theme from '../../common/theme'
 
 import ReservasPage from '../pages/Reservas/pages/ReservasPage'
 import FavoritosPages from '../pages/Favoritos/pages/FavoritosPages'
-
 import MyIcon from '../components/MyIcon'
 import PerfilRoutes from './perfil.routes'
 import AutenticacionRoutes from './autenticacion.routes'
@@ -25,19 +24,32 @@ const AppRoutes = () => {
   const { restaurante } = useAppSelector((state) => state.restaurante)
   const { validarUsuario } = useValidarUsuario()
 
+  // Estado de carga
+  const [loading, setLoading] = useState(true)
+
+  // Validar usuario y manejar splash
   useEffect(() => {
-    validarUsuario()
-  }, [usuario])
+    const validarYFinalizar = async () => {
+      await validarUsuario() // Asegurarse de que validarUsuario sea una función asíncrona que devuelve una promesa
+      setLoading(false) // Una vez validado, quita el splash
+    }
 
-  // useEffect(() => {
-  //   if(usuario){
-  //     if (usuario.getRol() === UsuarioRol.CLIENTE && !cliente) guar
-  //     else if (usuario.getRol() === UsuarioRol.RESTAURANTE && !restaurante)
-  //   }
-  // },[usuario])
+    validarYFinalizar()
+  }, [])
 
+  // Componente del splash personalizado (puede ser reemplazado con react-native-splash-screen)
+  if (loading) {
+    return (
+      <View style={styles.splashContainer}>
+        <ActivityIndicator size='large' color={theme.colors.primary} />
+      </View>
+    )
+  }
+
+  // Aquí va la navegación principal después de la validación
   const HomeComponete =
     usuario?.getRol() === UsuarioRol.RESTAURANTE ? HomeRestauranteRoutes : HomeRoutes
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -65,7 +77,6 @@ const AppRoutes = () => {
             component={usuario ? ReservaRoutes : AutenticacionRoutes}
             options={{
               title: 'Reservas',
-
               tabBarIcon: ({ color, size }) => (
                 <MyIcon color={color} tamano={size} nombre='calendar' />
               )
@@ -81,7 +92,6 @@ const AppRoutes = () => {
           />
         </>
       )}
-
       <Tab.Screen
         name='PerfilPage'
         component={usuario ? PerfilRoutes : AutenticacionRoutes}
@@ -96,6 +106,13 @@ const AppRoutes = () => {
   )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  splashContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: theme.colors.secondary // Puedes personalizar este color
+  }
+})
 
 export default AppRoutes
