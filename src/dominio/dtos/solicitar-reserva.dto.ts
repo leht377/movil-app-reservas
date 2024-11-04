@@ -2,6 +2,7 @@ export class SolicitarReservaDto {
   private constructor(
     public readonly restaurante_id: string,
     public readonly cliente_id: string,
+    public readonly platos_ids: string[],
     public readonly nombre_reservante: string,
     public readonly fecha_reserva: Date,
     public readonly hora_reserva: Date,
@@ -18,6 +19,7 @@ export class SolicitarReservaDto {
       hora_reserva,
       usuario_id,
       cantidad_personas,
+      platos_ids,
       token
     } = object
     if (!restaurante_id || typeof restaurante_id !== 'string') {
@@ -26,6 +28,9 @@ export class SolicitarReservaDto {
     if (!usuario_id) throw new Error('no se encontro el usuario_id')
     if (!cliente_id || typeof cliente_id !== 'string') {
       throw new Error('El campo "cliente_id" es requerido y debe ser una cadena de texto')
+    }
+    if (!Array.isArray(platos_ids) || platos_ids.length <= 0 ) {
+      throw new Error('El campo "platos_ids" es requerido y debe ser una array con un elemento')
     }
 
     if (!nombre_reservante || typeof nombre_reservante !== 'string') {
@@ -51,6 +56,7 @@ export class SolicitarReservaDto {
     return new SolicitarReservaDto(
       restaurante_id,
       cliente_id,
+      platos_ids,
       nombre_reservante,
       fechaReservaDate,
       hora_reserva,

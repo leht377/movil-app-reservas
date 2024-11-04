@@ -1,10 +1,12 @@
 import { EstadoReserva } from '../../common/utils/enums'
+import { PlatoEntity } from './plato.entity'
 
 export class ReservaEntity {
   constructor(
     private readonly id: string,
     private readonly cliente_id: string,
     private readonly nombre_cliente: string,
+    private readonly platos: PlatoEntity[],
     private readonly apellido_cliente: string,
     private readonly nombre_restaurante: string,
     private readonly locacion_restaurante: string,
@@ -35,6 +37,10 @@ export class ReservaEntity {
 
   getNombreRestaurante(): string {
     return this.nombre_restaurante
+  }
+
+  getPlatos(): PlatoEntity[] {
+    return this.platos
   }
 
   getLocacionRestaurante(): string {

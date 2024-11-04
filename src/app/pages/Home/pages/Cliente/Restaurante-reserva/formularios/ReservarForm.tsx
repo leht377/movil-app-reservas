@@ -7,11 +7,15 @@ import { Formik } from 'formik'
 import React, { useState } from 'react'
 import { GestureResponderEvent, StyleSheet, View } from 'react-native'
 import * as Yup from 'yup'
+import MenuSelection from '../components/MenuSelection'
+import useMenu from '../../hooks/useMenu'
+import { PlatoEntity } from '@/dominio/entities'
 interface MyFormValues {
   nombre_reservante: string
   hora_reserva: string
   cantidad_personas: number
   dia_reserva: string
+  platos_ids_seleccionados: string[]
 }
 
 const ReservaSchema = Yup.object().shape({
@@ -20,6 +24,10 @@ const ReservaSchema = Yup.object().shape({
     .max(50, 'Nombre demasiado largo!')
     .required('El nombre es requerido'),
   hora_reserva: Yup.string().required('La hora de reserva es requerida'),
+  platos_ids_seleccionados: Yup.array()
+    .of(Yup.string().required('El ID del plato es requerido')) // Ensures each ID is a non-empty string
+    .min(1, 'Debe seleccionar al menos un plato')
+    .required('Debe seleccionar al menos un plato'),
   cantidad_personas: Yup.number()
     .min(1, 'Minimo una persona')
     .max(5, 'Maximo 5 personas')
@@ -31,7 +39,8 @@ const initialValues: MyFormValues = {
   cantidad_personas: 0,
   hora_reserva: '',
   nombre_reservante: '',
-  dia_reserva: null
+  dia_reserva: null,
+  platos_ids_seleccionados: []
 }
 
 const cantidad_personas = [
@@ -51,6 +60,8 @@ interface Props {
 }
 const ReservarForm: React.FC<Props> = ({ dataHoras, handleSubmit }) => {
   const [isSubmit, setIsSubmit] = useState(false)
+  const { platos } = useMenu()
+
   const handle = async (values, resetForm) => {
     setIsSubmit(true)
     const fueExitoso = await handleSubmit(values)
@@ -65,7 +76,7 @@ const ReservarForm: React.FC<Props> = ({ dataHoras, handleSubmit }) => {
         handle(values, resetForm)
       }}
     >
-      {({ handleChange, handleBlur, handleSubmit, errors, values, touched }) => (
+      {({ handleChange, handleBlur, setFieldValue, handleSubmit, errors, values, touched }) => (
         <View style={{ gap: 10, paddingBottom: 20 }}>
           <View style={{ gap: 10 }}>
             <CalendarPicker onSelectDay={handleChange('dia_reserva')} />
@@ -105,6 +116,25 @@ const ReservarForm: React.FC<Props> = ({ dataHoras, handleSubmit }) => {
                   label='N° personas'
                   placeholder='Cantidad'
                 />
+              </View>
+              <View style={{ flex: 1, minWidth: 180, height: 'auto', marginTop: 10 }}>
+                <StyledText fontWeight='bold' fontSize='title'>
+                  Seleccionar platos
+                </StyledText>
+                {errors.platos_ids_seleccionados ? (
+                  <StyledText fontWeight='bold' fontSize='bodymini' color='primary'>
+                    *{errors.platos_ids_seleccionados}
+                  </StyledText>
+                ) : null}
+
+                {platos.length > 0 && (
+                  <MenuSelection
+                    onSelectedDishIds={(selectedIds) =>
+                      setFieldValue('platos_ids_seleccionados', selectedIds)
+                    }
+                    dishes={platos}
+                  />
+                )}
               </View>
             </View>
           </View>

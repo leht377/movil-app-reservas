@@ -29,7 +29,8 @@ const RestauranteReserva = () => {
       fecha_reserva: data?.dia_reserva,
       hora_reserva: data?.hora_reserva,
       cantidad_personas: data?.cantidad_personas,
-      restaurante_id: restauranteId
+      restaurante_id: restauranteId,
+      platos_ids: data?.platos_ids_seleccionados,
     }
     const fueExitoso = await solicitarReserva(dataR)
     return fueExitoso

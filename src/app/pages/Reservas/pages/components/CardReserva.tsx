@@ -93,6 +93,17 @@ const CardReserva: React.FC<Props> = ({ reserva, onPressCancelar }) => {
           </StyledText>
         </View>
       </View>
+      {/* INFORMACION Menú */}
+      <View style={styles.container}>
+        <StyledText fontWeight='bold' fontSize='title' style={styles.title}>
+          Platos solicitados
+        </StyledText>
+        {reserva.getPlatos().map((p) => (
+          <StyledText key={p.getId()} style={styles.dishText}>
+            {p.getNombre}
+          </StyledText>
+        ))}
+      </View>
 
       {/* ESTADO RESERVA */}
       <View style={styles.statusContainer}>
@@ -123,6 +134,25 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
     borderWidth: 0.2
+  },
+  container: {
+    padding: 15,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    marginVertical: 10
+  },
+  title: {
+    marginBottom: 8,
+    color: '#333'
+  },
+  dishText: {
+    fontSize: 16,
+    color: '#555',
+    marginBottom: 4
   },
   restaurantName: {
     fontSize: 28

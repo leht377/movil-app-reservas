@@ -47,6 +47,18 @@ const CardReservaPendiente: React.FC<Props> = ({ reserva, onPressAceptar, onPres
           {reserva?.getNombreCliente()}
         </StyledText>
       </View>
+
+      <View style={styles.container2}>
+          <StyledText fontWeight='bold' fontSize='title' style={styles.title}>
+            Platos solicitados
+          </StyledText>
+          {reserva.getPlatos().map((p) => (
+            <StyledText key={p.getId()} style={styles.dishText}>
+              {p.getNombre}
+            </StyledText>
+          ))}
+        </View>
+
       <View style={{ flexDirection: 'row', gap: 140 }}>
         <View style={styles.locationContainer}>
           <MyIcon nombre='people' tamano={25} />
@@ -61,6 +73,7 @@ const CardReservaPendiente: React.FC<Props> = ({ reserva, onPressAceptar, onPres
             {reserva?.getCodIngreso()}
           </StyledText>
         </View>
+
       </View>
 
       {estado === EstadoReserva.RECHAZADA ||
@@ -106,6 +119,26 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 10
   },
+  container2: {
+    padding: 15,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    marginVertical: 10
+  },
+  title: {
+    marginBottom: 8,
+    color: '#333'
+  },
+  dishText: {
+    fontSize: 16,
+    color: '#555',
+    marginBottom: 4
+  },
+
   restaurantName: {
     fontSize: 28
   },
