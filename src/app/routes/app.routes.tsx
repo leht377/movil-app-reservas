@@ -35,8 +35,13 @@ const AppRoutes = () => {
     }
 
     validarYFinalizar()
-  }, [])
+  }, [usuario])
 
+
+  useEffect(() => {
+    console.log(JSON.stringify(cliente, null,2))
+    console.log(JSON.stringify(usuario, null,2))
+  },[cliente, usuario])
   // Componente del splash personalizado (puede ser reemplazado con react-native-splash-screen)
   if (loading) {
     return (

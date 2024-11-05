@@ -49,7 +49,7 @@ const MenuSelection: React.FC<Props> = ({ dishes, onSelectedDishIds }) => {
     <View style={styles.container}>
       <FlatList
         data={dishes}
-        keyExtractor={(item) => item.getId.toString()}
+        keyExtractor={(item) => item.getId().toString()}
         renderItem={renderDishItem}
         showsVerticalScrollIndicator={false}
         style={styles.list}
