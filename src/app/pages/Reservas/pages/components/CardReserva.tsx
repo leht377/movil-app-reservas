@@ -54,7 +54,7 @@ const CardReserva: React.FC<Props> = ({ reserva, onPressCancelar }) => {
           <Badge icon='today' text={fecha} />
           <Badge icon='time' text={reserva?.getHoraReserva()} />
         </View>
-        {estadoReserva === EstadoReserva.PENDIENTE || estadoReserva === EstadoReserva.ACEPTADA && (
+        {(estadoReserva === EstadoReserva.PENDIENTE || estadoReserva === EstadoReserva.ACEPTADA) && (
           <View style={styles.optionsContainer}>
             <TouchableNativeFeedback onPress={() => onPressCancelar(reserva?.getId())}>
               <View style={[styles.optionButton, { backgroundColor: theme.colors.primary }]}>
@@ -101,7 +101,7 @@ const CardReserva: React.FC<Props> = ({ reserva, onPressCancelar }) => {
         </View>
       )}
 
-      {estadoReserva === EstadoReserva.RECHAZADA && (
+      {(estadoReserva === EstadoReserva.RECHAZADA ||  estadoReserva === EstadoReserva.CANCELADA) && reserva?.getMotivoRechazo() && (
         <View style={{ marginTop: 10 }}>
           <StyledText fontWeight='bold'>Motivo de rechazo:</StyledText>
           <StyledText fontSize='title' fontWeight='bold' color='primary'>

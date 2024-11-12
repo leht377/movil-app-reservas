@@ -79,7 +79,7 @@ const CardReservaPendiente: React.FC<Props> = ({ reserva, onPressAceptar, onPres
         </View>
       </View>
 
-      {estado === EstadoReserva.RECHAZADA  || estado === EstadoReserva.CANCELADA && (
+      {(estado === EstadoReserva.RECHAZADA  || estado === EstadoReserva.CANCELADA )  && reserva?.getMotivoRechazo()  && (
         <View style={{ marginTop: 10 }}>
           <StyledText fontWeight='bold'>Motivo de rechazo:</StyledText>
           <StyledText fontSize='title' fontWeight='bold' color='primary'>
