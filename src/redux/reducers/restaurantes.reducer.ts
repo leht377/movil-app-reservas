@@ -13,6 +13,7 @@ import { UploadFotoIntalacionDto } from '@/dominio/dtos/upload-foto-instalacion.
 import { DeleteFotoIntalacionDto } from '@/dominio/dtos/delete-foto-instalacion.dto'
 import { RechazarReservaRestauranteDto } from '@/dominio/dtos/rechazar-reserva-restaurante.dto'
 import { RestauranteMapper } from '@/common/utils/mappers/restaurante.mapper'
+import { CancelarReservaRestauranteDto } from '@/dominio/dtos/cancelar-reserva-restaurante.dto'
 
 interface initialStateInterface {
   restaurante_actual: RestauranteDetalladoEntity | null
@@ -23,6 +24,7 @@ interface initialStateInterface {
   status: Status
   status_calificar_restaurante: Status
   status_actualizar_restaurante: Status
+  status_cancelar_reserva: Status
   error: null | string
   status_aceptar_reserva: Status
   status_rechazar_reserva: Status
@@ -36,6 +38,7 @@ const initialState: initialStateInterface = {
   status: Status.IDLE,
   status_calificar_restaurante: Status.IDLE,
   status_actualizar_restaurante: Status.IDLE,
+  status_cancelar_reserva: Status.IDLE,
   top_restaurantes: null,
   paginacion: null,
   status_aceptar_reserva: Status.IDLE,
@@ -51,6 +54,9 @@ const restaurantes = createSlice({
     },
     reset_status_actualizar_restaurate(state) {
       state.status_actualizar_restaurante = Status.IDLE
+    },
+    reset_status_cancelar_reserva(state) {
+      state.status_cancelar_reserva = Status.IDLE
     },
     set_restaurante_actual(state, action: PayloadAction<RestauranteDetalladoEntity>) {
       state.restaurante_actual = action.payload
@@ -178,6 +184,18 @@ const restaurantes = createSlice({
       // state.status_aceptar_reserva = Status.SUCCEEDED
       state.restaurante = action.payload
     })
+
+    builder.addCase(cancelarReservaRestaurante.pending, (state, action) => {
+      state.status_cancelar_reserva = Status.LOADING
+    })
+    builder.addCase(cancelarReservaRestaurante.rejected, (state, action) => {
+      state.status_cancelar_reserva = Status.FAILED
+      if (action.payload instanceof AxiosError) state.error = action.payload.response.data?.error
+      else state.error = 'Ocurrio un error desconocido'
+    })
+    builder.addCase(cancelarReservaRestaurante.fulfilled, (state, action) => {
+      state.status_cancelar_reserva = Status.SUCCEEDED
+    })
   }
 })
 
@@ -188,10 +206,26 @@ export const {
   reset_status_actualizar_restaurate,
   reset_status_aceptar_reserva_restaurante,
   reset_status_rechazar_reserva_restaurante,
+  reset_status_cancelar_reserva,
   cambiar_id_menu
 } = restaurantes.actions
 export default restaurantes.reducer
 
+export const cancelarReservaRestaurante = createAsyncThunk(
+  'cliente/cancelarReservaRestaurante',
+  async (data: CancelarReservaRestauranteDto, { rejectWithValue }) => {
+    try {
+      const response = await reservaServices.cancelarReservaCliente(data)
+      return response
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        // Use rejectWithValue to pass AxiosError data to the rejected action payload
+        return rejectWithValue(error)
+      }
+      throw error
+    }
+  }
+)
 export const get_top_restaurantes = createAsyncThunk('restaurantes/top-restaurantes', async () => {
   try {
     const restaurantes = await restauranteServices.obtener_top_resturantes()

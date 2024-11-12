@@ -15,6 +15,8 @@ import ModalStatusAceptarReserva from './components/ModalStatusAceptarReserva'
 import useRechazarReservaRestaurante from './hooks/useRechazarReservaRestaurante'
 import ModalDecision from '@/app/components/ModalDesicion'
 import ModalMotivoRechazo from './components/ModalMotivoRechazo'
+import useCancelarReservaRestaurante from './hooks/useCancelarReservaRestuarante'
+import ModalStatusCancelarReserva from './components/ModalStatusCancelarReserva'
 
 const AdministrarReserva = () => {
   const { loading, obtenerReservas, reservas } = useObtenerReservaRestaurante()
@@ -25,13 +27,15 @@ const AdministrarReserva = () => {
     EstadoReserva.PENDIENTE
   )
   const [modalDesicionVisible, setModalDesicionVisible] = useState<boolean>(false)
+  const [modalCancelarReserva, setModalCancelarReserva] = useState<boolean>(false)
   const [idReservaSeleccionada, setIdReservaSeleccionada] = useState<string | undefined>(undefined)
   const { aceptarReserva, statusAceptarReserva, errorAceptarReserva } =
     useAceptarReservaRestaurante()
   const { rechazarReserva, statusRechazarReserva, errorRechazarReserva } =
     useRechazarReservaRestaurante()
   const [inputValue, setInputValue] = useState<string>('')
-
+  const { cancelarReserva, errorCancelarReserva, statusCancelarReserva } =
+    useCancelarReservaRestaurante()
   const filterReservas = () => {
     if (!reservas) return []
     return reservas.filter((r) => r.getEstado() === filtroEstadoReserva)
@@ -69,6 +73,21 @@ const AdministrarReserva = () => {
       setModalDesicionVisible(false)
       await onRefresh()
     }
+  }
+
+  const handleConfirmarCancelacion = async (motivo: string) => {
+    const reserva = reservas?.find((r) => r.getId() === idReservaSeleccionada)
+    if (idReservaSeleccionada && reserva) {
+      const cliente_id = reserva?.getClienteId()
+      await cancelarReserva(idReservaSeleccionada, motivo, cliente_id)
+      setModalCancelarReserva(false)
+      await onRefresh()
+    }
+  }
+
+  const handleCancelarReserva = async (idReserva: string) => {
+    setIdReservaSeleccionada(idReserva)
+    setModalCancelarReserva(true)
   }
 
   const handleCancelarRechazo = () => {
@@ -149,6 +168,7 @@ const AdministrarReserva = () => {
               reserva={item}
               onPressAceptar={handleAceptarReserva}
               onPressRechazar={handleRechazarReserva}
+              onPressCancelar={handleCancelarReserva}
             />
           )
         }
@@ -175,11 +195,20 @@ const AdministrarReserva = () => {
           </StyledText>
         </View>
       </ModalDecision> */}
-
+      <ModalStatusCancelarReserva
+        status={statusCancelarReserva}
+        error={errorCancelarReserva}
+        onClose={() => {}}
+      />
       <ModalMotivoRechazo
         visible={modalDesicionVisible}
         onCancel={handleCancelarRechazo}
         onConfirm={handleConfirmarRechazo}
+      />
+      <ModalMotivoRechazo
+        visible={modalCancelarReserva}
+        onCancel={() => setModalCancelarReserva(false)}
+        onConfirm={handleConfirmarCancelacion}
       />
       <ModalStatusAceptarReserva
         status={statusRechazarReserva}

@@ -12,6 +12,7 @@ interface Props {
   reserva: ReservaEntity
   onPressAceptar?: (idReserva: string) => void
   onPressRechazar?: (idReserva: string) => void
+  onPressCancelar?: (idReserva: string) => void
 }
 
 function formatDate(isoString) {
@@ -22,7 +23,7 @@ function formatDate(isoString) {
   return `${day}/${month}/${year}`
 }
 
-const CardReservaPendiente: React.FC<Props> = ({ reserva, onPressAceptar, onPressRechazar }) => {
+const CardReservaPendiente: React.FC<Props> = ({ reserva, onPressAceptar, onPressRechazar, onPressCancelar }) => {
   const fecha = reserva?.getFechaReserva() ? formatDate(reserva?.getFechaReserva()) : undefined
   const estado = reserva?.getEstado()
 
@@ -78,7 +79,7 @@ const CardReservaPendiente: React.FC<Props> = ({ reserva, onPressAceptar, onPres
         </View>
       </View>
 
-      {estado === EstadoReserva.RECHAZADA && (
+      {estado === EstadoReserva.RECHAZADA  || estado === EstadoReserva.CANCELADA && (
         <View style={{ marginTop: 10 }}>
           <StyledText fontWeight='bold'>Motivo de rechazo:</StyledText>
           <StyledText fontSize='title' fontWeight='bold' color='primary'>
@@ -103,6 +104,18 @@ const CardReservaPendiente: React.FC<Props> = ({ reserva, onPressAceptar, onPres
               color='primary'
               title='Rachazar'
               onPress={() => onPressRechazar?.(reserva.getId())}
+            />
+          </View>
+        </View>
+      )}
+
+      {estado === EstadoReserva.ACEPTADA && (
+        <View style={styles.statusContainer}>
+          <View style={styles.Butones}>
+            <Button
+              color='primary'
+              title='Cancelar'
+              onPress={() => onPressCancelar?.(reserva.getId())}
             />
           </View>
         </View>
@@ -144,7 +157,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
     padding: 10,
     borderRadius: 5,
-    gap:10,
+    gap: 10,
     marginBottom: 8,
     shadowColor: '#000',
     shadowOpacity: 0.05,

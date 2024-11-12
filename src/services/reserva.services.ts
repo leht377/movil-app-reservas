@@ -7,6 +7,7 @@ import { CancelarReservaClienteDto } from "@/dominio/dtos/cancelar-reserva-clien
 import { ReservaEntity } from "@/dominio/entities";
 import { AceptarReservaDto } from "@/dominio/dtos/aceptar-restaurante.dto";
 import { RechazarReservaRestauranteDto } from "@/dominio/dtos/rechazar-reserva-restaurante.dto";
+import { CancelarReservaRestauranteDto } from "@/dominio/dtos/cancelar-reserva-restaurante.dto";
 
 const API_URL = envs.API_URL;
 
@@ -26,7 +27,7 @@ const solicitarReserva = async (data: SolicitarReservaDto): Promise<any> => {
   }
 };
 const cancelarReservaCliente = async (
-  data: CancelarReservaClienteDto
+  data: CancelarReservaClienteDto | CancelarReservaRestauranteDto
 ): Promise<ReservaEntity> => {
   const { reserva_id, token, ...body } = data;
   const config = {
