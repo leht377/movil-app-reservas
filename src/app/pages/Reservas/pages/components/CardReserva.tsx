@@ -15,11 +15,11 @@ interface Props {
 function formatDate(isoString) {
   const date = new Date(isoString)
   const day = String(date.getUTCDate()).padStart(2, '0')
-  const month = String(date.getUTCMonth() + 1).padStart(2, '0') // Los meses en JavaScript van de 0 a 11
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0')
   const year = date.getUTCFullYear()
-
   return `${day}/${month}/${year}`
 }
+
 const CardReserva: React.FC<Props> = ({ reserva, onPressCancelar }) => {
   const fecha = reserva?.getFechaReserva() ? formatDate(reserva?.getFechaReserva()) : undefined
   let styleStatusBadge = {}
@@ -40,9 +40,9 @@ const CardReserva: React.FC<Props> = ({ reserva, onPressCancelar }) => {
     default:
       break
   }
+
   return (
     <View style={styles.card}>
-      {/* Nombre restaurante */}
       <View>
         <StyledText fontWeight='bold' fontSize='title' style={styles.restaurantName}>
           {reserva?.getNombreRestaurante()}
@@ -50,12 +50,10 @@ const CardReserva: React.FC<Props> = ({ reserva, onPressCancelar }) => {
       </View>
 
       <View style={styles.row}>
-        {/* BADGE */}
         <View style={styles.badgeContainer}>
           <Badge icon='today' text={fecha} />
           <Badge icon='time' text={reserva?.getHoraReserva()} />
         </View>
-        {/* OPTIONS */}
         {estadoReserva === EstadoReserva.PENDIENTE && (
           <View style={styles.optionsContainer}>
             <TouchableNativeFeedback onPress={() => onPressCancelar(reserva?.getId())}>
@@ -63,22 +61,17 @@ const CardReserva: React.FC<Props> = ({ reserva, onPressCancelar }) => {
                 <MyIcon nombre='close-circle' tamano={30} color='white' />
               </View>
             </TouchableNativeFeedback>
-            {/* <TouchableNativeFeedback>
-              <View style={[styles.optionButton, { backgroundColor: theme.colors.tertiary }]}>
-                <MyIcon nombre='book' tamano={30} color='white' />
-              </View>
-            </TouchableNativeFeedback> */}
           </View>
         )}
       </View>
-      {/* LOCATION */}
+
       <View style={styles.locationContainer}>
         <MyIcon nombre='location' tamano={25} />
         <StyledText fontWeight='bold' fontSize='title'>
           {reserva?.getLocacionRestaurante()}
         </StyledText>
       </View>
-      {/* INFORMACION BASICA */}
+
       <View style={styles.informacionBasica}>
         <View style={styles.locationContainer}>
           <MyIcon nombre='person' tamano={25} />
@@ -93,19 +86,30 @@ const CardReserva: React.FC<Props> = ({ reserva, onPressCancelar }) => {
           </StyledText>
         </View>
       </View>
-      {/* INFORMACION Menú */}
-      <View style={styles.container}>
-        <StyledText fontWeight='bold' fontSize='title' style={styles.title}>
-          Platos solicitados
-        </StyledText>
-        {reserva.getPlatos().map((p) => (
-          <StyledText key={p.getId()} style={styles.dishText}>
-            {p.getNombre}
-          </StyledText>
-        ))}
-      </View>
 
-      {/* ESTADO RESERVA */}
+      {estadoReserva != EstadoReserva.RECHAZADA && estadoReserva != EstadoReserva.CANCELADA && (
+        <View style={styles.dishContainer}>
+          <StyledText fontWeight='bold' fontSize='title' style={styles.dishTitle}>
+            Platos solicitados
+          </StyledText>
+          {reserva.getPlatos().map((p, index) => (
+            <View key={p.getId() + index} style={styles.dishCard}>
+              <MyIcon nombre='restaurant' tamano={20} color={theme.colors.primary} />
+              <StyledText style={styles.dishText}>{p.getNombre}</StyledText>
+            </View>
+          ))}
+        </View>
+      )}
+
+      {estadoReserva === EstadoReserva.RECHAZADA && (
+        <View style={{ marginTop: 10 }}>
+          <StyledText fontWeight='bold'>Motivo de rechazo:</StyledText>
+          <StyledText fontSize='title' fontWeight='bold' color='primary'>
+            {reserva?.getMotivoRechazo()}
+          </StyledText>
+        </View>
+      )}
+
       <View style={styles.statusContainer}>
         <View style={[styles.statusBadge, styleStatusBadge]}>
           <StyledText fontWeight='bold' color='secondary'>
@@ -113,14 +117,16 @@ const CardReserva: React.FC<Props> = ({ reserva, onPressCancelar }) => {
           </StyledText>
         </View>
 
-        {reserva?.getCodIngreso() && (
-          <View style={styles.codeContainer}>
-            <StyledText fontWeight='bold'>CÓDIGO RESERVA</StyledText>
-            <StyledText color='primary' fontWeight='bold' fontSize='title'>
-              {reserva?.getCodIngreso()}
-            </StyledText>
-          </View>
-        )}
+        {reserva?.getCodIngreso() &&
+          estadoReserva != EstadoReserva.RECHAZADA &&
+          estadoReserva != EstadoReserva.CANCELADA && (
+            <View style={styles.codeContainer}>
+              <StyledText fontWeight='bold'>CÓDIGO RESERVA</StyledText>
+              <StyledText color='primary' fontWeight='bold' fontSize='title'>
+                {reserva?.getCodIngreso()}
+              </StyledText>
+            </View>
+          )}
       </View>
     </View>
   )
@@ -128,15 +134,14 @@ const CardReserva: React.FC<Props> = ({ reserva, onPressCancelar }) => {
 
 const styles = StyleSheet.create({
   card: {
-    gap: 10,
+    gap: 15,
     backgroundColor: theme.colors.secondary,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,
     borderWidth: 0.2
   },
-  container: {
-    padding: 15,
+  dishContainer: {
     backgroundColor: '#fff',
     borderRadius: 8,
     shadowColor: '#000',
@@ -145,17 +150,30 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     marginVertical: 10
   },
-  title: {
+  dishTitle: {
     marginBottom: 8,
-    color: '#333'
+    color: '#333',
+    fontWeight: 'bold'
+  },
+  dishCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f9f9f9',
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 1 },
+    shadowRadius: 2
   },
   dishText: {
     fontSize: 16,
     color: '#555',
-    marginBottom: 4
+    marginLeft: 8
   },
   restaurantName: {
-    fontSize: 28
+    fontSize: 24
   },
   informacionBasica: {
     flexDirection: 'row',
@@ -169,11 +187,14 @@ const styles = StyleSheet.create({
   },
   badgeContainer: {
     flexDirection: 'row',
-    gap: 10
+    gap: 10,
+    flexWrap:"wrap",
+    flex:1
   },
   optionsContainer: {
     flexDirection: 'row',
-    gap: 5
+    gap: 5,
+    maxHeight:40,
   },
   statusAceptada: {
     backgroundColor: theme.colors.green

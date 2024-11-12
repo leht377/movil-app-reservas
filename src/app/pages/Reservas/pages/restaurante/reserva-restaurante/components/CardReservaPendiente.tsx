@@ -41,50 +41,55 @@ const CardReservaPendiente: React.FC<Props> = ({ reserva, onPressAceptar, onPres
         </View>
       </View>
 
-      <View style={styles.locationContainer}>
-        <MyIcon nombre='person' tamano={25} />
-        <StyledText fontWeight='bold' fontSize='title'>
-          {reserva?.getNombreCliente()}
-        </StyledText>
-      </View>
-
-      <View style={styles.container2}>
-          <StyledText fontWeight='bold' fontSize='title' style={styles.title}>
-            Platos solicitados
+      <View style={{ gap: 20, flexDirection: 'row' }}>
+        <View style={styles.locationContainer}>
+          <MyIcon nombre='person' tamano={25} />
+          <StyledText fontWeight='bold' fontSize='title'>
+            {reserva?.getNombreCliente()}
           </StyledText>
-          {reserva.getPlatos().map((p) => (
-            <StyledText key={p.getId()} style={styles.dishText}>
-              {p.getNombre}
-            </StyledText>
-          ))}
         </View>
-
-      <View style={{ flexDirection: 'row', gap: 140 }}>
         <View style={styles.locationContainer}>
           <MyIcon nombre='people' tamano={25} />
           <StyledText fontWeight='bold' fontSize='title'>
             {reserva?.getCantidadPersonas()}
           </StyledText>
         </View>
+      </View>
+      {estado != EstadoReserva.RECHAZADA && estado != EstadoReserva.CANCELADA && (
+        <View style={styles.dishContainer}>
+          <StyledText fontWeight='bold' fontSize='title' style={styles.dishTitle}>
+            Platos solicitados
+          </StyledText>
+          {reserva.getPlatos().map((p, index) => (
+            <View key={p.getId() + index} style={styles.dishCard}>
+              <MyIcon nombre='restaurant' tamano={20} color={theme.colors.primary} />
+              <StyledText style={styles.dishText}>{p.getNombre}</StyledText>
+            </View>
+          ))}
+        </View>
+      )}
 
+      <View style={{ flexDirection: 'row', gap: 140 }}>
         <View style={styles.codeContainer}>
           <StyledText fontWeight='bold'>CÓDIGO DE INGRESO</StyledText>
           <StyledText color='primary' fontWeight='bold' fontSize='title'>
             {reserva?.getCodIngreso()}
           </StyledText>
         </View>
-
       </View>
+
+      {estado === EstadoReserva.RECHAZADA && (
+        <View style={{ marginTop: 10 }}>
+          <StyledText fontWeight='bold'>Motivo de rechazo:</StyledText>
+          <StyledText fontSize='title' fontWeight='bold' color='primary'>
+            {reserva?.getMotivoRechazo()}
+          </StyledText>
+        </View>
+      )}
 
       {estado === EstadoReserva.RECHAZADA ||
       estado === EstadoReserva.CANCELADA ||
       estado === EstadoReserva.ACEPTADA ? null : (
-        //  estado ===
-        //   EstadoReserva.ACEPTADA ? (
-        //   <View >
-        //     <Button color="primary" title="Cancelar" />
-        //   </View>
-        // ) :
         <View style={styles.statusContainer}>
           <View style={styles.Butones}>
             <Button
@@ -118,6 +123,33 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginBottom: 20,
     marginTop: 10
+  },
+  dishContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    marginVertical: 10
+  },
+  dishTitle: {
+    marginBottom: 8,
+    color: '#333',
+    fontWeight: 'bold'
+  },
+  dishCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f9f9f9',
+    padding: 10,
+    borderRadius: 5,
+    gap:10,
+    marginBottom: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 1 },
+    shadowRadius: 2
   },
   container2: {
     padding: 15,
@@ -167,7 +199,7 @@ const styles = StyleSheet.create({
   },
   codeContainer: {
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'flex-start'
   }
 })
 

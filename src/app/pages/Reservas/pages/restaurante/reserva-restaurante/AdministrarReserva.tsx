@@ -14,6 +14,7 @@ import useAceptarReservaRestaurante from './hooks/useAceptarReservaRestaurante'
 import ModalStatusAceptarReserva from './components/ModalStatusAceptarReserva'
 import useRechazarReservaRestaurante from './hooks/useRechazarReservaRestaurante'
 import ModalDecision from '@/app/components/ModalDesicion'
+import ModalMotivoRechazo from './components/ModalMotivoRechazo'
 
 const AdministrarReserva = () => {
   const { loading, obtenerReservas, reservas } = useObtenerReservaRestaurante()
@@ -52,7 +53,6 @@ const AdministrarReserva = () => {
 
   const handleAceptarReserva = async (idReserva: string) => {
     const reserva = await aceptarReserva(idReserva)
-
     if (reserva) {
       await onRefresh()
     }
@@ -63,9 +63,9 @@ const AdministrarReserva = () => {
     setModalDesicionVisible(true)
   }
 
-  const handleConfirmarRechazo = async () => {
+  const handleConfirmarRechazo = async (motivo: string) => {
     if (idReservaSeleccionada) {
-      await rechazarReserva(idReservaSeleccionada)
+      await rechazarReserva(idReservaSeleccionada, motivo)
       setModalDesicionVisible(false)
       await onRefresh()
     }
@@ -164,7 +164,7 @@ const AdministrarReserva = () => {
         texto1='Reserva Aceptada exitosamente'
       />
 
-      <ModalDecision
+      {/* <ModalDecision
         onAccept={handleConfirmarRechazo}
         onCancel={handleCancelarRechazo}
         visible={modalDesicionVisible}
@@ -174,8 +174,13 @@ const AdministrarReserva = () => {
             ¿Desea rechazar esta reserva?
           </StyledText>
         </View>
-      </ModalDecision>
+      </ModalDecision> */}
 
+      <ModalMotivoRechazo
+        visible={modalDesicionVisible}
+        onCancel={handleCancelarRechazo}
+        onConfirm={handleConfirmarRechazo}
+      />
       <ModalStatusAceptarReserva
         status={statusRechazarReserva}
         error={errorRechazarReserva}

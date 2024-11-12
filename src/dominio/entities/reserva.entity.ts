@@ -16,11 +16,16 @@ export class ReservaEntity {
     private readonly estado: EstadoReserva,
     private readonly fecha_reserva: Date,
     private readonly hora_reserva: string,
-    private readonly cod_ingreso?: string
+    private readonly cod_ingreso?: string,
+    private readonly motivo_rechazo?:string
   ) {}
 
   getId(): string {
     return this.id
+  }
+
+  getMotivoRechazo(): string | undefined{
+    return this.motivo_rechazo
   }
 
   getClienteId(): string {
